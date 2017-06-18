@@ -7,10 +7,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     platform: mysql
 
-  #视图解析配置
-  view:
-    prefix: /WEB-INF/views/
-    suffix: .jsp
+  mvc:
+    #视图解析配置
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
   #Activiti配置
 

@@ -43,11 +43,11 @@
         <!--<property name="mapperLocations" value="classpath:indi/baojie/demo/supervision/dao/mapper/*.xml"/>-->
     <!--</bean>-->
 
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!--basePackage不要包含service目录-->
-        <property name="basePackage" value="com.lb.supervision.dao"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    </bean>
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--&lt;!&ndash;basePackage不要包含service目录&ndash;&gt;-->
+        <!--<property name="basePackage" value="indi.baojie.demo.supervision.dao"/>-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
 
     <!-- 事务管理器 -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
