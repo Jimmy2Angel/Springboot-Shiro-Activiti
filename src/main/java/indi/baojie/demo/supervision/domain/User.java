@@ -1,6 +1,7 @@
 package indi.baojie.demo.supervision.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable{
     private static final long serialVersionUID = 4612862885081206763L;
@@ -14,6 +15,16 @@ public class User implements Serializable{
     private String email;
 
     private Integer unitId;
+
+    private List<Role> roleList;
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
 
     public Integer getUserId() {
         return userId;

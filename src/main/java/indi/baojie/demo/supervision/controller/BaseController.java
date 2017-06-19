@@ -1,6 +1,6 @@
 package indi.baojie.demo.supervision.controller;
 
-import org.activiti.engine.identity.User;
+import indi.baojie.demo.supervision.domain.User;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
