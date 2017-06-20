@@ -11,6 +11,6 @@
     <title></title>
 </head>
 <body>
-aaaaaaaaaaaaa
+<a href="/sup/logout">退出</a>
 </body>
 </html>

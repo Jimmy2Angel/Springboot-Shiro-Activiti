@@ -1,12 +1,16 @@
 package indi.baojie.demo.shiro.cfg;
 
+import indi.baojie.demo.shiro.filter.MyShiroFilterFactoryBean;
 import indi.baojie.demo.shiro.realm.MyShiroRealm;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -25,8 +29,8 @@ public class Cfg_Shiro {
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
-        logger.info("注入Shiro的Web过滤器-->shiroFilter", ShiroFilterFactoryBean.class);
-        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        logger.info("注入Shiro的Web过滤器-->shiroFilter", MyShiroFilterFactoryBean.class);
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new MyShiroFilterFactoryBean();
 
         //Shiro的核心安全接口,这个属性是必须的
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -45,14 +49,17 @@ public class Cfg_Shiro {
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
 
-        // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
+        // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/static/**","anon");
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/logout","anon");
+        filterChainDefinitionMap.put("/H-ui/**","anon");
+        filterChainDefinitionMap.put("/myStatic/**","anon");
+        filterChainDefinitionMap.put("/index","user");
+        filterChainDefinitionMap.put("/","user");
+        filterChainDefinitionMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
         return shiroFilterFactoryBean;
     }
 
@@ -100,9 +107,36 @@ public class Cfg_Shiro {
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(MyShiroRealm myShiroRealm) {
         DefaultWebSecurityManager securityManager  = new DefaultWebSecurityManager();
+        //设置"记住我"管理器
+        securityManager.setRememberMeManager(rememberMeManager());
+        //设置realm
         securityManager .setRealm(myShiroRealm);
-//      <!-- 用户授权/认证信息Cache, 采用EhCache 缓存 -->
+        // 用户授权/认证信息Cache, 采用EhCache 缓存
         securityManager .setCacheManager(getEhCacheManager());
         return securityManager;
+    }
+
+    /**
+     * cookie对象;
+     */
+    @Bean
+    public SimpleCookie rememberMeCookie(){
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        simpleCookie.setMaxAge(2592000);
+        return simpleCookie;
+    }
+
+    /**
+     * cookie管理对象;记住我功能
+     */
+    @Bean
+    public CookieRememberMeManager rememberMeManager(){
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
     }
 }

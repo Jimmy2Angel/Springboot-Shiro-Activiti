@@ -37,7 +37,7 @@
 <div class="header"></div>
 <div class="loginWraper">
     <div id="loginform" class="loginBox">
-        <form class="form form-horizontal" id="loginform1" action="" method="post">
+        <form class="form form-horizontal" id="loginform1">
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
                 <div class="formControls col-xs-8">
@@ -50,20 +50,20 @@
                     <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
                 </div>
             </div>
-          <%--  <div class="row cl">
-                <div class="formControls col-xs-8 col-xs-offset-3">
-                    <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-                    <img src="images/VerifyCode.aspx.png">
-                    <a id="kanbuq" href="javascript:;">看不清，换一张</a>
-                </div>
-            </div>
+            <%--<div class="row cl">--%>
+                <%--<div class="formControls col-xs-8 col-xs-offset-3">--%>
+                    <%--<input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">--%>
+                    <%--<img src="images/VerifyCode.aspx.png">--%>
+                    <%--<a id="kanbuq" href="javascript:;">看不清，换一张</a>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
                     <label for="online">
-                        <input type="checkbox" name="online" id="online" value="">
-                        使我保持登录状态</label>
+                        <input type="checkbox" name="rememberMe" id="online" value="true">
+                        记住我</label>
                 </div>
-            </div>--%>
+            </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
                     <input name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
@@ -112,6 +112,9 @@
                     dataType: 'json',
                     type: 'post', // 提交方式 get/post
                     url: '${ctx}/${url}', // 需要提交的 url
+                    data: {
+                        'rememberMe' : $('#rememberMe').is(':checked')
+                    },
                     success: function(res) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
                         //var index = parent.layer.getFrameIndex(window.name);

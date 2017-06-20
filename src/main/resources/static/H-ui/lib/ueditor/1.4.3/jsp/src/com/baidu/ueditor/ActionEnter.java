@@ -1,9 +1,5 @@
 package com.baidu.ueditor;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.baidu.ueditor.define.ActionMap;
 import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
@@ -11,6 +7,9 @@ import com.baidu.ueditor.define.State;
 import com.baidu.ueditor.hunter.FileManager;
 import com.baidu.ueditor.hunter.ImageHunter;
 import com.baidu.ueditor.upload.Uploader;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public class ActionEnter {
 	

@@ -1,17 +1,16 @@
 package com.baidu.ueditor.hunter;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
-
 import com.baidu.ueditor.PathFormat;
 import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.MultiState;
 import com.baidu.ueditor.define.State;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 public class FileManager {
 

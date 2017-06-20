@@ -1,7 +1,6 @@
 package indi.baojie.demo.supervision.controller;
 
 import indi.baojie.demo.common.data.JsonResult;
-import indi.baojie.demo.supervision.domain.User;
 import indi.baojie.demo.supervision.service.UserService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
@@ -21,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Created by Lollipop on 2017/6/15.
  */
 @RestController
-public class LoginController extends BaseController{
+public class LoginController{
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
@@ -37,19 +36,24 @@ public class LoginController extends BaseController{
      * 打开登陆页面
      * @return
      */
-    @GetMapping("/login")
+    @GetMapping(value = {"/login"})
     public ModelAndView login(){
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated() || subject.isRemembered()) {
+            return new ModelAndView("redirect:/index");
+        }
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("url","login");
         return modelAndView;
     }
 
     @PostMapping("/login")
-    public JsonResult login(String username, String password, HttpServletRequest req,
+    public JsonResult login(String username, String password,Boolean rememberMe, HttpServletRequest req,
                             RedirectAttributes redirectAttributes){
+        System.out.println(username+"======="+password+"=========="+rememberMe);
         JsonResult jsonResult = new JsonResult();
         logger.info("准备登陆用户 => {}", username);
-        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username,password,rememberMe);
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();
         try {
@@ -80,14 +84,31 @@ public class LoginController extends BaseController{
         //验证是否登录成功
         if (currentUser.isAuthenticated()) {
             logger.info("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
-            User user = userService.findByName(username);
-            saveUser(req,user);
             jsonResult.setSuccess(true);
             return  jsonResult;
         } else {
             jsonResult.markError("账号或密码不正确");
             return  jsonResult;
         }
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated() || subject.isRemembered()) {
+            // session 会销毁，在SessionListener监听session销毁，清理权限缓存
+            subject.logout();
+        }
+        return new ModelAndView("redirect:/login");
+    }
+
+    /**
+     * 访问未授权页面时的跳转
+     */
+    @GetMapping("/unauthorized")
+    public ModelAndView unauthorized(){
+        logger.info("------没有权限-------");
+        return new ModelAndView("unauthorized");
     }
 
 }

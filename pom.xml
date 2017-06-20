@@ -24,7 +24,7 @@
                 <filtering>false</filtering>
             </resource>
             <resource>
-                <directory>src/main/resourcec</directory>
+                <directory>src/main/resource</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
@@ -38,9 +38,19 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--fork :  如果没有该项配置，那个devtools不会起作用，即应用不会restart -->
+                    <fork>true</fork>
+                    <!-- 解决中文乱码问题 -->
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
