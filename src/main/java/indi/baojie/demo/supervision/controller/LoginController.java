@@ -36,7 +36,7 @@ public class LoginController{
      * 打开登陆页面
      * @return
      */
-    @GetMapping(value = {"/login"})
+    @GetMapping(value = {"/login","/"})
     public ModelAndView login(){
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated() || subject.isRemembered()) {
@@ -50,7 +50,6 @@ public class LoginController{
     @PostMapping("/login")
     public JsonResult login(String username, String password,Boolean rememberMe, HttpServletRequest req,
                             RedirectAttributes redirectAttributes){
-        System.out.println(username+"======="+password+"=========="+rememberMe);
         JsonResult jsonResult = new JsonResult();
         logger.info("准备登陆用户 => {}", username);
         UsernamePasswordToken token = new UsernamePasswordToken(username,password,rememberMe);

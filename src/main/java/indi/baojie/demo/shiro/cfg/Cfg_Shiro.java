@@ -1,8 +1,8 @@
 package indi.baojie.demo.shiro.cfg;
 
+import indi.baojie.demo.redis.cfg.RedisProp;
 import indi.baojie.demo.shiro.filter.MyShiroFilterFactoryBean;
 import indi.baojie.demo.shiro.realm.MyShiroRealm;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -11,9 +11,15 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,8 +30,21 @@ import java.util.Map;
  * Created by Lollipop on 2017/6/19.
  */
 @Configuration
+@EnableConfigurationProperties(RedisProp.class)
 public class Cfg_Shiro {
     private static final Logger logger = LoggerFactory.getLogger(Cfg_Shiro.class);
+
+    @Value("${spring.redis.host}")
+    private String host;
+//    private String host = "127.0.0.1";
+
+    @Value("${spring.redis.port}")
+    private int port;
+//    private int port = 6379;
+
+    @Value("${spring.redis.timeout}")
+    private int timeout;
+//    private int timeout = 1000;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
@@ -51,6 +70,17 @@ public class Cfg_Shiro {
 
         // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
+
+        //自定义加载权限资源关系
+//        List<Resources> resourcesList = resourcesService.queryAll();
+//        for(Resources resources:resourcesList){
+//
+//            if (StringUtil.isNotEmpty(resources.getResurl())) {
+//                String permission = "perms[" + resources.getResurl()+ "]";
+//                filterChainDefinitionMap.put(resources.getResurl(),permission);
+//            }
+//        }
+
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/logout","anon");
         filterChainDefinitionMap.put("/H-ui/**","anon");
@@ -63,17 +93,17 @@ public class Cfg_Shiro {
         return shiroFilterFactoryBean;
     }
 
-    @Bean
-    public EhCacheManager getEhCacheManager() {
-        EhCacheManager em = new EhCacheManager();
-        em.setCacheManagerConfigFile("classpath:shiro/ehcache-shiro.xml");
-        return em;
-    }
+//    @Bean
+//    public EhCacheManager getEhCacheManager() {
+//        EhCacheManager em = new EhCacheManager();
+//        em.setCacheManagerConfigFile("classpath:shiro/ehcache-shiro.xml");
+//        return em;
+//    }
 
     @Bean(name = "myShiroRealm")
-    public MyShiroRealm myShiroRealm(EhCacheManager cacheManager) {
+    public MyShiroRealm myShiroRealm() {
         MyShiroRealm realm = new MyShiroRealm();
-        realm.setCacheManager(cacheManager);
+        realm.setCacheManager(cacheManager());
         return realm;
     }
 
@@ -107,12 +137,22 @@ public class Cfg_Shiro {
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(MyShiroRealm myShiroRealm) {
         DefaultWebSecurityManager securityManager  = new DefaultWebSecurityManager();
+        /**设置session管理器
+           这里如果不设置的话，DefaultWebSecurityManager默认使用ServletContainerSessionManager
+           这样response（实际是ResponseFacade）不会包装成ShiroHttpServletResponse,为了去掉url的目的而去重写ShiroHttpServletResponse的方法也就没有用了
+         **/
+
+//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+//        securityManager.setSessionManager(sessionManager);
+
+        // 自定义缓存实现 使用redis
+        securityManager.setCacheManager(cacheManager());
+        // 自定义session管理 使用redis
+        securityManager.setSessionManager(sessionManager());
         //设置"记住我"管理器
         securityManager.setRememberMeManager(rememberMeManager());
         //设置realm
         securityManager .setRealm(myShiroRealm);
-        // 用户授权/认证信息Cache, 采用EhCache 缓存
-        securityManager .setCacheManager(getEhCacheManager());
         return securityManager;
     }
 
@@ -139,4 +179,53 @@ public class Cfg_Shiro {
         cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
         return cookieRememberMeManager;
     }
+
+    /**
+     * 配置shiro redisManager
+     * 使用的是shiro-redis开源插件
+     * @return
+     */
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost(host);
+        redisManager.setPort(port);
+        redisManager.setExpire(1800);// 配置缓存过期时间
+        redisManager.setTimeout(timeout);
+        // redisManager.setPassword(password);
+        return redisManager;
+    }
+
+    /**
+     * cacheManager 缓存 redis实现
+     * 使用的是shiro-redis开源插件
+     * @return
+     */
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
+
+
+    /**
+     * RedisSessionDAO shiro sessionDao层的实现 通过redis
+     * 使用的是shiro-redis开源插件
+     */
+    @Bean
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
+    }
+
+    /**
+     * shiro session的管理
+     */
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(redisSessionDAO());
+        return sessionManager;
+    }
+
 }
