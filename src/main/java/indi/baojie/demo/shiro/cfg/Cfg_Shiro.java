@@ -1,6 +1,5 @@
 package indi.baojie.demo.shiro.cfg;
 
-import indi.baojie.demo.redis.cfg.RedisProp;
 import indi.baojie.demo.shiro.filter.MyShiroFilterFactoryBean;
 import indi.baojie.demo.shiro.realm.MyShiroRealm;
 import org.apache.shiro.codec.Base64;
@@ -19,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,7 +28,6 @@ import java.util.Map;
  * Created by Lollipop on 2017/6/19.
  */
 @Configuration
-@EnableConfigurationProperties(RedisProp.class)
 public class Cfg_Shiro {
     private static final Logger logger = LoggerFactory.getLogger(Cfg_Shiro.class);
 
