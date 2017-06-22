@@ -17,9 +17,11 @@ import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,20 +30,43 @@ import java.util.Map;
  * Created by Lollipop on 2017/6/19.
  */
 @Configuration
-public class Cfg_Shiro {
+public class Cfg_Shiro implements EnvironmentAware {
     private static final Logger logger = LoggerFactory.getLogger(Cfg_Shiro.class);
 
-    @Value("${spring.redis.host}")
+//    @Value("${spring.redis.host}")
     private String host;
-//    private String host = "127.0.0.1";
 
-    @Value("${spring.redis.port}")
+//    @Value("${spring.redis.port}")
     private int port;
-//    private int port = 6379;
 
-    @Value("${spring.redis.timeout}")
+//    @Value("${spring.redis.timeout}")
     private int timeout;
-//    private int timeout = 1000;
+
+    //TODO @Value注入失效以待解决
+    /**
+     * 获取系统变量，注入redis配置
+     * 不知道为什么这里用@Value注入不了，还没解决
+     * @param environment
+     */
+    @Override
+    public void setEnvironment(Environment environment) {
+
+        //通过 environment 获取到系统属性.
+        //System.out.println(environment.getProperty("JAVA_HOME"));
+
+        //通过 environment 同样能获取到application.yml配置的属性.
+        logger.info(environment.getProperty("spring.redis.host"));
+
+        //获取到前缀是"spring.redis." 的属性列表值.
+        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(environment, "spring.redis.");
+        logger.info("spring.redis.port="+relaxedPropertyResolver.getProperty("port"));
+        logger.info("spring.redis.timeout="+relaxedPropertyResolver.getProperty("timeout"));
+
+        //注入redis配置
+        this.host = environment.getProperty("spring.redis.host");
+        this.port = Integer.parseInt(environment.getProperty("spring.redis.port"));
+        this.timeout = Integer.parseInt(environment.getProperty("spring.redis.timeout"));
+    }
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
@@ -188,7 +213,7 @@ public class Cfg_Shiro {
         redisManager.setPort(port);
         redisManager.setExpire(1800);// 配置缓存过期时间
         redisManager.setTimeout(timeout);
-        // redisManager.setPassword(password);
+//         redisManager.setPassword(password);
         return redisManager;
     }
 
@@ -224,5 +249,4 @@ public class Cfg_Shiro {
         sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
-
 }

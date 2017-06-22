@@ -1,5 +1,6 @@
 package indi.baojie.demo.redis.cfg;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -15,7 +16,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @EnableCaching
 public class Cfg_Redis extends CachingConfigurerSupport {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Cfg_Redis.class);
+    private static final Logger logger = LoggerFactory.getLogger(Cfg_Redis.class);
 
     @Value("${spring.redis.host}")
     private String host;
@@ -39,9 +40,7 @@ public class Cfg_Redis extends CachingConfigurerSupport {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
-
         return jedisPool;
     }
 

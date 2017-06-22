@@ -1,5 +1,6 @@
 package indi.baojie.demo;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,8 @@ import java.io.IOException;
 public class Application {
 
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(Application.class,args);
+        SpringApplication app = new SpringApplication(Application.class);
+        app.setBannerMode(Banner.Mode.OFF);
+        app.run(args);
     }
 }
