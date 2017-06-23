@@ -84,7 +84,7 @@
 <!--/_menu 作为公共模版分离出去-->
 
 <section class="Hui-article-box">
-    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i><%--<a href="${pageContext.request.contextPath }/admin/index.do">首页</a><span class="c-gray en">&gt;</span>--%> 督办登记
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i><%--<a href="${pageContext.request.contextPath }/admin/index.do">首页</a><span class="c-gray en">&gt;</span>--%> 督办督查
         <span class="c-gray en">&gt;</span> 领导批示件<a class="btn btn-success radius r"
                                                      style="line-height:1.6em;margin-top:3px"
                                                      href="javascript:location.reload();" title="刷新">
