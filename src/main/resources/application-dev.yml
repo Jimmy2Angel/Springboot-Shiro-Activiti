@@ -35,10 +35,12 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
 
+  devtools:
+    restart:
+      exclude: WEB-INF/views/**
 
 mybatis:
   type-aliases-package: indi.baojie.demo.supervision.domain
   mapperLocations: classpath:indi/baojie/demo/supervision/dao/mapping/*.xml
 
-
-debug: true
+debug: false

@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by Lollipop on 2017/6/19.
  */
 @Configuration
-public class Cfg_Shiro implements EnvironmentAware {
+public class Cfg_Shiro implements EnvironmentAware{
     private static final Logger logger = LoggerFactory.getLogger(Cfg_Shiro.class);
 
 //    @Value("${spring.redis.host}")
@@ -42,33 +42,7 @@ public class Cfg_Shiro implements EnvironmentAware {
 //    @Value("${spring.redis.timeout}")
     private int timeout;
 
-    //TODO @Value注入失效以待解决
-    /**
-     * 获取系统变量，注入redis配置
-     * 不知道为什么这里用@Value注入不了，还没解决
-     * @param environment
-     */
-    @Override
-    public void setEnvironment(Environment environment) {
-
-        //通过 environment 获取到系统属性.
-        //System.out.println(environment.getProperty("JAVA_HOME"));
-
-        //通过 environment 同样能获取到application.yml配置的属性.
-        logger.info(environment.getProperty("spring.redis.host"));
-
-        //获取到前缀是"spring.redis." 的属性列表值.
-        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(environment, "spring.redis.");
-        logger.info("spring.redis.port="+relaxedPropertyResolver.getProperty("port"));
-        logger.info("spring.redis.timeout="+relaxedPropertyResolver.getProperty("timeout"));
-
-        //注入redis配置
-        this.host = environment.getProperty("spring.redis.host");
-        this.port = Integer.parseInt(environment.getProperty("spring.redis.port"));
-        this.timeout = Integer.parseInt(environment.getProperty("spring.redis.timeout"));
-    }
-
-    @Bean
+    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         logger.info("注入Shiro的Web过滤器-->shiroFilter", MyShiroFilterFactoryBean.class);
         ShiroFilterFactoryBean shiroFilterFactoryBean = new MyShiroFilterFactoryBean();
@@ -208,6 +182,7 @@ public class Cfg_Shiro implements EnvironmentAware {
      * @return
      */
     public RedisManager redisManager() {
+        System.out.println("注入host：================="+host);
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(port);
@@ -248,5 +223,31 @@ public class Cfg_Shiro implements EnvironmentAware {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
+    }
+
+    //TODO @Value注入失效以待解决
+    /**
+     * 获取系统变量，注入redis配置
+     * 不知道为什么这里用@Value注入不了，还没解决
+     * @param environment
+     */
+    @Override
+    public void setEnvironment(Environment environment) {
+
+        //通过 environment 获取到系统属性.
+        //System.out.println(environment.getProperty("JAVA_HOME"));
+
+        //通过 environment 同样能获取到application.yml配置的属性.
+        logger.info(environment.getProperty("spring.redis.host"));
+
+        //获取到前缀是"spring.redis." 的属性列表值.
+        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(environment, "spring.redis.");
+        logger.info("spring.redis.port="+relaxedPropertyResolver.getProperty("port"));
+        logger.info("spring.redis.timeout="+relaxedPropertyResolver.getProperty("timeout"));
+
+        //注入redis配置
+        this.host = environment.getProperty("spring.redis.host");
+        this.port = Integer.parseInt(environment.getProperty("spring.redis.port"));
+        this.timeout = Integer.parseInt(environment.getProperty("spring.redis.timeout"));
     }
 }
