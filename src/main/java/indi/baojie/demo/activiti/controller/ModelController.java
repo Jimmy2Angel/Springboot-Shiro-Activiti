@@ -18,10 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,7 +33,7 @@ import java.util.List;
  * @author henryyan
  */
 @Controller
-@RequestMapping(value = "/workflow/model")
+@RequestMapping(value = "/activiti/model")
 public class ModelController {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -47,9 +44,9 @@ public class ModelController {
     /**
      * 模型列表
      */
-    @RequestMapping(value = "list")
+    @GetMapping(value = "/list")
     public ModelAndView modelList() {
-        ModelAndView mav = new ModelAndView("workflow/model-list");
+        ModelAndView mav = new ModelAndView("activiti/model_list");
         List<Model> modelList = repositoryService.createModelQuery().list();
         mav.addObject("modelList", modelList);
         return mav;
@@ -58,7 +55,7 @@ public class ModelController {
     /**
      * 创建模型
      */
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @PostMapping(value = "/create")
     public ModelAndView create(
             @RequestParam("name") String name, @RequestParam("key") String key, @RequestParam("description") String description,
             HttpServletRequest request, HttpServletResponse response) {
@@ -95,7 +92,7 @@ public class ModelController {
     /**
      * 根据Model部署流程
      */
-    @RequestMapping(value = "deploy/{modelId}")
+    @RequestMapping(value = "/deploy/{modelId}")
     public String deploy(@PathVariable("modelId") String modelId, RedirectAttributes redirectAttributes) {
         try {
             Model modelData = repositoryService.getModel(modelId);
@@ -168,16 +165,16 @@ public class ModelController {
         }
     }
 
-    @RequestMapping(value = "delete/{modelId}")
+    @RequestMapping(value = "/delete/{modelId}")
     public String delete(@PathVariable("modelId") String modelId) {
         repositoryService.deleteModel(modelId);
-        return "redirect:/workflow/model/list.do";
+        return "redirect:/activiti/model/list";
     }
 
-    @RequestMapping("show_add")
-    public ModelAndView showAdd(){
+    @GetMapping("add")
+    public ModelAndView add(){
         ModelAndView modelAndView = new ModelAndView("workflow/model-add");
-        modelAndView.addObject("url","workflow/model/create.do");
+        modelAndView.addObject("url","/workflow/model/create");
         return modelAndView;
     }
 

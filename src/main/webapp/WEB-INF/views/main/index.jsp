@@ -52,7 +52,7 @@
     ProcessDefinitionCache.setRepositoryService(repositoryService);
 %>
 <!--_header 作为公共模版分离出去-->
-<jsp:include page="/head.do"/>
+<jsp:include page="/head"/>
 <!--/_header 作为公共模版分离出去-->
 
 <!--_menu 作为公共模版分离出去-->
@@ -64,14 +64,14 @@
                     class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd style="display: block;">
                 <ul>
-                    <li class="current"><a href="" title="领导批示督查">领导批示件</a></li>
+                    <li class="current"><a href="" title="领导批示督查">领导批示督查</a></li>
                 </ul>
             </dd>
             <dt><i class="Hui-iconfont">&#xe60d;</i> 流程管理<i
                     class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd style="display: none;">
                 <ul>
-                    <li><a href="${ctx}/workflow/model/list.do">模型工作区</a></li>
+                    <li><a href="${ctx}/activiti/model/list">模型工作区</a></li>
                     <li><a href="${ctx}/workflow/process_list.do">流程定义及部署管理</a></li>
                     <li><a href="${ctx}/workflow/processinstance/running.do">运行中流程</a></li>
                 </ul>
@@ -84,7 +84,7 @@
 <!--/_menu 作为公共模版分离出去-->
 
 <section class="Hui-article-box">
-    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i><%--<a href="${pageContext.request.contextPath }/admin/index.do">首页</a><span class="c-gray en">&gt;</span>--%> 督办督查
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i>督办督查
         <span class="c-gray en">&gt;</span> 领导批示件<a class="btn btn-success radius r"
                                                      style="line-height:1.6em;margin-top:3px"
                                                      href="javascript:location.reload();" title="刷新">

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Created by Lollipop on 2017/6/15.
  */
 @RestController
-public class LoginController{
+public class LoginController extends BaseController{
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
@@ -112,8 +112,10 @@ public class LoginController{
     @RequestMapping("/head")
     public ModelAndView head() {
         ModelAndView modelAndView = new ModelAndView("main/head");
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        modelAndView.addObject("username",username);
         return modelAndView;
-
     }
 
 }

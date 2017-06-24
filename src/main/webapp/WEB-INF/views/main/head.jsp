@@ -26,9 +26,9 @@
                 <ul class="cl">
                     <%--<li>督查部门</li>--%>
                     <li class="dropDown dropDown_hover">
-                        <a href="#" class="dropDown_A">${user.name} <i class="Hui-iconfont">&#xe6d5;</i></a>
+                        <a href="#" class="dropDown_A">${username} <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onClick="changeMyselfPassword('修改密码','${ctx}/admin/changePassword/${userId}','10001','600','270')">密码修改</a></li>
+                            <li><a href="javascript:;" onClick="changeMyselfPassword('修改密码','${ctx}','10001','600','270')">密码修改</a></li>
                             <li>
                                 <a href="${ctx}/logout">退出</a>
                             </li>
