@@ -4,6 +4,8 @@ server:
   session-timeout: 7200
   context-path: /sup
 
+#  servlet-path: /service/*
+
 spring:
   # 数据库配置
   datasource:

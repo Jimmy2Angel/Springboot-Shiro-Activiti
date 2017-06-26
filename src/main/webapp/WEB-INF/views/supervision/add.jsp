@@ -69,25 +69,20 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">办理类型：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:25%;"> <span class="select-box">
-				<select class="select" size="1" name="typeId">
+				<select class="select" size="1" name="type">
                     <option value="" selected>请选择</option>
-                    <c:forEach items="${matterTypes}" var="matterType">
-                        <option value="${matterType.id}"
-                                <c:if test="${matter.typeId eq matterType.id}">selected</c:if> >${matterType.name}</option>
-                    </c:forEach>
+                    <option value="督办件">督办件</option>
+                    <option value="阅研件">阅研件</option>
                 </select>
 				</span></div>
 
             <label class="form-label col-xs-4 col-sm-3" style="width: 10%;text-align: left;">类别：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:25%;"> <span class="select-box">
-				<select class="select" size="1" name="categoryId">
-
-                    <%--综合经济、工交科技、农林水利、外经商贸、城建城管、政法其他、教卫文体--%>
-                    <option value="" selected>请选择</option>
-                    <c:forEach items="${matterCategories}" var="matterCategory">
-                        <option value="${matterCategory.id}"
-                                <c:if test="${matter.categoryId eq matterCategory.id}">selected</c:if> >${matterCategory.name}</option>
-                    </c:forEach>
+				<select class="select" size="1" name="category">
+                    <option value="">请选择</option>
+                    <option value="综合经济">综合经济</option>
+                    <option value="工交科技">工交科技</option>
+                    <option value="外经商贸">外经商贸</option>
                 </select>
 				</span></div>
         </div>
@@ -122,16 +117,18 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">承办单位：</label>
             <div class="formControls col-xs-8 col-sm-9">
-
-                <div style="width:200px;float: left;">
-                    <ul class="ztree" id="des_school"></ul>
-                </div>
-                <div style="width: 340px;float:left;">
-                    <textarea class="textarea" id="organizerNames" name="organizerNames" style="resize: both;height: 130px;" readonly >${matter.organizerNames}</textarea>
-                </div>
+                <c:forEach var="unit" items="${units}">
+                    <input name="unitIds" type="checkbox" value="${unit.unitId}"/>${unit.unitName}
+                </c:forEach>
             </div>
+        </div>
 
-
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">是否需要领导批示：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input name="requireInstruction" type="radio" value="1" checked/>是
+                <input name="requireInstruction" type="radio" value="0"/>否
+            </div>
         </div>
 
         <div class="row cl">

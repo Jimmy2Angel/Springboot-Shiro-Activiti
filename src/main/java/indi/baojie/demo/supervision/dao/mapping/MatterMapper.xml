@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.baojie.demo.supervision.dao.MatterMapper" >
+  <resultMap id="BaseResultMap" type="indi.baojie.demo.supervision.domain.Matter" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="service_code" property="serviceCode" jdbcType="VARCHAR" />
+    <result column="old_code" property="oldCode" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="require_instruction" property="requireInstruction" jdbcType="INTEGER" />
+    <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="unit_ids" property="unitIds" jdbcType="VARCHAR" />
+    <result column="unit_names" property="unitNames" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+    <result column="registrant" property="registrant" jdbcType="INTEGER" />
+    <result column="reg_time" property="regTime" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="process_instance_id" property="processInstanceId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, service_code, old_code, type, category, title, summary, require_instruction, 
+    attachment_id, remark, unit_ids, unit_names, deadline, registrant, reg_time, state, 
+    deleted, process_instance_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="indi.baojie.demo.supervision.domain.MatterExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from matter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from matter
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from matter
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="indi.baojie.demo.supervision.domain.MatterExample" >
+    delete from matter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="indi.baojie.demo.supervision.domain.Matter" >
+    insert into matter (id, service_code, old_code, 
+      type, category, title, 
+      summary, require_instruction, attachment_id, 
+      remark, unit_ids, unit_names, 
+      deadline, registrant, reg_time, 
+      state, deleted, process_instance_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{serviceCode,jdbcType=VARCHAR}, #{oldCode,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{summary,jdbcType=VARCHAR}, #{requireInstruction,jdbcType=INTEGER}, #{attachmentId,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{unitIds,jdbcType=VARCHAR}, #{unitNames,jdbcType=VARCHAR}, 
+      #{deadline,jdbcType=VARCHAR}, #{registrant,jdbcType=INTEGER}, #{regTime,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{processInstanceId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="indi.baojie.demo.supervision.domain.Matter" >
+    insert into matter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serviceCode != null" >
+        service_code,
+      </if>
+      <if test="oldCode != null" >
+        old_code,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="requireInstruction != null" >
+        require_instruction,
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="unitIds != null" >
+        unit_ids,
+      </if>
+      <if test="unitNames != null" >
+        unit_names,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="registrant != null" >
+        registrant,
+      </if>
+      <if test="regTime != null" >
+        reg_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="processInstanceId != null" >
+        process_instance_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serviceCode != null" >
+        #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="oldCode != null" >
+        #{oldCode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="requireInstruction != null" >
+        #{requireInstruction,jdbcType=INTEGER},
+      </if>
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIds != null" >
+        #{unitIds,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNames != null" >
+        #{unitNames,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=VARCHAR},
+      </if>
+      <if test="registrant != null" >
+        #{registrant,jdbcType=INTEGER},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="processInstanceId != null" >
+        #{processInstanceId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="indi.baojie.demo.supervision.domain.MatterExample" resultType="java.lang.Integer" >
+    select count(*) from matter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update matter
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceCode != null" >
+        service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oldCode != null" >
+        old_code = #{record.oldCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null" >
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requireInstruction != null" >
+        require_instruction = #{record.requireInstruction,jdbcType=INTEGER},
+      </if>
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitIds != null" >
+        unit_ids = #{record.unitIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitNames != null" >
+        unit_names = #{record.unitNames,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deadline != null" >
+        deadline = #{record.deadline,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registrant != null" >
+        registrant = #{record.registrant,jdbcType=INTEGER},
+      </if>
+      <if test="record.regTime != null" >
+        reg_time = #{record.regTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.deleted != null" >
+        deleted = #{record.deleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.processInstanceId != null" >
+        process_instance_id = #{record.processInstanceId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update matter
+    set id = #{record.id,jdbcType=INTEGER},
+      service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      old_code = #{record.oldCode,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      require_instruction = #{record.requireInstruction,jdbcType=INTEGER},
+      attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      unit_ids = #{record.unitIds,jdbcType=VARCHAR},
+      unit_names = #{record.unitNames,jdbcType=VARCHAR},
+      deadline = #{record.deadline,jdbcType=VARCHAR},
+      registrant = #{record.registrant,jdbcType=INTEGER},
+      reg_time = #{record.regTime,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      deleted = #{record.deleted,jdbcType=INTEGER},
+      process_instance_id = #{record.processInstanceId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="indi.baojie.demo.supervision.domain.Matter" >
+    update matter
+    <set >
+      <if test="serviceCode != null" >
+        service_code = #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="oldCode != null" >
+        old_code = #{oldCode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="requireInstruction != null" >
+        require_instruction = #{requireInstruction,jdbcType=INTEGER},
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id = #{attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIds != null" >
+        unit_ids = #{unitIds,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNames != null" >
+        unit_names = #{unitNames,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline,jdbcType=VARCHAR},
+      </if>
+      <if test="registrant != null" >
+        registrant = #{registrant,jdbcType=INTEGER},
+      </if>
+      <if test="regTime != null" >
+        reg_time = #{regTime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="processInstanceId != null" >
+        process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="indi.baojie.demo.supervision.domain.Matter" >
+    update matter
+    set service_code = #{serviceCode,jdbcType=VARCHAR},
+      old_code = #{oldCode,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      require_instruction = #{requireInstruction,jdbcType=INTEGER},
+      attachment_id = #{attachmentId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      unit_ids = #{unitIds,jdbcType=VARCHAR},
+      unit_names = #{unitNames,jdbcType=VARCHAR},
+      deadline = #{deadline,jdbcType=VARCHAR},
+      registrant = #{registrant,jdbcType=INTEGER},
+      reg_time = #{regTime,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
