@@ -2,6 +2,7 @@ package indi.baojie.demo.shiro.cfg;
 
 import indi.baojie.demo.shiro.filter.MyShiroFilterFactoryBean;
 import indi.baojie.demo.shiro.realm.MyShiroRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -96,11 +97,32 @@ public class Cfg_Shiro implements EnvironmentAware{
 //        return em;
 //    }
 
+    /**
+     * 所以在认证时的密码是加过密的，使用md5散发将密码与盐值组合加密两次。则我们在增加用户的时候，对用户的密码则要进过相同规则的加密才行。
+     * @return
+     */
     @Bean(name = "myShiroRealm")
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm realm = new MyShiroRealm();
-        realm.setCacheManager(cacheManager());
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
+    }
+
+    /**
+     * 凭证匹配器
+     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
+     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
+     * ）
+     * @return
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+
+        return hashedCredentialsMatcher;
     }
 
     /**
@@ -142,6 +164,7 @@ public class Cfg_Shiro implements EnvironmentAware{
 //        securityManager.setSessionManager(sessionManager);
 
         // 自定义缓存实现 使用redis
+        //TODO 据说在刚修改用户的权限时，无法立即失效。
         securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());

@@ -4,13 +4,14 @@ import indi.baojie.demo.supervision.domain.Role;
 import indi.baojie.demo.supervision.domain.User;
 import indi.baojie.demo.supervision.service.RoleService;
 import indi.baojie.demo.supervision.service.UserService;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,18 +67,24 @@ public class MyShiroRealm extends AuthorizingRealm {
      * 登录认证
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        //UsernamePasswordToken对象用来存放提交的登录信息
-        UsernamePasswordToken token=(UsernamePasswordToken) authenticationToken;
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
-        logger.info("验证当前Subject时获取到token为：" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-
-        //查出是否有此用户
-        User user=userService.findByName(token.getUsername());
-        if(user!=null){
-            // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
-            return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());
+        //获取用户的输入的账号.
+        String username = (String)token.getPrincipal();
+        User user = userService.findByName(username);
+        if(user==null) {
+            throw new UnknownAccountException();
         }
-        return null;
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                user, //用户
+                user.getPassword(), //密码
+                ByteSource.Util.bytes(username),
+                getName()  //realm name
+        );
+        // 当验证都通过后，把用户信息放在session里
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute("userSession", user);
+        session.setAttribute("userSessionId", user.getUserId());
+        return authenticationInfo;
     }
 }

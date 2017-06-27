@@ -1,6 +1,8 @@
 package indi.baojie.demo.supervision.controller;
 
 import indi.baojie.demo.supervision.domain.User;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -30,7 +32,7 @@ public class BaseController {
      * @return
      */
     public User currentUser(){
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return (User) request.getSession().getAttribute(CURRENT_USER);
+        Session session = SecurityUtils.getSubject().getSession();
+        return (User) session.getAttribute("userSession");
     }
 }
