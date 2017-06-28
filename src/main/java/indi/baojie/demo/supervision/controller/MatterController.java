@@ -16,13 +16,14 @@ import java.util.List;
  * Created by Lollipop on 2017/6/23.
  */
 @RestController
-public class MatterController {
+public class MatterController extends BaseController{
 
     @Autowired
     private UnitService unitService;
 
     @GetMapping("/index")
     public ModelAndView index(){
+        System.out.println(currentUser().getUserName()+"======="+currentUser().getPassword());
         //TODO 获取首页数据
         return new ModelAndView("main/index");
     }

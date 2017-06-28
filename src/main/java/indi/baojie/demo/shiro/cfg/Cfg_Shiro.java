@@ -171,7 +171,7 @@ public class Cfg_Shiro implements EnvironmentAware{
         //设置"记住我"管理器
         securityManager.setRememberMeManager(rememberMeManager());
         //设置realm
-        securityManager .setRealm(myShiroRealm);
+        securityManager.setRealm(myShiroRealm);
         return securityManager;
     }
 

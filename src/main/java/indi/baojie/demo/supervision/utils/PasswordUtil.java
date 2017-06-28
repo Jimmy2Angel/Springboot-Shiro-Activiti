@@ -22,8 +22,8 @@ public class PasswordUtil {
     public static void main(String[] args) {
         PasswordUtil passwordUtil = new PasswordUtil();
         User user = new User();
-        user.setUserName("admin");
-        user.setPassword("admin");
+        user.setUserName("leader");
+        user.setPassword("111");
         passwordUtil.encryptPassword(user);
         System.out.println(user);
     }

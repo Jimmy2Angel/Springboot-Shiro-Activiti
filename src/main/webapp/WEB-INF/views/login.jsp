@@ -75,7 +75,7 @@
 
     </div>
 </div>
-<div class="footer">Copyright 江苏连邦信息科技有限公司  FEDTECH</div>
+<div class="footer"></div>
 
 <script type="text/javascript" src="${ctx}/H-ui/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}/H-ui/lib/layer/2.4/layer.js"></script>

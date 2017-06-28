@@ -83,7 +83,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         );
         // 当验证都通过后，把用户信息放在session里
         Session session = SecurityUtils.getSubject().getSession();
-        session.setAttribute("userSession", user);
+        session.setAttribute("userSession",user);
+        System.out.println((session.getAttribute("userSession").getClass()));
         session.setAttribute("userSessionId", user.getUserId());
         return authenticationInfo;
     }
