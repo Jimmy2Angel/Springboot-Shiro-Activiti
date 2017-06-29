@@ -44,5 +44,7 @@ spring:
 mybatis:
   type-aliases-package: indi.baojie.demo.supervision.domain
   mapperLocations: classpath:indi/baojie/demo/supervision/dao/mapping/*.xml
+  configuration:
+    lazy-loading-enabled: false
 
-debug: true
+debug: false

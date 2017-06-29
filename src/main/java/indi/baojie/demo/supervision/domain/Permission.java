@@ -1,22 +1,16 @@
 package indi.baojie.demo.supervision.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Permission implements Serializable{
     private static final long serialVersionUID = 2380902884375259188L;
     private Integer permissionId;
 
     private String permissionName;
-    private List<Role> roleList;
 
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
-    }
+    private Set<Role> roles = new HashSet<>();
 
     public Integer getPermissionId() {
         return permissionId;
@@ -31,15 +25,14 @@ public class Permission implements Serializable{
     }
 
     public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName == null ? null : permissionName.trim();
+        this.permissionName = permissionName;
     }
 
-    @Override
-    public String toString() {
-        return "Permission{" +
-                "permissionId=" + permissionId +
-                ", permissionName='" + permissionName + '\'' +
-                ", roleList=" + roleList +
-                '}';
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

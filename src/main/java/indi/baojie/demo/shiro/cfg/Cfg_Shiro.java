@@ -2,7 +2,6 @@ package indi.baojie.demo.shiro.cfg;
 
 import indi.baojie.demo.shiro.filter.MyShiroFilterFactoryBean;
 import indi.baojie.demo.shiro.realm.MyShiroRealm;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -104,26 +103,26 @@ public class Cfg_Shiro implements EnvironmentAware{
     @Bean(name = "myShiroRealm")
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm realm = new MyShiroRealm();
-        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+//        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
-    /**
-     * 凭证匹配器
-     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
-     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
-     * ）
-     * @return
-     */
-    @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
-
-        return hashedCredentialsMatcher;
-    }
+//    /**
+//     * 凭证匹配器
+//     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
+//     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
+//     * ）
+//     * @return
+//     */
+//    @Bean
+//    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+//
+//        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+//        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+//
+//        return hashedCredentialsMatcher;
+//    }
 
     /**
      * Shiro生命周期处理器

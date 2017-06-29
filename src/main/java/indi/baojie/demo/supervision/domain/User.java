@@ -1,7 +1,8 @@
 package indi.baojie.demo.supervision.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class User implements Serializable{
     private static final long serialVersionUID = 4612862885081206763L;
@@ -16,15 +17,7 @@ public class User implements Serializable{
 
     private Integer unitId;
 
-    private List<Role> roleList;
-
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
-    }
+    private Set<Role> roles = new HashSet<>();
 
     public Integer getUserId() {
         return userId;
@@ -39,7 +32,7 @@ public class User implements Serializable{
     }
 
     public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -47,7 +40,7 @@ public class User implements Serializable{
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getEmail() {
@@ -55,7 +48,7 @@ public class User implements Serializable{
     }
 
     public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+        this.email = email;
     }
 
     public Integer getUnitId() {
@@ -66,15 +59,11 @@ public class User implements Serializable{
         this.unitId = unitId;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", unitId=" + unitId +
-                ", roleList=" + roleList +
-                '}';
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

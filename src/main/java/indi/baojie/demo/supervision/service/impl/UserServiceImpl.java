@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<String> getRolesName(User user) {
-        List<Role> roles = user.getRoleList();
+        Set<Role> roles = user.getRoles();
         Set<String> set = new HashSet<String>();
         for (Role role : roles) {
             set.add(role.getRoleName());

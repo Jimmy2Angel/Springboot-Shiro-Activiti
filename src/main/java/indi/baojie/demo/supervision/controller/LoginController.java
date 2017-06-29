@@ -1,10 +1,12 @@
 package indi.baojie.demo.supervision.controller;
 
 import indi.baojie.demo.common.data.JsonResult;
+import indi.baojie.demo.supervision.domain.User;
 import indi.baojie.demo.supervision.service.UserService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.mozilla.javascript.SecurityController;
 import org.slf4j.Logger;
@@ -78,6 +80,11 @@ public class LoginController extends BaseController{
         }
         //验证是否登录成功
         if (subject.isAuthenticated()) {
+            // 当验证都通过后，把用户信息放在session里
+            Session session = SecurityUtils.getSubject().getSession();
+            User user = (User)subject.getPrincipal();
+            session.setAttribute("username",user.getUserName());
+
             logger.info("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
             jsonResult.setSuccess(true);
             return  jsonResult;
@@ -112,9 +119,6 @@ public class LoginController extends BaseController{
     @RequestMapping("/head")
     public ModelAndView head() {
         ModelAndView modelAndView = new ModelAndView("main/head");
-        Subject subject = SecurityUtils.getSubject();
-        String username = (String) subject.getPrincipal();
-        modelAndView.addObject("username",username);
         return modelAndView;
     }
 

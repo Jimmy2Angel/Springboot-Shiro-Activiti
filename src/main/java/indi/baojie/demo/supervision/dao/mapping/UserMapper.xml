@@ -209,7 +209,7 @@
       unit_id = #{unitId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-
+  
   <select id="selectByName" resultMap="UserInfo">
     SELECT user_id,user_name,password,email,unit_id
     FROM user
@@ -221,7 +221,7 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <collection property="roleList" column="user_id" select="selectRolesByUserId"/>
+    <collection property="roles" column="user_id" select="selectRolesByUserId"/>
   </resultMap>
   <select id="selectRolesByUserId" resultMap="RoleInfo">
     SELECT r.role_id,role_name
@@ -232,21 +232,7 @@
   <resultMap id="RoleInfo" type="indi.baojie.demo.supervision.domain.Role">
     <id column="role_id" property="roleId" jdbcType="INTEGER"/>
     <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
-    <collection property="userList" column="role_id" select="selectUsersByRoleId"/>
-    <collection property="permissionList" column="role_id" select="selectPermissionsByRoleId"/>
-  </resultMap>
-  <select id="selectUsersByRoleId" resultMap="UsersInfo">
-    SELECT u.user_id AS uid,user_name,password,email,unit_id
-    FROM user AS u,user_role AS ur
-    WHERE ur.role_id = #{role_id}
-    AND ur.user_id = u.user_id
-  </select>
-  <resultMap id="UsersInfo" type="indi.baojie.demo.supervision.domain.User">
-    <id column="uid" property="userId" jdbcType="INTEGER" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <collection property="permissions" column="role_id" select="selectPermissionsByRoleId"/>
   </resultMap>
   <select id="selectPermissionsByRoleId" resultMap="PermissionInfo">
     SELECT p.permission_id,permission_name
@@ -257,16 +243,6 @@
   <resultMap id="PermissionInfo" type="indi.baojie.demo.supervision.domain.Permission">
     <id column="permission_id" property="permissionId" jdbcType="INTEGER"/>
     <result column="permission_name" property="permissionName" jdbcType="VARCHAR"/>
-    <collection property="roleList" column="permission_id" select="selectRolesByPermissionId"/>
-  </resultMap>
-  <select id="selectRolesByPermissionId" resultMap="RolesInfo">
-    SELECT r.role_id AS rid,role_name
-    FROM role as r,role_permission AS rp
-    WHERE rp.permission_id = #{permission_id}
-    AND rp.role_id = r.role_id
-  </select>
-  <resultMap id="RolesInfo" type="indi.baojie.demo.supervision.domain.Role">
-    <id column="rid" property="roleId" jdbcType="INTEGER"/>
-    <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+    <!--<collection property="roles" column="permission_id" select="selectRolesByPermissionId"/>-->
   </resultMap>
 </mapper>

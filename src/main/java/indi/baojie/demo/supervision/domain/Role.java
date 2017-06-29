@@ -1,7 +1,8 @@
 package indi.baojie.demo.supervision.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Role implements Serializable{
     private static final long serialVersionUID = 941613016380559279L;
@@ -9,25 +10,9 @@ public class Role implements Serializable{
 
     private String roleName;
 
-    private List<Permission> permissionList;
+    private Set<Permission> permissions = new HashSet<>();
 
-    private List<User> userList;
-
-    public List<Permission> getPermissionList() {
-        return permissionList;
-    }
-
-    public void setPermissionList(List<Permission> permissionList) {
-        this.permissionList = permissionList;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
+    private Set<User> users = new HashSet<>();
 
     public Integer getRoleId() {
         return roleId;
@@ -42,16 +27,22 @@ public class Role implements Serializable{
     }
 
     public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
+        this.roleName = roleName;
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", permissionList=" + permissionList +
-                ", userList=" + userList +
-                '}';
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

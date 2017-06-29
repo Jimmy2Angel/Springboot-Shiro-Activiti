@@ -23,7 +23,7 @@ public class MatterController extends BaseController{
 
     @GetMapping("/index")
     public ModelAndView index(){
-        System.out.println(currentUser().getUserName()+"======="+currentUser().getPassword());
+        System.out.println(currentUser().getUserName());
         //TODO 获取首页数据
         return new ModelAndView("main/index");
     }

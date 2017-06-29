@@ -6,7 +6,6 @@ import indi.baojie.demo.supervision.service.RoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +17,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Set<String> getPermissionsName(Role role) {
         Set<String> set = new HashSet<>();
-        List<Permission> perlist = role.getPermissionList();
+        Set<Permission> perlist = role.getPermissions();
         for (Permission per : perlist) {
             set.add(per.getPermissionName());
         }
