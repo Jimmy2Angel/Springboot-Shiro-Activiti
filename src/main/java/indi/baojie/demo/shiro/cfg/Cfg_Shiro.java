@@ -13,7 +13,6 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -21,6 +20,7 @@ import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import java.util.LinkedHashMap;
@@ -43,7 +43,9 @@ public class Cfg_Shiro implements EnvironmentAware{
     private int timeout;
 
     @Bean(name = "shiroFilter")
+    @Order(Integer.MAX_VALUE)
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
+
         logger.info("注入Shiro的Web过滤器-->shiroFilter", MyShiroFilterFactoryBean.class);
         ShiroFilterFactoryBean shiroFilterFactoryBean = new MyShiroFilterFactoryBean();
 
@@ -81,8 +83,8 @@ public class Cfg_Shiro implements EnvironmentAware{
         filterChainDefinitionMap.put("/logout","anon");
         filterChainDefinitionMap.put("/H-ui/**","anon");
         filterChainDefinitionMap.put("/myStatic/**","anon");
-        filterChainDefinitionMap.put("/index","user");
-        filterChainDefinitionMap.put("/","user");
+//        filterChainDefinitionMap.put("/index","user");
+//        filterChainDefinitionMap.put("/","user");
         filterChainDefinitionMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -103,6 +105,7 @@ public class Cfg_Shiro implements EnvironmentAware{
     @Bean(name = "myShiroRealm")
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm realm = new MyShiroRealm();
+//        realm.setCacheManager(cacheManager());
 //        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
@@ -204,7 +207,6 @@ public class Cfg_Shiro implements EnvironmentAware{
      * @return
      */
     public RedisManager redisManager() {
-        System.out.println("注入host：================="+host);
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(port);
@@ -230,12 +232,13 @@ public class Cfg_Shiro implements EnvironmentAware{
      * RedisSessionDAO shiro sessionDao层的实现 通过redis
      * 使用的是shiro-redis开源插件
      */
-    @Bean
-    public RedisSessionDAO redisSessionDAO() {
-        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(redisManager());
-        return redisSessionDAO;
-    }
+    //TODO 此处有问题  不知道为什么
+//    @Bean
+//    public RedisSessionDAO redisSessionDAO() {
+//        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+//        redisSessionDAO.setRedisManager(redisManager());
+//        return redisSessionDAO;
+//    }
 
     /**
      * shiro session的管理
@@ -243,7 +246,7 @@ public class Cfg_Shiro implements EnvironmentAware{
     @Bean
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAO());
+//        sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
 

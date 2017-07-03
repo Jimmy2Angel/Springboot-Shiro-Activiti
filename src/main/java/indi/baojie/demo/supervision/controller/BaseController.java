@@ -2,8 +2,11 @@ package indi.baojie.demo.supervision.controller;
 
 import indi.baojie.demo.supervision.domain.User;
 import indi.baojie.demo.supervision.service.UserService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -18,6 +21,12 @@ public class BaseController {
 
     static String CURRENT_USER = "user";
 
+    @Autowired
+    protected TaskService taskService;
+    @Autowired
+    protected RuntimeService runtimeService;
+    @Autowired
+    protected HistoryService historyService;
     @Autowired
     private UserService userService;
 
@@ -37,15 +46,8 @@ public class BaseController {
      * @return
      */
     public User currentUser(){
-//        Session session = SecurityUtils.getSubject().getSession();
-//        //此处会强转失败
-//        return (User) session.getAttribute("user");
-
-        Subject subject = SecurityUtils.getSubject();
-        Object object = subject.getPrincipal();
-        System.out.println(subject.isAuthenticated());
-        System.out.println("object.getClass()========"+subject.getPrincipal().getClass());
-        System.out.println(subject.getPrincipal() instanceof User);
-        return (User)object;
+        Session session = SecurityUtils.getSubject().getSession();
+        //此处会强转失败
+        return (User) session.getAttribute("user");
     }
 }

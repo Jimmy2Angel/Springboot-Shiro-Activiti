@@ -72,13 +72,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if(user==null) {
             throw new UnknownAccountException();
         }
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                user, //用户
-                user.getPassword(), //密码
-//                ByteSource.Util.bytes(username),
-                getName()  //realm name
-        );
-
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
         return authenticationInfo;
     }
 }

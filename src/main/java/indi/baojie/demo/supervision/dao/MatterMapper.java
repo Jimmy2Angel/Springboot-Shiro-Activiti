@@ -30,4 +30,6 @@ public interface MatterMapper {
     int updateByPrimaryKeySelective(Matter record);
 
     int updateByPrimaryKey(Matter record);
+
+    List<Matter> getMaterAllInfo(Integer id);
 }

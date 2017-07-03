@@ -3,7 +3,6 @@ package indi.baojie.demo.supervision.controller;
 import indi.baojie.demo.common.data.JsonResult;
 import indi.baojie.demo.supervision.domain.User;
 import indi.baojie.demo.supervision.service.UserService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
@@ -46,7 +45,7 @@ public class LoginController extends BaseController{
     }
 
     @PostMapping("/login")
-    public JsonResult login(String username, String password,Boolean rememberMe, HttpServletRequest req,
+    public JsonResult login(String username, String password,Boolean rememberMe,
                             RedirectAttributes redirectAttributes){
         JsonResult jsonResult = new JsonResult();
         logger.info("准备登陆用户 => {}", username);
@@ -59,6 +58,7 @@ public class LoginController extends BaseController{
             //所以这一步在调用login(token)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法
             logger.info("对用户[" + username + "]进行登录验证..验证开始");
             subject.login(token);
+
             logger.info("对用户[" + username + "]进行登录验证..验证通过");
         } catch (UnknownAccountException uae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,未知账户");
@@ -81,9 +81,9 @@ public class LoginController extends BaseController{
         //验证是否登录成功
         if (subject.isAuthenticated()) {
             // 当验证都通过后，把用户信息放在session里
-            Session session = SecurityUtils.getSubject().getSession();
+            Session session = subject.getSession();
             User user = (User)subject.getPrincipal();
-            session.setAttribute("username",user.getUserName());
+            session.setAttribute("user",user);
 
             logger.info("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
             jsonResult.setSuccess(true);

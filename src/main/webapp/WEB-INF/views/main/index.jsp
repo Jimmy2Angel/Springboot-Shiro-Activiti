@@ -93,57 +93,115 @@
     </nav>
     <div class="Hui-article">
         <article class="cl pd-20">
-
-            <div class="text-c">
-
-            </div>
-
             <div class="cl pd-5 bg-1 bk-gray mt-20">
                 <span class="l"><a href="javascript:;"
-                                   onclick="add('新增办件','${ctx}/add','','')"
+                                   onclick="member_add('新增办件','${pageContext.request.contextPath }/show_add.do','','')"
                                    class="btn btn-primary "><i class="Hui-iconfont">&#xe600;</i> 新增办件</a>
                     <a href="javascript:;" onclick="datadel()" class="btn btn-danger "><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-                </span>
-                <span class="r">共有数据：<strong>${matters.size()}</strong> 条</span>
-            </div>
-            <div class="mt-20">
-                <table class="table table-border table-bordered table-hover table-bg table-sort">
-                    <thead>
-                    <tr class="text-c">
-                        <th width="25"><input type="checkbox" name="" value=""></th>
-                        <th style="display:none;" width="80">ID</th>
-                        <th width="100">编号</th>
-                        <th width="200">办件标题</th>
-                        <th width="40">类型</th>
-                        <th width="90">类别</th>
-                        <th width="150">创建时间</th>
-                        <th width="150">截止时间</th>
-                        <th width="70">当前节点</th>
-                        <th width="70">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${matters}" var="matter">
-                        <c:set var="pdid" value="${matter.processInstance.processDefinitionId }"/>
-                        <c:set var="activityId" value="${matter.processInstance.activityId }"/>
-                        <tr class="text-c">
-                            <td><input type="checkbox" value="${matter.id}" name="id"></td>
-                            <td style="display:none;">${matter.id}</td>
-                            <td>${matter.serviceCode}</td>
-                            <td><a onclick="member_add('编辑','show_modify.do?id=${matter.id}','','')">${matter.title}</a></td>
-                            <td>${matter.matterType.name}</td>
-                            <td>${matter.matterCategory.name}</td>
-                            <td>${matter.regTime}</td>
-                            <td>${matter.deadline}</td>
-                            <td><a class="trace" pid="${matter.processInstance.id }" pdid="${matter.processInstance.processDefinitionId}" title="点击查看流程图" >
-                                ${matter.task.name}
-                               <%-- <%=ProcessDefinitionCache.getActivityName(pageContext.getAttribute("pdid").toString(), org.apache.commons.lang3.ObjectUtils.toString(pageContext.getAttribute("activityId")))==null?"${matter.task.name}":"${matter.task.name}" %>--%>
-                            </a></td>
-                            <td><a class="btn btn-primary" onclick="member_add('编辑','show_modify.do?id=${matter.id}','','')">编辑</a> <a class="btn badge-success" onclick="edit_sub('${matter.id}','${matter.task.id}')">提交</a></td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                        <%--<a href="javascript:;" onclick="exportPerson()" class="btn btn-secondary  "><i
+                        class="Hui-iconfont">&#xe644;</i> 导出用户</a> <a href="javascript:;" onclick="importPerson()" class="btn btn-secondary  "><i
+                        class="Hui-iconfont">&#xe645;</i> 导入用户</a> <a href="javascript:;" onclick="signList()" class="btn btn-success "><i
+                        class="Hui-iconfont">&#xe667;</i> 批量签到</a>--%>&nbsp</span>
+
+                <div id="tab_demo" class="HuiTab">
+                    <div class="tabBar clearfix"><span>我的待办</span><span>机构在办</span><span>已办办件</span><span>全部办件</span></div>
+                    <!-- 我的待办 -->
+                    <div class="tabCon">
+                        <div class="mt-20">
+                            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                                <thead>
+                                <tr class="text-c">
+                                    <th width="25"><input type="checkbox" name="" value=""></th>
+                                    <th style="display:none;" width="80">ID</th>
+                                    <th width="100">编号</th>
+                                    <th width="200">办件标题</th>
+                                    <th width="40">类型</th>
+                                    <th width="90">类别</th>
+                                    <th width="150">创建时间</th>
+                                    <th width="150">截止时间</th>
+                                    <th width="70">当前节点</th>
+                                    <th width="70">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 机构在办 -->
+                    <div class="tabCon">
+                        <div class="mt-20">
+                            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                                <thead>
+                                <tr class="text-c">
+                                    <th width="25"><input type="checkbox" name="" value=""></th>
+                                    <th style="display:none;" width="80">ID</th>
+                                    <th width="100">编号</th>
+                                    <th width="200">办件标题</th>
+                                    <th width="40">类型</th>
+                                    <th width="90">类别</th>
+                                    <th width="150">创建时间</th>
+                                    <th width="150">截止时间</th>
+                                    <th width="70">当前节点</th>
+                                    <th width="70">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 已办办件 -->
+                    <div class="tabCon">
+                        <div class="mt-20">
+                            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                                <thead>
+                                <tr class="text-c">
+                                    <th width="25"><input type="checkbox" name="" value=""></th>
+                                    <th style="display:none;" width="80">ID</th>
+                                    <th width="100">编号</th>
+                                    <th width="200">办件标题</th>
+                                    <th width="40">类型</th>
+                                    <th width="90">类别</th>
+                                    <th width="150">创建时间</th>
+                                    <th width="150">截止时间</th>
+                                    <th width="70">当前节点</th>
+                                    <th width="70">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 全部办件 -->
+                    <div class="tabCon">
+                        <div class="mt-20">
+                            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                                <thead>
+                                <tr class="text-c">
+                                    <th width="25"><input type="checkbox" name="" value=""></th>
+                                    <th style="display:none;" width="80">ID</th>
+                                    <th width="100">编号</th>
+                                    <th width="200">办件标题</th>
+                                    <th width="40">类型</th>
+                                    <th width="90">类别</th>
+                                    <th width="150">创建时间</th>
+                                    <th width="150">截止时间</th>
+                                    <th width="70">当前状态</th>
+                                    <th width="70">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
     </div>
@@ -177,6 +235,7 @@
                 {"orderable": false, "aTargets": [0, 5]}// 制定列不参与排序
             ]
         });
+        $.Huitab("#tab_demo .tabBar span","#tab_demo .tabCon","current","click","0");
     });
 
     /*新增办件页面显示*/

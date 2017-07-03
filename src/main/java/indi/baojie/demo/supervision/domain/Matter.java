@@ -1,6 +1,8 @@
 package indi.baojie.demo.supervision.domain;
 
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 
 public class Matter {
     private Integer id;
@@ -40,6 +42,26 @@ public class Matter {
     private String processInstanceId;
 
     private ProcessInstance processInstance;
+
+    private Task task;
+
+    private HistoricProcessInstance historicProcessInstance;
+
+    public HistoricProcessInstance getHistoricProcessInstance() {
+        return historicProcessInstance;
+    }
+
+    public void setHistoricProcessInstance(HistoricProcessInstance historicProcessInstance) {
+        this.historicProcessInstance = historicProcessInstance;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
     public ProcessInstance getProcessInstance() {
         return processInstance;
