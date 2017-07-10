@@ -49,4 +49,4 @@ mybatis:
   configuration:
     lazy-loading-enabled: false
 
-debug: false
+debug: true

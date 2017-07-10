@@ -95,7 +95,7 @@
         <article class="cl pd-20">
             <div class="cl pd-5 bg-1 bk-gray mt-20">
                 <span class="l"><a href="javascript:;"
-                                   onclick="member_add('新增办件','${pageContext.request.contextPath }/show_add.do','','')"
+                                   onclick="matter_add('新增办件','${pageContext.request.contextPath }/matter/add','','')"
                                    class="btn btn-primary "><i class="Hui-iconfont">&#xe600;</i> 新增办件</a>
                     <a href="javascript:;" onclick="datadel()" class="btn btn-danger "><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
                         <%--<a href="javascript:;" onclick="exportPerson()" class="btn btn-secondary  "><i
@@ -239,7 +239,7 @@
     });
 
     /*新增办件页面显示*/
-    function add(title, url, w, h) {
+    function matter_add(title, url, w, h) {
         layer_show(title, url, w, h);
     }
 

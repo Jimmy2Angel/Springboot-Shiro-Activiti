@@ -4,12 +4,14 @@ import indi.baojie.demo.supervision.dao.MatterMapper;
 import indi.baojie.demo.supervision.domain.Matter;
 import indi.baojie.demo.supervision.service.MatterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by Lollipop on 2017/7/3.
  */
+@Service
 public class MatterServiceImpl implements MatterService {
 
     @Autowired

@@ -10,7 +10,6 @@ import indi.baojie.demo.supervision.domain.Unit;
 import indi.baojie.demo.supervision.domain.User;
 import indi.baojie.demo.supervision.service.MatterService;
 import indi.baojie.demo.supervision.service.UnitService;
-import indi.baojie.demo.supervision.utils.DateUtil;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.Execution;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +42,7 @@ public class MatterController extends BaseController{
 
         //TODO 获取首页数据
         User user = currentUser();
-        List<Integer> roleIds = null;
+        List<Integer> roleIds = Lists.newArrayList();
         Set<Role> roles = user.getRoles();
         for(Role role:roles){
             roleIds.add(role.getRoleId());
@@ -59,7 +57,7 @@ public class MatterController extends BaseController{
             List<Matter> supervisionMatter = this.getMatter("2");  //督查提交&督查判断,之后去掉督查判断
             List<Matter> supMatter = Lists.newArrayList();  //进入子流程办理中的办件，也包括督查判断
             List<Matter> supervisionJudgeMatter = Lists.newArrayList(); //督查判断
-            modelAndView = new ModelAndView("index");
+            modelAndView = new ModelAndView("supervision/index");
 
             List<Execution> executionList = runtimeService.createExecutionQuery().list();
             Set<String> processInstanceIdSet = Sets.newHashSet();
@@ -105,9 +103,9 @@ public class MatterController extends BaseController{
             modelAndView.addObject("finishMatter", getHisMatter());                      //流程已经走完的办件
             return modelAndView;
         } else if (roleIds.contains(1)) {  //领导
-            modelAndView = new ModelAndView("leader_index");
+            modelAndView = new ModelAndView("supervision/leader_index");
             modelAndView.addObject("leaderMatter", leaderMatter); //待办
-            List<Matter> leaderRunMatter = getLeaderHanded("310000000").get(0);
+            List<Matter> leaderRunMatter = getLeaderHanded("1").get(0);
 
             /**
              * 如果已办列表不需要显示审批未通过的办件，则把这段注释
@@ -123,16 +121,16 @@ public class MatterController extends BaseController{
             }
 
             modelAndView.addObject("leaderRunMatter", leaderRunMatter); //已办：未办结
-            modelAndView.addObject("leaderEndMatter", getLeaderHanded("310000000").get(1)); //已办：已办结
+            modelAndView.addObject("leaderEndMatter", getLeaderHanded("1").get(1)); //已办：已办结
             return modelAndView;
         } else if (roleIds.contains(3)) {  //办公厅
-            modelAndView = new ModelAndView("leader_index");
+            modelAndView = new ModelAndView("supervision/leader_index");
             modelAndView.addObject("officeMatter", officeMatter); //待办
-            modelAndView.addObject("officeRunMatter", getLeaderHanded("320000000").get(0)); //已办：未办结
-            modelAndView.addObject("officeEndMatter", getLeaderHanded("320000000").get(1)); //已办：已办结
+            modelAndView.addObject("officeRunMatter", getLeaderHanded("3").get(0)); //已办：未办结
+            modelAndView.addObject("officeEndMatter", getLeaderHanded("3").get(1)); //已办：已办结
             return modelAndView;
         } else {                                              //受理部门
-            modelAndView = new ModelAndView("department_matter_list");
+            modelAndView = new ModelAndView("supervision/department_matter_list");
             List<Matter> departMatter = this.getMatter(String.valueOf(roleIds.get(0)));
             List<Matter> hisMatterList = getDepartmentMatter(String.valueOf(roleIds.get(0)));
             modelAndView.addObject("departMatter", departMatter);
@@ -144,9 +142,9 @@ public class MatterController extends BaseController{
     /**
      * 新增办件页面显示
      */
-    @GetMapping("/add")
+    @GetMapping("/matter/add")
     public ModelAndView add() {
-        ModelAndView modelAndView = new ModelAndView("supervision/add");
+        ModelAndView modelAndView = new ModelAndView("supervision/matter_add");
         List<Unit> units = unitService.selectAll();
         modelAndView.addObject("url", "add");
         modelAndView.addObject("units",units);
@@ -156,7 +154,7 @@ public class MatterController extends BaseController{
     /**
      * 新增办件处理
      */
-    @PostMapping("/add")
+    @PostMapping("/matter/add")
     public JsonResult add(HttpServletRequest request){
         JsonResult jsonResult = new JsonResult();
         return jsonResult;
@@ -186,22 +184,6 @@ public class MatterController extends BaseController{
 
             matter.setProcessInstance(processInstance);
             matter.setTask(task);
-            String deadline = matter.getDeadline();
-            if (!Strings.isNullOrEmpty(deadline)) {
-                Date deadlineDate = DateUtil.String2Date(matter.getDeadline());
-                Date nowDate = new Date();
-
-                int d = DateUtil.differentDays(nowDate, deadlineDate); //dealineDate  - nowDate 的时间差    单位是天
-
-//                if (d < 0) {
-//                    matter.setLocalState("已超期");
-//                } else if (d == 0) {
-//                    matter.setLocalState("即将超期");
-//                } else {
-//                    matter.setLocalState("办理中");
-//                }
-
-            }
             matterList.add(matter);
         }
         return matterList;
