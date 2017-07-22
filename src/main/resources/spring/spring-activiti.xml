@@ -23,16 +23,16 @@
         <property name="jobExecutorActivate" value="true"/>
 
         <!-- 自定义用户组 -->
-        <property name="customSessionFactories">
-            <list>
-                <bean class="indi.baojie.demo.activiti.identity.CustomUserEntityManagerFactory">
-                    <property name="customUserEntityManager" ref="customUserEntityManager"/>
-                </bean>
-                <bean class="indi.baojie.demo.activiti.identity.CustomGroupEntityManagerFactory">
-                    <property name="customGroupEntityManager" ref="customGroupEntityManager"/>
-                </bean>
-            </list>
-        </property>
+        <!--<property name="customSessionFactories">-->
+            <!--<list>-->
+                <!--<bean class="indi.baojie.demo.activiti.identity.CustomUserEntityManagerFactory">-->
+                    <!--<property name="customUserEntityManager" ref="customUserEntityManager"/>-->
+                <!--</bean>-->
+                <!--<bean class="indi.baojie.demo.activiti.identity.CustomGroupEntityManagerFactory">-->
+                    <!--<property name="customGroupEntityManager" ref="customGroupEntityManager"/>-->
+                <!--</bean>-->
+            <!--</list>-->
+        <!--</property>-->
 
         <!-- 生成流程图的字体 -->
         <property name="activityFontName" value="宋体"/>
@@ -41,8 +41,8 @@
     </bean>
 
     <!-- 自定义用户、组管理器 -->
-    <bean id="customUserEntityManager" class="indi.baojie.demo.activiti.identity.CustomUserEntityManager"/>
-    <bean id="customGroupEntityManager" class="indi.baojie.demo.activiti.identity.CustomGroupEntityManager"/>
+    <!--<bean id="customUserEntityManager" class="indi.baojie.demo.activiti.identity.CustomUserEntityManager"/>-->
+    <!--<bean id="customGroupEntityManager" class="indi.baojie.demo.activiti.identity.CustomGroupEntityManager"/>-->
 
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
         <property name="processEngineConfiguration" ref="processEngineConfiguration"/>

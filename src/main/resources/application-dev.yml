@@ -44,8 +44,8 @@ spring:
       exclude: WEB-INF/views/**
 
 mybatis:
-  type-aliases-package: indi.baojie.demo.supervision.domain
-  mapperLocations: classpath:indi/baojie/demo/supervision/dao/mapping/*.xml
+  type-aliases-package: indi.baojie.supervision.domain
+  mapperLocations: classpath:indi/baojie/supervision/dao/mapping/*.xml
   configuration:
     lazy-loading-enabled: false
 

@@ -1,6 +1,6 @@
 package activiti;
 
-import indi.baojie.demo.Application;
+import indi.baojie.Application;
 import org.activiti.engine.RuntimeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
