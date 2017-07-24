@@ -2,12 +2,10 @@ package indi.baojie.supervision.dao;
 
 import indi.baojie.supervision.domain.MatterAttachment;
 import indi.baojie.supervision.domain.MatterAttachmentExample;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
 public interface MatterAttachmentMapper {
     int countByExample(MatterAttachmentExample example);
 

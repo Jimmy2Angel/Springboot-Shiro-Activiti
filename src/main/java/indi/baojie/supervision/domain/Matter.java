@@ -1,75 +1,29 @@
 package indi.baojie.supervision.domain;
 
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+
+import java.util.List;
 
 public class Matter {
     private Integer id;
 
     private String serviceCode;
 
-    private String oldCode;
-
-    private Integer type;
-
-    private Integer category;
-
-    private String title;
-
     private String summary;
-
-    private Integer requireInstruction;
-
-    private Integer attachmentId;
 
     private String remark;
 
-    private String unitIds;
+    private Integer createUserId;
 
-    private String unitNames;
+    private String createUserName;
 
-    private String deadline;
-
-    private Integer registrant;
-
-    private String regTime;
+    private String createTime;
 
     private Integer state;
 
-    private Integer deleted;
+    private List<Task> tasks;
 
-    private String processInstanceId;
-
-    private ProcessInstance processInstance;
-
-    private Task task;
-
-    private HistoricProcessInstance historicProcessInstance;
-
-    public HistoricProcessInstance getHistoricProcessInstance() {
-        return historicProcessInstance;
-    }
-
-    public void setHistoricProcessInstance(HistoricProcessInstance historicProcessInstance) {
-        this.historicProcessInstance = historicProcessInstance;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public ProcessInstance getProcessInstance() {
-        return processInstance;
-    }
-
-    public void setProcessInstance(ProcessInstance processInstance) {
-        this.processInstance = processInstance;
-    }
+    private List<MatterAttachment> matterAttachments;
 
     public Integer getId() {
         return id;
@@ -84,39 +38,7 @@ public class Matter {
     }
 
     public void setServiceCode(String serviceCode) {
-        this.serviceCode = serviceCode == null ? null : serviceCode.trim();
-    }
-
-    public String getOldCode() {
-        return oldCode;
-    }
-
-    public void setOldCode(String oldCode) {
-        this.oldCode = oldCode == null ? null : oldCode.trim();
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.serviceCode = serviceCode;
     }
 
     public String getSummary() {
@@ -124,23 +46,7 @@ public class Matter {
     }
 
     public void setSummary(String summary) {
-        this.summary = summary == null ? null : summary.trim();
-    }
-
-    public Integer getRequireInstruction() {
-        return requireInstruction;
-    }
-
-    public void setRequireInstruction(Integer requireInstruction) {
-        this.requireInstruction = requireInstruction;
-    }
-
-    public Integer getAttachmentId() {
-        return attachmentId;
-    }
-
-    public void setAttachmentId(Integer attachmentId) {
-        this.attachmentId = attachmentId;
+        this.summary = summary;
     }
 
     public String getRemark() {
@@ -148,47 +54,31 @@ public class Matter {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
-    public String getUnitIds() {
-        return unitIds;
+    public Integer getCreateUserId() {
+        return createUserId;
     }
 
-    public void setUnitIds(String unitIds) {
-        this.unitIds = unitIds == null ? null : unitIds.trim();
+    public void setCreateUserId(Integer createUserId) {
+        this.createUserId = createUserId;
     }
 
-    public String getUnitNames() {
-        return unitNames;
+    public String getCreateUserName() {
+        return createUserName;
     }
 
-    public void setUnitNames(String unitNames) {
-        this.unitNames = unitNames == null ? null : unitNames.trim();
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
     }
 
-    public String getDeadline() {
-        return deadline;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setDeadline(String deadline) {
-        this.deadline = deadline == null ? null : deadline.trim();
-    }
-
-    public Integer getRegistrant() {
-        return registrant;
-    }
-
-    public void setRegistrant(Integer registrant) {
-        this.registrant = registrant;
-    }
-
-    public String getRegTime() {
-        return regTime;
-    }
-
-    public void setRegTime(String regTime) {
-        this.regTime = regTime == null ? null : regTime.trim();
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public Integer getState() {
@@ -199,19 +89,19 @@ public class Matter {
         this.state = state;
     }
 
-    public Integer getDeleted() {
-        return deleted;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
-    public String getProcessInstanceId() {
-        return processInstanceId;
+    public List<MatterAttachment> getMatterAttachments() {
+        return matterAttachments;
     }
 
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId == null ? null : processInstanceId.trim();
+    public void setMatterAttachments(List<MatterAttachment> matterAttachments) {
+        this.matterAttachments = matterAttachments;
     }
 }
