@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.baojie.supervision.dao.MatterTaskResultMapper" >
+  <resultMap id="BaseResultMap" type="indi.baojie.supervision.domain.MatterTaskResult" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="execution_id" property="executionId" jdbcType="INTEGER" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="sign_user_id" property="signUserId" jdbcType="INTEGER" />
+    <result column="sign_user_name" property="signUserName" jdbcType="VARCHAR" />
+    <result column="sign_time" property="signTime" jdbcType="VARCHAR" />
+    <result column="feedback_user_id" property="feedbackUserId" jdbcType="VARCHAR" />
+    <result column="feedback_user_name" property="feedbackUserName" jdbcType="VARCHAR" />
+    <result column="feedback_time" property="feedbackTime" jdbcType="VARCHAR" />
+    <result column="report_user_id" property="reportUserId" jdbcType="INTEGER" />
+    <result column="report_user_name" property="reportUserName" jdbcType="VARCHAR" />
+    <result column="report_time" property="reportTime" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, task_id, execution_id, unit_id, unit_name, sign_user_id, sign_user_name, sign_time, 
+    feedback_user_id, feedback_user_name, feedback_time, report_user_id, report_user_name, 
+    report_time, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="indi.baojie.supervision.domain.MatterTaskResultExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from matter_task_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from matter_task_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from matter_task_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="indi.baojie.supervision.domain.MatterTaskResultExample" >
+    delete from matter_task_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="indi.baojie.supervision.domain.MatterTaskResult" >
+    insert into matter_task_result (id, task_id, execution_id, 
+      unit_id, unit_name, sign_user_id, 
+      sign_user_name, sign_time, feedback_user_id, 
+      feedback_user_name, feedback_time, report_user_id, 
+      report_user_name, report_time, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{executionId,jdbcType=INTEGER}, 
+      #{unitId,jdbcType=INTEGER}, #{unitName,jdbcType=VARCHAR}, #{signUserId,jdbcType=INTEGER}, 
+      #{signUserName,jdbcType=VARCHAR}, #{signTime,jdbcType=VARCHAR}, #{feedbackUserId,jdbcType=VARCHAR}, 
+      #{feedbackUserName,jdbcType=VARCHAR}, #{feedbackTime,jdbcType=VARCHAR}, #{reportUserId,jdbcType=INTEGER}, 
+      #{reportUserName,jdbcType=VARCHAR}, #{reportTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="indi.baojie.supervision.domain.MatterTaskResult" >
+    insert into matter_task_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="executionId != null" >
+        execution_id,
+      </if>
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="unitName != null" >
+        unit_name,
+      </if>
+      <if test="signUserId != null" >
+        sign_user_id,
+      </if>
+      <if test="signUserName != null" >
+        sign_user_name,
+      </if>
+      <if test="signTime != null" >
+        sign_time,
+      </if>
+      <if test="feedbackUserId != null" >
+        feedback_user_id,
+      </if>
+      <if test="feedbackUserName != null" >
+        feedback_user_name,
+      </if>
+      <if test="feedbackTime != null" >
+        feedback_time,
+      </if>
+      <if test="reportUserId != null" >
+        report_user_id,
+      </if>
+      <if test="reportUserName != null" >
+        report_user_name,
+      </if>
+      <if test="reportTime != null" >
+        report_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="executionId != null" >
+        #{executionId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="signUserId != null" >
+        #{signUserId,jdbcType=INTEGER},
+      </if>
+      <if test="signUserName != null" >
+        #{signUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        #{signTime,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackUserId != null" >
+        #{feedbackUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackUserName != null" >
+        #{feedbackUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackTime != null" >
+        #{feedbackTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reportUserId != null" >
+        #{reportUserId,jdbcType=INTEGER},
+      </if>
+      <if test="reportUserName != null" >
+        #{reportUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="reportTime != null" >
+        #{reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="indi.baojie.supervision.domain.MatterTaskResultExample" resultType="java.lang.Integer" >
+    select count(*) from matter_task_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update matter_task_result
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.executionId != null" >
+        execution_id = #{record.executionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitId != null" >
+        unit_id = #{record.unitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitName != null" >
+        unit_name = #{record.unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signUserId != null" >
+        sign_user_id = #{record.signUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.signUserName != null" >
+        sign_user_name = #{record.signUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signTime != null" >
+        sign_time = #{record.signTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackUserId != null" >
+        feedback_user_id = #{record.feedbackUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackUserName != null" >
+        feedback_user_name = #{record.feedbackUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackTime != null" >
+        feedback_time = #{record.feedbackTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportUserId != null" >
+        report_user_id = #{record.reportUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.reportUserName != null" >
+        report_user_name = #{record.reportUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportTime != null" >
+        report_time = #{record.reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update matter_task_result
+    set id = #{record.id,jdbcType=INTEGER},
+      task_id = #{record.taskId,jdbcType=INTEGER},
+      execution_id = #{record.executionId,jdbcType=INTEGER},
+      unit_id = #{record.unitId,jdbcType=INTEGER},
+      unit_name = #{record.unitName,jdbcType=VARCHAR},
+      sign_user_id = #{record.signUserId,jdbcType=INTEGER},
+      sign_user_name = #{record.signUserName,jdbcType=VARCHAR},
+      sign_time = #{record.signTime,jdbcType=VARCHAR},
+      feedback_user_id = #{record.feedbackUserId,jdbcType=VARCHAR},
+      feedback_user_name = #{record.feedbackUserName,jdbcType=VARCHAR},
+      feedback_time = #{record.feedbackTime,jdbcType=VARCHAR},
+      report_user_id = #{record.reportUserId,jdbcType=INTEGER},
+      report_user_name = #{record.reportUserName,jdbcType=VARCHAR},
+      report_time = #{record.reportTime,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="indi.baojie.supervision.domain.MatterTaskResult" >
+    update matter_task_result
+    <set >
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="executionId != null" >
+        execution_id = #{executionId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="unitName != null" >
+        unit_name = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="signUserId != null" >
+        sign_user_id = #{signUserId,jdbcType=INTEGER},
+      </if>
+      <if test="signUserName != null" >
+        sign_user_name = #{signUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        sign_time = #{signTime,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackUserId != null" >
+        feedback_user_id = #{feedbackUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackUserName != null" >
+        feedback_user_name = #{feedbackUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackTime != null" >
+        feedback_time = #{feedbackTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reportUserId != null" >
+        report_user_id = #{reportUserId,jdbcType=INTEGER},
+      </if>
+      <if test="reportUserName != null" >
+        report_user_name = #{reportUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="reportTime != null" >
+        report_time = #{reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="indi.baojie.supervision.domain.MatterTaskResult" >
+    update matter_task_result
+    set task_id = #{taskId,jdbcType=INTEGER},
+      execution_id = #{executionId,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      unit_name = #{unitName,jdbcType=VARCHAR},
+      sign_user_id = #{signUserId,jdbcType=INTEGER},
+      sign_user_name = #{signUserName,jdbcType=VARCHAR},
+      sign_time = #{signTime,jdbcType=VARCHAR},
+      feedback_user_id = #{feedbackUserId,jdbcType=VARCHAR},
+      feedback_user_name = #{feedbackUserName,jdbcType=VARCHAR},
+      feedback_time = #{feedbackTime,jdbcType=VARCHAR},
+      report_user_id = #{reportUserId,jdbcType=INTEGER},
+      report_user_name = #{reportUserName,jdbcType=VARCHAR},
+      report_time = #{reportTime,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
