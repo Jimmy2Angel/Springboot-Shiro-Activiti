@@ -2,9 +2,8 @@ package indi.baojie.supervision.dao;
 
 import indi.baojie.supervision.domain.Matter;
 import indi.baojie.supervision.domain.MatterExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MatterMapper {
     int countByExample(MatterExample example);
@@ -28,13 +27,4 @@ public interface MatterMapper {
     int updateByPrimaryKeySelective(Matter record);
 
     int updateByPrimaryKey(Matter record);
-
-    List<Matter> getMaterAllInfo(@Param("id") Integer id);
-
-    int deleteByIds(@Param("idList") List<Integer> idList);
-
-
-    int updateActInsIdById(@Param("id") Integer id, @Param("processInstanceId") String processInstanceId);
-
-    List<Matter> selectDecomposeMatters();
 }

@@ -2,9 +2,8 @@ package indi.baojie.supervision.dao;
 
 import indi.baojie.supervision.domain.MatterTaskResult;
 import indi.baojie.supervision.domain.MatterTaskResultExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MatterTaskResultMapper {
     int countByExample(MatterTaskResultExample example);
@@ -28,8 +27,4 @@ public interface MatterTaskResultMapper {
     int updateByPrimaryKeySelective(MatterTaskResult record);
 
     int updateByPrimaryKey(MatterTaskResult record);
-
-    List<Integer> selectAllMatterId();
-
-    MatterTaskResult getAllInfo(@Param("id") Integer matterTaskResultId);
 }

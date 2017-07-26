@@ -2,9 +2,8 @@ package indi.baojie.supervision.dao;
 
 import indi.baojie.supervision.domain.Summary;
 import indi.baojie.supervision.domain.SummaryExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SummaryMapper {
     int countByExample(SummaryExample example);

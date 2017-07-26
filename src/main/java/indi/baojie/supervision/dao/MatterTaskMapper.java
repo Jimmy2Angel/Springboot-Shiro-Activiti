@@ -2,9 +2,8 @@ package indi.baojie.supervision.dao;
 
 import indi.baojie.supervision.domain.MatterTask;
 import indi.baojie.supervision.domain.MatterTaskExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MatterTaskMapper {
     int countByExample(MatterTaskExample example);

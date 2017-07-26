@@ -2,7 +2,6 @@ package indi.baojie.supervision.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import indi.baojie.common.data.Constants;
 import indi.baojie.common.data.JsonResult;
 import indi.baojie.supervision.dao.*;
 import indi.baojie.supervision.domain.*;
@@ -101,8 +100,9 @@ public class MatterServiceImpl implements MatterService {
      */
     @Override
     public List<Matter> selectDecomposeMatters() {
-        List<Matter> matters = matterMapper.selectDecomposeMatters();
-        return (matters!=null && matters.size()>0)?matters:null;
+//        List<Matter> matters = matterMapper.selectDecomposeMatters();
+//        return (matters!=null && matters.size()>0)?matters:null;
+        return  null;
     }
 
     /**
@@ -184,81 +184,82 @@ public class MatterServiceImpl implements MatterService {
      */
     @Override
     public JsonResult doFeedback(User user, Integer matterTaskResultId, String content, MultipartFile file, HttpServletRequest request) {
-        JsonResult jsonResult = new JsonResult();
-        boolean isSuccess;
-        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(matterTaskResultId);
-
-        matterTaskResult.setFeedbackPersonId(user.getUnitId());
-        matterTaskResult.setFeedbackPersonName(user.getUserName());
-        matterTaskResult.setFeedbackTime(DateUtil.Date2String(new Date()));
-        isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
-        if (!isSuccess) {
-            jsonResult.markError("反馈失败，请联系管理员！");
-            return jsonResult;
-        }
-        if (file != null && !file.isEmpty()) {
-            if (file.getSize() > 10485760) {
-                jsonResult.markError("附件太大,请修改后重试！");
-                return jsonResult;
-            }
-            FileUtil fu = new FileUtil();
-            String fileName = file.getOriginalFilename();
-            //String fileType = fileName.substring(fileName.lastIndexOf("."));
-            jsonResult = fu.saveFile(request, file, "attached");
-            Feedback feedback = new Feedback();
-            feedback.setContent(content);
-            feedback.setName(fileName);
-            feedback.setUrl(jsonResult.getData().toString());
-            feedback.setTaskResultId((matterTaskResult.getId()));
-            isSuccess = feedbackMapper.insert(feedback)==1;
-        } else {
-            Feedback feedback = new Feedback();
-            feedback.setContent(content);
-            feedback.setTaskResultId((matterTaskResult.getId()));
-            isSuccess = feedbackMapper.insert(feedback)==1;
-        }
-        if (!isSuccess) {
-            jsonResult.markError("反馈失败，请联系管理员！");
-            return jsonResult;
-        }
-
-        Integer processInstanceId = matterTaskResult.getMatterTask().getProcessInstanceId();
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId.toString())
-                .taskCandidateGroup(String.valueOf(user.getUnitId())).list();
-        for(Task task:tasks){
-            //TODO "信息反馈"
-            if("信息反馈".equals(task.getName())){
-                taskService.complete(task.getId());
-            }
-        }
-
-        Integer matterId = matterTaskResult.getMatterId();
-        MatterTaskResultExample example = new MatterTaskResultExample();
-        example.or().andMatterIdEqualTo(matterId);
-        List<MatterTaskResult> matterTaskResults = matterTaskResultMapper.selectByExample(example);
-
-        List<Integer> resultIds = Lists.newArrayList();
-        for (MatterTaskResult taskResult:matterTaskResults){
-            Integer resultId = taskResult.getId();
-            resultIds.add(resultId);
-        }
-        FeedbackExample feedbackExample = new FeedbackExample();
-        feedbackExample.or().andTaskResultIdIn(resultIds);
-        List<Feedback> feedbacks = feedbackMapper.selectByExample(feedbackExample);
-        /*
-        判断是否所有的相关机构均完成了信息反馈
-         */
-        if (matterTaskResults.size()!=0 && matterTaskResults.size()==feedbacks.size()) {
-            Matter matter = matterMapper.selectByPrimaryKey(matterId);
-            matter.setState(3);
-            isSuccess = matterMapper.updateByPrimaryKey(matter)==1;
-            if(!isSuccess){
-                jsonResult.markError("反馈失败，请联系管理员！");
-                return jsonResult;
-            }
-        }
-        jsonResult.markSuccess("反馈成功！",null);
-        return jsonResult;
+//        JsonResult jsonResult = new JsonResult();
+//        boolean isSuccess;
+//        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(matterTaskResultId);
+//
+//        matterTaskResult.setFeedbackPersonId(user.getUnitId());
+//        matterTaskResult.setFeedbackPersonName(user.getUserName());
+//        matterTaskResult.setFeedbackTime(DateUtil.Date2String(new Date()));
+//        isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
+//        if (!isSuccess) {
+//            jsonResult.markError("反馈失败，请联系管理员！");
+//            return jsonResult;
+//        }
+//        if (file != null && !file.isEmpty()) {
+//            if (file.getSize() > 10485760) {
+//                jsonResult.markError("附件太大,请修改后重试！");
+//                return jsonResult;
+//            }
+//            FileUtil fu = new FileUtil();
+//            String fileName = file.getOriginalFilename();
+//            //String fileType = fileName.substring(fileName.lastIndexOf("."));
+//            jsonResult = fu.saveFile(request, file, "attached");
+//            Feedback feedback = new Feedback();
+//            feedback.setContent(content);
+//            feedback.setName(fileName);
+//            feedback.setUrl(jsonResult.getData().toString());
+//            feedback.setTaskResultId((matterTaskResult.getId()));
+//            isSuccess = feedbackMapper.insert(feedback)==1;
+//        } else {
+//            Feedback feedback = new Feedback();
+//            feedback.setContent(content);
+//            feedback.setTaskResultId((matterTaskResult.getId()));
+//            isSuccess = feedbackMapper.insert(feedback)==1;
+//        }
+//        if (!isSuccess) {
+//            jsonResult.markError("反馈失败，请联系管理员！");
+//            return jsonResult;
+//        }
+//
+//        Integer processInstanceId = matterTaskResult.getMatterTask().getProcessInstanceId();
+//        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId.toString())
+//                .taskCandidateGroup(String.valueOf(user.getUnitId())).list();
+//        for(Task task:tasks){
+//            //TODO "信息反馈"
+//            if("信息反馈".equals(task.getName())){
+//                taskService.complete(task.getId());
+//            }
+//        }
+//
+//        Integer matterId = matterTaskResult.getMatterId();
+//        MatterTaskResultExample example = new MatterTaskResultExample();
+//        example.or().andMatterIdEqualTo(matterId);
+//        List<MatterTaskResult> matterTaskResults = matterTaskResultMapper.selectByExample(example);
+//
+//        List<Integer> resultIds = Lists.newArrayList();
+//        for (MatterTaskResult taskResult:matterTaskResults){
+//            Integer resultId = taskResult.getId();
+//            resultIds.add(resultId);
+//        }
+//        FeedbackExample feedbackExample = new FeedbackExample();
+//        feedbackExample.or().andTaskResultIdIn(resultIds);
+//        List<Feedback> feedbacks = feedbackMapper.selectByExample(feedbackExample);
+//        /*
+//        判断是否所有的相关机构均完成了信息反馈
+//         */
+//        if (matterTaskResults.size()!=0 && matterTaskResults.size()==feedbacks.size()) {
+//            Matter matter = matterMapper.selectByPrimaryKey(matterId);
+//            matter.setState(3);
+//            isSuccess = matterMapper.updateByPrimaryKey(matter)==1;
+//            if(!isSuccess){
+//                jsonResult.markError("反馈失败，请联系管理员！");
+//                return jsonResult;
+//            }
+//        }
+//        jsonResult.markSuccess("反馈成功！",null);
+//        return jsonResult;
+        return null;
     }
 
 
@@ -343,40 +344,41 @@ public class MatterServiceImpl implements MatterService {
      */
     @Override
     public boolean doJudge(User user, String type, Integer matterTaskResultId, String unPassReason) {
-        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(matterTaskResultId);
-        Integer processInstanceId = matterTaskResult.getMatterTask().getProcessInstanceId();
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId.toString())
-                .taskCandidateGroup(String.valueOf(user.getUnitId())).list();
-        HashMap map = Maps.newHashMap();
-        if("1".equals(type)){
-            matterTaskResult.setRemark("1");
-            boolean isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
-            if (isSuccess) {
-                map.put("supervisionPass", true);
-                for (Task task : tasks) {
-                    if ("结果判断".equals(task.getName()) && task.getExecutionId().equals(matterTaskResult.getExecutionId().toString())) {
-                        synchronized (this) {
-                            taskService.complete(task.getId(), map);
-                            return true;
-                        }
-                    }
-                }
-            }
-        } else if("0".equals(type)) {
-            matterTaskResult.setRemark(unPassReason);
-            boolean isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
-            if(isSuccess){
-                map.put("supervisionPass",false);
-                for (Task task:tasks) {
-                    if ("结果判断".equals(task.getName()) && task.getExecutionId().equals(matterTaskResult.getExecutionId().toString())) {
-                        synchronized (this){
-                            taskService.complete(task.getId(),map);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+//        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(matterTaskResultId);
+//        Integer processInstanceId = matterTaskResult.getMatterTask().getProcessInstanceId();
+//        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId.toString())
+//                .taskCandidateGroup(String.valueOf(user.getUnitId())).list();
+//        HashMap map = Maps.newHashMap();
+//        if("1".equals(type)){
+//            matterTaskResult.setRemark("1");
+//            boolean isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
+//            if (isSuccess) {
+//                map.put("supervisionPass", true);
+//                for (Task task : tasks) {
+//                    if ("结果判断".equals(task.getName()) && task.getExecutionId().equals(matterTaskResult.getExecutionId().toString())) {
+//                        synchronized (this) {
+//                            taskService.complete(task.getId(), map);
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+//        } else if("0".equals(type)) {
+//            matterTaskResult.setRemark(unPassReason);
+//            boolean isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
+//            if(isSuccess){
+//                map.put("supervisionPass",false);
+//                for (Task task:tasks) {
+//                    if ("结果判断".equals(task.getName()) && task.getExecutionId().equals(matterTaskResult.getExecutionId().toString())) {
+//                        synchronized (this){
+//                            taskService.complete(task.getId(),map);
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return false;
         return false;
     }
 
@@ -395,7 +397,6 @@ public class MatterServiceImpl implements MatterService {
 
     /**
      * 相关机构对受理任务进行结果上报
-     * @param person
      * @param taskResultId
      * @param reportContent
      * @param file
@@ -404,61 +405,62 @@ public class MatterServiceImpl implements MatterService {
      */
     @Override
     public JsonResult doReport(User user, Integer taskResultId, String reportContent, MultipartFile file, HttpServletRequest request) {
-        JsonResult jsonResult = new JsonResult();
-        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(taskResultId);
-
-        matterTaskResult.setReportPersonId(user.getUserId());
-        matterTaskResult.setReportPersonName(user.getUserName());
-        matterTaskResult.setReportTime(DateUtil.Date2String(new Date()));
-        boolean isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
-        if (!isSuccess) {
-            jsonResult.markError("上报失败，请联系管理员！");
-            return jsonResult;
-        }
-
-        if (file != null && !file.isEmpty()) {
-            if (file.getSize() > 10485760) {
-                jsonResult.markError("附件太大,请修改后重试！");
-                return jsonResult;
-            }
-            FileUtil fu = new FileUtil();
-            String fileName = file.getOriginalFilename();
-            //String fileType = fileName.substring(fileName.lastIndexOf("."));
-            jsonResult = fu.saveFile(request, file, "attached");
-            Report report = new Report();
-            report.setContent(reportContent);
-            report.setName(fileName);
-            report.setUrl(jsonResult.getData().toString());
-            report.setTaskResultId((matterTaskResult.getId()));
-            isSuccess = reportMapper.insert(report)==1;
-        } else {
-            Report report = new Report();
-            report.setContent(reportContent);
-            report.setTaskResultId((matterTaskResult.getMatterId()));
-            isSuccess = reportMapper.insert(report)==1;
-        }
-        if (!isSuccess) {
-            jsonResult.markError("上报失败，请联系管理员！");
-            return jsonResult;
-        }
-
-        Integer processInstanceId = matterTaskResult.getMatterTask().getProcessInstanceId();
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId.toString())
-                .taskCandidateGroup(String.valueOf(user.getUnitId())).list();
-        for(Task task:tasks){
-            //TODO "结果上报"
-            if("结果上报".equals(task.getName())){
-                matterTaskResult.setExecutionId(Integer.valueOf(task.getExecutionId()));
-                isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
-                if (!isSuccess) {
-                    jsonResult.markError("上报失败，请联系管理员！");
-                    return jsonResult;
-                }
-                taskService.complete(task.getId());
-            }
-        }
-        jsonResult.markSuccess("上报成功",null);
-        return jsonResult;
+//        JsonResult jsonResult = new JsonResult();
+//        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(taskResultId);
+//
+//        matterTaskResult.setReportPersonId(user.getUserId());
+//        matterTaskResult.setReportPersonName(user.getUserName());
+//        matterTaskResult.setReportTime(DateUtil.Date2String(new Date()));
+//        boolean isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
+//        if (!isSuccess) {
+//            jsonResult.markError("上报失败，请联系管理员！");
+//            return jsonResult;
+//        }
+//
+//        if (file != null && !file.isEmpty()) {
+//            if (file.getSize() > 10485760) {
+//                jsonResult.markError("附件太大,请修改后重试！");
+//                return jsonResult;
+//            }
+//            FileUtil fu = new FileUtil();
+//            String fileName = file.getOriginalFilename();
+//            //String fileType = fileName.substring(fileName.lastIndexOf("."));
+//            jsonResult = fu.saveFile(request, file, "attached");
+//            Report report = new Report();
+//            report.setContent(reportContent);
+//            report.setName(fileName);
+//            report.setUrl(jsonResult.getData().toString());
+//            report.setTaskResultId((matterTaskResult.getId()));
+//            isSuccess = reportMapper.insert(report)==1;
+//        } else {
+//            Report report = new Report();
+//            report.setContent(reportContent);
+//            report.setTaskResultId((matterTaskResult.getMatterId()));
+//            isSuccess = reportMapper.insert(report)==1;
+//        }
+//        if (!isSuccess) {
+//            jsonResult.markError("上报失败，请联系管理员！");
+//            return jsonResult;
+//        }
+//
+//        Integer processInstanceId = matterTaskResult.getMatterTask().getProcessInstanceId();
+//        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId.toString())
+//                .taskCandidateGroup(String.valueOf(user.getUnitId())).list();
+//        for(Task task:tasks){
+//            //TODO "结果上报"
+//            if("结果上报".equals(task.getName())){
+//                matterTaskResult.setExecutionId(Integer.valueOf(task.getExecutionId()));
+//                isSuccess = matterTaskResultMapper.updateByPrimaryKey(matterTaskResult)==1;
+//                if (!isSuccess) {
+//                    jsonResult.markError("上报失败，请联系管理员！");
+//                    return jsonResult;
+//                }
+//                taskService.complete(task.getId());
+//            }
+//        }
+//        jsonResult.markSuccess("上报成功",null);
+//        return jsonResult;
+        return null;
     }
 
     /**
@@ -467,15 +469,16 @@ public class MatterServiceImpl implements MatterService {
      * @return
      */
     public List<Matter> getMaterAllInfo(Integer id){
-        List<Matter> matters = matterMapper.getMaterAllInfo(id);
-        for(Matter matter:matters){
-            MatterAttachmentExample matterAttachmentExample = new MatterAttachmentExample();
-            matterAttachmentExample.or().andMatterIdEqualTo(matter.getId());
-            matterAttachmentExample.setOrderByClause("id desc");
-            List<MatterAttachment> matterAttachments = matterAttachmentMapper.selectByExample(matterAttachmentExample);
-            matter.setMatterAttachments(matterAttachments);
-        }
-        return matters;
+//        List<Matter> matters = matterMapper.getMaterAllInfo(id);
+//        for(Matter matter:matters){
+//            MatterAttachmentExample matterAttachmentExample = new MatterAttachmentExample();
+//            matterAttachmentExample.or().andMatterIdEqualTo(matter.getId());
+//            matterAttachmentExample.setOrderByClause("id desc");
+//            List<MatterAttachment> matterAttachments = matterAttachmentMapper.selectByExample(matterAttachmentExample);
+//            matter.setMatterAttachments(matterAttachments);
+//        }
+//        return matters;
+        return null;
     }
 
     /**

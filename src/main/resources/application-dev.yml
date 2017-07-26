@@ -6,8 +6,6 @@ server:
     uri-encoding: UTF-8
   context-path: /sup
 
-#  servlet-path: /service/*
-
 spring:
   # 数据库配置
   datasource:
@@ -38,10 +36,13 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+    static-path-pattern: /static/**
 
   devtools:
     restart:
       exclude: WEB-INF/views/**
+
+resources.static-locations: classpath:/static/
 
 mybatis:
   type-aliases-package: indi.baojie.supervision.domain
@@ -49,4 +50,4 @@ mybatis:
   configuration:
     lazy-loading-enabled: false
 
-debug: true
+debug: false

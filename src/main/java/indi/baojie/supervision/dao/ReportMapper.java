@@ -2,9 +2,8 @@ package indi.baojie.supervision.dao;
 
 import indi.baojie.supervision.domain.Report;
 import indi.baojie.supervision.domain.ReportExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface ReportMapper {
     int countByExample(ReportExample example);

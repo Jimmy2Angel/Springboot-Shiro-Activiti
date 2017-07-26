@@ -1,7 +1,6 @@
 package indi.baojie.supervision.service.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import indi.baojie.supervision.dao.*;
 import indi.baojie.supervision.domain.*;
 import indi.baojie.supervision.service.MatterTaskResultService;
@@ -46,28 +45,29 @@ public class MatterTaskResultServiceImpl implements MatterTaskResultService {
      */
     @Override
     public Map<Integer,List<MatterTaskResult>> selectTaskResultsOrderByMatterId() {
-        Map<Integer,List<MatterTaskResult>> map = Maps.newHashMap();
-        MatterExample matterExample = new MatterExample();
-        matterExample.or().andStateEqualTo(3);
-        List<Matter> matters = matterMapper.selectByExample(matterExample);
-        for (Matter matter:matters) {
-            MatterTaskResultExample example = new MatterTaskResultExample();
-            example.or().andMatterIdEqualTo(matter.getId());
-            List<MatterTaskResult> matterTaskResults = matterTaskResultMapper.selectByExample(example);
-            List<Integer> resultIds = Lists.newArrayList();
-            for (MatterTaskResult taskResult:matterTaskResults){
-                Integer resultId = taskResult.getId();
-                resultIds.add(resultId);
-                MatterTask matterTask = matterTaskMapper.selectByPrimaryKey(taskResult.getTaskId());
-                taskResult.setMatterTask(matterTask);
-                FeedbackExample feedbackExample = new FeedbackExample();
-                feedbackExample.or().andTaskResultIdEqualTo(resultId);
-                List<Feedback> feedbacks = feedbackMapper.selectByExample(feedbackExample);
-                taskResult.setFeedback((feedbacks!=null && feedbacks.size()>0)?feedbacks.get(0):null);
-            }
-            map.put(matter.getId(),matterTaskResults);
-        }
-        return (map!=null && map.size()>0)?map:Collections.<Integer, List<MatterTaskResult>>emptyMap();
+//        Map<Integer,List<MatterTaskResult>> map = Maps.newHashMap();
+//        MatterExample matterExample = new MatterExample();
+//        matterExample.or().andStateEqualTo(3);
+//        List<Matter> matters = matterMapper.selectByExample(matterExample);
+//        for (Matter matter:matters) {
+//            MatterTaskResultExample example = new MatterTaskResultExample();
+//            example.or().andMatterIdEqualTo(matter.getId());
+//            List<MatterTaskResult> matterTaskResults = matterTaskResultMapper.selectByExample(example);
+//            List<Integer> resultIds = Lists.newArrayList();
+//            for (MatterTaskResult taskResult:matterTaskResults){
+//                Integer resultId = taskResult.getId();
+//                resultIds.add(resultId);
+//                MatterTask matterTask = matterTaskMapper.selectByPrimaryKey(taskResult.getTaskId());
+//                taskResult.setMatterTask(matterTask);
+//                FeedbackExample feedbackExample = new FeedbackExample();
+//                feedbackExample.or().andTaskResultIdEqualTo(resultId);
+//                List<Feedback> feedbacks = feedbackMapper.selectByExample(feedbackExample);
+//                taskResult.setFeedback((feedbacks!=null && feedbacks.size()>0)?feedbacks.get(0):null);
+//            }
+//            map.put(matter.getId(),matterTaskResults);
+//        }
+//        return (map!=null && map.size()>0)?map:Collections.<Integer, List<MatterTaskResult>>emptyMap();
+        return null;
     }
 
     /**
@@ -148,15 +148,16 @@ public class MatterTaskResultServiceImpl implements MatterTaskResultService {
      */
     @Override
     public MatterTaskResult getAllInfo(Integer matterTaskResultId) {
-        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(matterTaskResultId);
-        ReportExample example = new ReportExample();
-        example.or().andTaskResultIdEqualTo(matterTaskResultId);
-        example.setOrderByClause("id desc");
-        List<Report> reports = reportMapper.selectByExample(example);
-        if (reports!=null && reports.size()>0) {
-            matterTaskResult.setReport(reports.get(0));
-        }
-        return matterTaskResult;
+//        MatterTaskResult matterTaskResult = matterTaskResultMapper.getAllInfo(matterTaskResultId);
+//        ReportExample example = new ReportExample();
+//        example.or().andTaskResultIdEqualTo(matterTaskResultId);
+//        example.setOrderByClause("id desc");
+//        List<Report> reports = reportMapper.selectByExample(example);
+//        if (reports!=null && reports.size()>0) {
+//            matterTaskResult.setReport(reports.get(0));
+//        }
+//        return matterTaskResult;
+        return null;
     }
 
     /**
