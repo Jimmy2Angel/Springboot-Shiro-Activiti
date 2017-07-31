@@ -36,7 +36,6 @@
     <link rel="stylesheet" type="text/css"
           href="${ctx}/H-ui/static/h-ui.admin/css/style.css"/>
 
-
     <link rel="stylesheet" type="text/css"
           href="${ctx}/H-ui/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css"/>
     <!--[if IE 6]>
@@ -59,37 +58,6 @@
             </div>
         </div>
 
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>原编号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="${matter.oldCode}" placeholder="" id="oldCode" name="oldCode" maxlength="255">
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">办理类型：</label>
-            <div class="formControls col-xs-8 col-sm-9" style="width:25%;"> <span class="select-box">
-				<select class="select" size="1" name="type">
-                    <option value="" selected>请选择</option>
-                    <option value="督办件">督办件</option>
-                    <option value="阅研件">阅研件</option>
-                </select>
-				</span></div>
-
-            <label class="form-label col-xs-4 col-sm-3" style="width: 10%;text-align: left;">类别：</label>
-            <div class="formControls col-xs-8 col-sm-9" style="width:25%;"> <span class="select-box">
-				<select class="select" size="1" name="category">
-                    <option value="">请选择</option>
-                    <option value="综合经济">综合经济</option>
-                    <option value="工交科技">工交科技</option>
-                    <option value="外经商贸">外经商贸</option>
-                </select>
-				</span></div>
-        </div>
-
-        <div class="row cl">
-
-        </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>标题：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -124,14 +92,6 @@
         </div>
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">是否需要领导批示：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input name="requireInstruction" type="radio" value="1" checked/>是
-                <input name="requireInstruction" type="radio" value="0"/>否
-            </div>
-        </div>
-
-        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">附件：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="btn-upload form-group">
 				<input class="input-text upload-url" type="text" name="uploadfile" id="uploadfile" readonly nullmsg="请添加附件！" style="width:200px">
@@ -144,13 +104,6 @@
             <label class="form-label col-xs-4 col-sm-3">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <textarea name="remark" cols="" rows="" class="textarea" placeholder="" maxlength="4000" style="max-height: 300px;resize: none;">${matter.remark}</textarea>
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>截止时间：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" value="${matter.deadline}" onfocus="WdatePicker({minDate:'%y-%M-%d'})" id="deadline" name="deadline" class="input-text Wdate" style="width:120px;">
             </div>
         </div>
 
@@ -234,7 +187,6 @@
     });
 
     function sub(state) {
-        $("#state").val(state);
         $("#form-member-add").submit();
     }
 
@@ -272,7 +224,7 @@
             type: "post",
             otherParam: ["matterId", "${matter.id}"],
             dataType:"json",
-            url: "${pageContext.request.contextPath }/tree.do"
+            url: "${ctx}/matter/tree"
         }
 
     }

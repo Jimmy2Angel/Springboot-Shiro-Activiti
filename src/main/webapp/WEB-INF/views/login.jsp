@@ -119,7 +119,7 @@
                         //var index = parent.layer.getFrameIndex(window.name);
                         //parent.$('#ref').click();
                         if(res.success){
-                            top.location = "${ctx}/index";
+                            top.location = "${ctx}/matter/index";
                         }else{
                             parent.layer.msg(res.message,{icon:2,time:3000});
                         }

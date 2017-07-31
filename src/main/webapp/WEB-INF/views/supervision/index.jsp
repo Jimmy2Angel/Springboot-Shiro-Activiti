@@ -8,10 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="indi.baojie.demo.activiti.utils.ProcessDefinitionCache" %>
-<%@page import="org.activiti.engine.RepositoryService" %>
-<%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <meta charset="utf-8">
@@ -47,10 +43,6 @@
     <title></title>
 </head>
 <body>
-<%
-    RepositoryService repositoryService = WebApplicationContextUtils.getWebApplicationContext(session.getServletContext()).getBean(org.activiti.engine.RepositoryService.class);
-    ProcessDefinitionCache.setRepositoryService(repositoryService);
-%>
 <!--_header 作为公共模版分离出去-->
 <jsp:include page="/head"/>
 <!--/_header 作为公共模版分离出去-->
@@ -64,7 +56,7 @@
                     class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd style="display: block;">
                 <ul>
-                    <li class="current"><a href="" title="领导批示督查">领导批示督查</a></li>
+                    <li class="current"><a href="" title="重点工作督查">重点工作督查</a></li>
                 </ul>
             </dd>
             <dt><i class="Hui-iconfont">&#xe60d;</i> 流程管理<i
@@ -72,8 +64,8 @@
             <dd style="display: none;">
                 <ul>
                     <li><a href="${ctx}/activiti/model/list">模型工作区</a></li>
-                    <li><a href="${ctx}/workflow/process_list.do">流程定义及部署管理</a></li>
-                    <li><a href="${ctx}/workflow/processinstance/running.do">运行中流程</a></li>
+                    <li><a href="${ctx}/workflow/process_list">流程定义及部署管理</a></li>
+                    <li><a href="${ctx}/workflow/processinstance/running">运行中流程</a></li>
                 </ul>
             </dd>
         </dl>
@@ -85,7 +77,7 @@
 
 <section class="Hui-article-box">
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i>督办督查
-        <span class="c-gray en">&gt;</span> 领导批示件<a class="btn btn-success radius r"
+        <span class="c-gray en">&gt;</span> 重点工作督查<a class="btn btn-success radius r"
                                                      style="line-height:1.6em;margin-top:3px"
                                                      href="javascript:location.reload();" title="刷新">
             <i class="Hui-iconfont">&#xe68f;</i></a>
@@ -95,13 +87,10 @@
         <article class="cl pd-20">
             <div class="cl pd-5 bg-1 bk-gray mt-20">
                 <span class="l"><a href="javascript:;"
-                                   onclick="matter_add('新增办件','${pageContext.request.contextPath }/matter/add','','')"
-                                   class="btn btn-primary "><i class="Hui-iconfont">&#xe600;</i> 新增办件</a>
+                                   onclick="matter_add('新增报告','${ctx}/matter/add','','')"
+                                   class="btn btn-primary "><i class="Hui-iconfont">&#xe600;</i> 新增报告</a>
                     <a href="javascript:;" onclick="datadel()" class="btn btn-danger "><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-                        <%--<a href="javascript:;" onclick="exportPerson()" class="btn btn-secondary  "><i
-                        class="Hui-iconfont">&#xe644;</i> 导出用户</a> <a href="javascript:;" onclick="importPerson()" class="btn btn-secondary  "><i
-                        class="Hui-iconfont">&#xe645;</i> 导入用户</a> <a href="javascript:;" onclick="signList()" class="btn btn-success "><i
-                        class="Hui-iconfont">&#xe667;</i> 批量签到</a>--%>&nbsp</span>
+                        &nbsp</span>
 
                 <div id="tab_demo" class="HuiTab">
                     <div class="tabBar clearfix"><span>我的待办</span><span>机构在办</span><span>已办办件</span><span>全部办件</span></div>
@@ -238,368 +227,10 @@
         $.Huitab("#tab_demo .tabBar span","#tab_demo .tabCon","current","click","0");
     });
 
-    /*新增办件页面显示*/
+    /*新增办件*/
     function matter_add(title, url, w, h) {
         layer_show(title, url, w, h);
     }
-
-    /*上报*/
-    function department(title, url, w, h) {
-        layer_show(title, 'matter_department.jsp', '1000', '800');
-    }
-
-    /*进度查询 */
-    function schedule(title, url, w, h) {
-        layer_show(title, url, w, h);
-    }
-
-    /*批示*/
-    function instruct(title, url, w, h) {
-        layer_show(title, url, w, h);
-    }
-
-    /*办件编辑*/
-    function matter_edit(title, url, id, w, h) {
-        layer_show(title, url, w, h);
-    }
-
-
-
-    /*督查室提交至领导审核*/
-    function edit_sub(id, taskId, deId) {
-        /*if(!(remark==null||remark=='')){
-         mes = '备注:'+remark+'<br/>确认要交办吗？';
-
-         }else{
-
-         }*/
-        var mes = '确认要提交至领导审核吗？';
-        layer.confirm(mes, function (index) {
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath }/edit_sub.do',
-                data: {matterId: id, taskId: taskId},
-                dataType: 'json',
-                success: function (data) {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        layer.msg('系统繁忙，请稍后再试!', {icon: 2, time: 3000});
-                    }
-
-                },
-                error: function (data) {
-                    console.log(data.msg);
-                }
-            });
-        });
-    }
-
-    /*批量删除*/
-    function datadel() {
-        var obj = document.getElementsByName('id');  //选择所有name="'test'"的对象，返回数组
-        //取到对象数组后，我们来循环检测它是不是被选中
-        var ids = '';
-        var leng = 0;
-        for (var i = 0; i < obj.length; i++) {
-            if (obj[i].checked) {
-                ids += obj[i].value + ',';
-                leng = leng + 1;
-            }  //如果选中，将value添加到变量s中
-
-        }
-        if (ids.length == 0) {
-            layer.msg('尚未选择任何记录!', {icon: 3, time: 3000});
-        } else {
-            layer.confirm('确认要删除这' + leng + '条记录吗？', function (index) {
-                $.ajax({
-                    type: 'POST',
-                    url: '${pageContext.request.contextPath }/delete.do',
-                    data: 'ids=' + ids,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.success) {
-                            layer.msg('删除成功!', {icon: 1, time: 1000});
-                            location.reload();
-                        } else {
-                            layer.msg('系统繁忙，请稍后再试!', {icon: 2, time: 3000});
-                        }
-
-                    },
-                    error: function (data) {
-                        console.log(data.msg);
-                    }
-                });
-            });
-        }
-    }
-
-    /*用户-删除*/
-    function member_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath }/admin/person/delete.do',
-                data: 'ids=' + id,
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    if (data.success) {
-
-                        layer.msg('删除成功!', {icon: 1, time: 1000});
-                        location.reload();
-                    } else {
-                        layer.msg('系统繁忙，请稍后再试!', {icon: 2, time: 3000});
-                    }
-
-                },
-                error: function (data) {
-                    console.log(data.msg);
-                }
-            });
-        });
-    }
-
-  /*  下方是查看办理流程js*/
-    var ctx = "/supervision";
-    $(function () {
-
-
-        $('#create').button({
-            icons: {
-                primary: 'ui-icon-plus'
-            }
-        }).click(function () {
-            $('#createModelTemplate').modal("show");
-        });
-
-        // 跟踪
-        $('.trace').click(graphTrace);
-    });
-
-    function subAddModel() {
-        if (!$('#name').val()) {
-            alert('请填写名称！');
-            $('#name').focus();
-            return;
-        }
-        setTimeout(function () {
-            location.reload();
-        }, 1000);
-        $('#modelForm').submit();
-    }
-
-
-    function graphTrace(options) {
-
-        var _defaults = {
-            srcEle: this,
-            pid: $(this).attr('pid'),
-            pdid: $(this).attr('pdid')
-        };
-        var opts = $.extend(true, _defaults, options);
-
-        // 处理使用js跟踪当前节点坐标错乱问题
-        $('#changeImg').live('click', function () {
-            $('#workflowTraceDialog').dialog('close');
-            if ($('#imgDialog').length > 0) {
-                $('#imgDialog').remove();
-            }
-            $('<div/>', {
-                'id': 'imgDialog',
-                title: '<button id="diagram-viewer"></button>',
-                html: "<img src='" + ctx + '/workflow/process/trace/auto/' + opts.pid + "' />"
-            }).appendTo('article').dialog({
-                modal: true,
-                resizable: false,
-                dragable: false,
-                width: document.documentElement.clientWidth * 0.95,
-                height: document.documentElement.clientHeight * 0.95
-            });
-        });
-
-        /*
-         用官方开发的Diagram-Viewer跟踪
-         */
-        $('#diagram-viewer').live('click', function () {
-            $('#workflowTraceDialog').dialog('close');
-
-            if ($('#imgDialog').length > 0) {
-                $('#imgDialog').remove();
-            }
-
-            var url = ctx + '/diagram-viewer/index.html?processDefinitionId=' + opts.pdid + '&processInstanceId=' + opts.pid;
-
-            $('<div/>', {
-                'id': 'imgDialog',
-                title: '此对话框显示的图片是由引擎自动生成的，并用红色标记当前的节点',
-                html: '<iframe src="' + url + '" width="100%" height="' + document.documentElement.clientHeight * 0.90 + '" />'
-            }).appendTo('body').dialog({
-                modal: true,
-                resizable: false,
-                dragable: false,
-                width: document.documentElement.clientWidth * 0.95,
-                height: document.documentElement.clientHeight * 0.95
-            });
-        });
-
-        // 获取图片资源
-        var imageUrl = ctx + "/workflow/resource/process_instance.do?pid=" + opts.pid + "&type=image";
-        $.getJSON(ctx + '/workflow/process/trace.do?pid=' + opts.pid, function (infos) {
-
-            var positionHtml = "";
-
-            // 生成图片
-            var varsArray = new Array();
-            $.each(infos, function (i, v) {
-                var $positionDiv = $('<div/>', {
-                    'class': 'activity-attr'
-                }).css({
-                    position: 'absolute',
-                    left: (v.x - 1),
-                    top: (v.y - 1),
-                    width: (v.width - 2),
-                    height: (v.height - 2),
-                    backgroundColor: 'black',
-                    opacity: 0,
-                    zIndex: $.fn.qtip.zindex - 1
-                });
-
-                // 节点边框
-                var $border = $('<div/>', {
-                    'class': 'activity-attr-border'
-                }).css({
-                    position: 'absolute',
-                    left: (v.x - 1),
-                    top: (v.y - 1),
-                    width: (v.width - 4),
-                    height: (v.height - 3),
-                    zIndex: $.fn.qtip.zindex - 2
-                });
-
-                if (v.currentActiviti) {
-                    $border.addClass('ui-corner-all-12').css({
-                        border: '3px solid red'
-                    });
-                }
-
-
-                positionHtml += $positionDiv.outerHTML() + $border.outerHTML();
-                varsArray[varsArray.length] = v.vars;
-            });
-
-            if ($('#workflowTraceDialog').length == 0) {
-                $('<div/>', {
-                    id: 'workflowTraceDialog',
-                    title: '<button id="changeImg"></button><button id="diagram-viewer"></button>',
-                    html: "<div><img src='" + imageUrl + "' style='position:absolute; left:0px; top:0px;' />" +
-                    "<div id='processImageBorder'>" +
-                    positionHtml +
-                    "</div>" +
-                    "</div>"
-                }).appendTo('article');
-            } else {
-                $('#workflowTraceDialog img').attr('src', imageUrl);
-                $('#workflowTraceDialog #processImageBorder').html(positionHtml);
-            }
-
-            // 设置每个节点的data
-            $('#workflowTraceDialog .activity-attr').each(function (i, v) {
-                $(this).data('vars', varsArray[i]);
-            });
-
-            // 打开对话框
-            $('#workflowTraceDialog').dialog({
-                modal: false,
-                resizable: false,
-                dragable: false,
-                open: function () {
-                    $('#workflowTraceDialog').dialog('option', 'title', '<button id="changeImg" style="display:none;"></button><button id="diagram-viewer"></button>');
-                    $('#workflowTraceDialog').css('padding', '0.2em');
-                    $('#workflowTraceDialog .ui-accordion-content').css('padding', '0.2em').height($('#workflowTraceDialog').height() - 75);
-
-                    // 此处用于显示每个节点的信息，如果不需要可以删除
-                    $('.activity-attr').qtip({
-                        content: function () {
-                            var vars = $(this).data('vars');
-                            var tipContent = "<table class='need-border'>";
-                            $.each(vars, function (varKey, varValue) {
-                                if (varValue) {
-                                    tipContent += "<tr><td class='label'>" + varKey + "</td><td>" + varValue + "<td/></tr>";
-                                }
-                            });
-                            tipContent += "</table>";
-                            return tipContent;
-                        },
-                        position: {
-                            at: 'bottom left',
-                            adjust: {
-                                x: 3
-                            }
-                        }
-                    });
-                    // end qtip
-                },
-                close: function () {
-                    $('#workflowTraceDialog').remove();
-                },
-                width: document.documentElement.clientWidth * 0.95,
-                height: document.documentElement.clientHeight * 0.95
-            });
-
-            /*layer.open({
-             type: 1,
-             shade: false,
-             title: false, //不显示标题
-             content: $('#workflowTraceDialog'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-             cancel: function(){
-             layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', {time: 5000, icon:6});
-             }
-             });*/
-
-
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-rim', //加上边框
-                area: ['1600', '800'], //宽高
-                content: $('#workflowTraceDialog') //iframe的url
-            });
-
-            $(".layui-layer-shade").hide();
-
-        });
-
-    }
-
-    /*  上方是查看办理流程js*/
-
-
-    /**
-     * 签收
-     * @param taskId
-     */
-    function assignee(taskId){
-        $.ajax({
-            type: 'POST',
-            url: '${pageContext.request.contextPath }/assignee.do',
-            data: 'taskId=' + taskId,
-            dataType: 'json',
-            success: function (data) {
-                if (data.success) {
-
-                    layer.msg('删除成功!', {icon: 1, time: 1000});
-                    location.reload();
-                } else {
-                    layer.msg('系统繁忙，请稍后再试!', {icon: 2, time: 3000});
-                }
-
-            },
-            error: function (data) {
-                console.log(data.msg);
-            }
-        });
-    }
-
 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
