@@ -4,19 +4,20 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import indi.baojie.common.data.JsonResult;
 import indi.baojie.common.data.TreeNode;
 import indi.baojie.supervision.domain.Group;
 import indi.baojie.supervision.domain.Matter;
-import indi.baojie.supervision.service.GroupService;
-import indi.baojie.supervision.service.MatterService;
-import indi.baojie.supervision.service.MatterTaskResultService;
-import indi.baojie.supervision.service.UnitService;
+import indi.baojie.supervision.domain.User;
+import indi.baojie.supervision.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,8 @@ public class MatterController extends BaseController{
     private GroupService groupService;
     @Autowired
     private MatterTaskResultService matterTaskResultService;
+    @Autowired
+    private MatterAttachmentService matterAttachmentService;
 
     @RequestMapping("index")
     public ModelAndView index(HttpServletRequest request){
@@ -89,6 +92,22 @@ public class MatterController extends BaseController{
     public String add(Model model) {
         model.addAttribute("url", "submit_add");
         return "supervision/matter_add";
+    }
+
+    /**
+     * 新增办件处理
+     * @param matter
+     * @param file
+     * @param request
+     * @return
+     */
+    @PostMapping("add")
+    @ResponseBody
+    public JsonResult add(Matter matter, MultipartFile file,HttpServletRequest request) {
+        User user = new User();
+        JsonResult jsonResult = new JsonResult();
+        jsonResult = matterService.addMatter(user, matter, file, request, jsonResult);
+        return jsonResult;
     }
 
     /**

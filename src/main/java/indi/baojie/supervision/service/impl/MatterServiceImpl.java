@@ -59,7 +59,6 @@ public class MatterServiceImpl implements MatterService {
     @Override
     @Transactional(readOnly = false)
     public JsonResult addMatter(User user, Matter matter, MultipartFile file, HttpServletRequest request, JsonResult jsonResult) {
-        //处理新增matter和event
         matter.setCreateUserId(user.getUserId());
         matter.setCreateTime(DateUtil.Date2String(new Date()));
         matter.setState(1);

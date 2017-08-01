@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lb.supervision.user.dao.GroupMapper" >
-  <!--<cache type="com.lb.supervision.user.redis.RedisCache"/>-->
-  <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+<mapper namespace="indi.baojie.supervision.dao.GroupMapper" >
   <cache eviction="FIFO"  flushInterval="60000" size="512"  readOnly="true"/>
-  <resultMap id="BaseResultMap" type="com.lb.supervision.user.entity.Group" >
+  <resultMap id="BaseResultMap" type="indi.baojie.supervision.domain.Group" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="org_name" property="orgName" jdbcType="VARCHAR" />
     <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
@@ -74,7 +72,7 @@
   <sql id="Base_Column_List" >
     id, org_name, org_code, org_sort_code, parent_code, org_postalcode, org_phone
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lb.supervision.user.entity.GroupExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="indi.baojie.supervision.domain.GroupExample" >
     select
     <if test="distinct" >
       distinct
@@ -99,13 +97,13 @@
     delete from ims_group
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.lb.supervision.user.entity.GroupExample" >
+  <delete id="deleteByExample" parameterType="indi.baojie.supervision.domain.GroupExample" >
     delete from ims_group
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.lb.supervision.user.entity.Group" >
+  <insert id="insert" parameterType="indi.baojie.supervision.domain.Group" >
     insert into ims_group (id, org_name, org_code, 
       org_sort_code, parent_code, org_postalcode, 
       org_phone)
@@ -113,7 +111,7 @@
       #{orgSortCode,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, #{orgPostalcode,jdbcType=VARCHAR}, 
       #{orgPhone,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.lb.supervision.user.entity.Group" >
+  <insert id="insertSelective" parameterType="indi.baojie.supervision.domain.Group" >
     insert into ims_group
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -162,7 +160,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.lb.supervision.user.entity.GroupExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="indi.baojie.supervision.domain.GroupExample" resultType="java.lang.Integer" >
     select count(*) from ims_group
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -210,7 +208,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lb.supervision.user.entity.Group" >
+  <update id="updateByPrimaryKeySelective" parameterType="indi.baojie.supervision.domain.Group" >
     update ims_group
     <set >
       <if test="orgName != null" >
@@ -234,7 +232,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.lb.supervision.user.entity.Group" >
+  <update id="updateByPrimaryKey" parameterType="indi.baojie.supervision.domain.Group" >
     update ims_group
     set org_name = #{orgName,jdbcType=VARCHAR},
       org_code = #{orgCode,jdbcType=VARCHAR},
