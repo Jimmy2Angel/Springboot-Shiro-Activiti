@@ -16,6 +16,7 @@ import org.crazycake.shiro.RedisManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -260,10 +261,11 @@ public class Cfg_Shiro implements EnvironmentAware{
     public void setEnvironment(Environment environment) {
 
         //通过 environment 获取到系统属性.
-        //System.out.println(environment.getProperty("JAVA_HOME"));
+//        System.out.println(environment.getProperty("JAVA_HOME"));
 
         //通过 environment 同样能获取到application.yml配置的属性.
         logger.info(environment.getProperty("spring.redis.host"));
+        logger.info(environment.getProperty("server.port"));
 
         //获取到前缀是"spring.redis." 的属性列表值.
         RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(environment, "spring.redis.");

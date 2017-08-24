@@ -35,9 +35,9 @@ public class MyShiroRealm extends AuthorizingRealm {
 
         logger.info("##################执行Shiro权限认证##################");
         //获取当前登录输入的用户名，等价于(String) principalCollection.fromRealm(getName()).iterator().next();
-        String loginName = (String)super.getAvailablePrincipal(principalCollection);
+        String username = (String)super.getAvailablePrincipal(principalCollection);
         //到数据库查是否有此对象
-        User user=userService.findByName(loginName);
+        User user=userService.findByName(username);
         if(user!=null){
             //权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
             SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();

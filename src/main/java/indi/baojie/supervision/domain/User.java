@@ -1,27 +1,33 @@
 package indi.baojie.supervision.domain;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
 
-    private Integer userId;
+    private Integer id;
 
-    private String userName;
+    private String username;
 
     private String password;
 
-    public Integer getUserId() {
-        return userId;
+    private Set<Role> roles;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -32,12 +38,21 @@ public class User {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

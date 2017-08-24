@@ -4,14 +4,14 @@ server:
   session-timeout: 7200
   tomcat:
     uri-encoding: UTF-8
-  context-path: /sup
+  context-path: /ssa
 
 spring:
   # 数据库配置
   datasource:
     url: jdbc:mysql://localhost:3306/ssa?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: 123
+    password: 123root
     driver-class-name: com.mysql.jdbc.Driver
     platform: mysql
 

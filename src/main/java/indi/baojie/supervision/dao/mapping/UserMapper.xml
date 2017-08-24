@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.baojie.supervision.dao.UserMapper">
+
+    <sql id="Base_Column_List">
+        id, username, password
+    </sql>
+
+    <select id="findOne" parameterType="indi.baojie.supervision.domain.User" resultType="indi.baojie.supervision.domain.User">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+        </where>
+    </select>
+
+</mapper>
