@@ -1,8 +1,6 @@
 package indi.baojie.supervision.cfg;
 
 import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -80,24 +78,24 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
         registry.viewResolver(jspViewResolver);
     }
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        fastJsonConfig.setFeatures(Feature.IgnoreNotMatch);
-
-        FastJsonHttpMessageConverter4 fastJsonHttpMessageConverter4 = new FastJsonHttpMessageConverter4();
-        fastJsonHttpMessageConverter4.setFastJsonConfig(fastJsonConfig);
-        fastJsonHttpMessageConverter4.setSupportedMediaTypes(new ArrayList<MediaType>() {
-            {
-                add(MediaType.TEXT_HTML);
-                add(MediaType.APPLICATION_JSON_UTF8);
-            }
-
-        });
-        converters.add(fastJsonHttpMessageConverter4);
-    }
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//
+//        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+//        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
+//        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//        fastJsonConfig.setFeatures(Feature.IgnoreNotMatch);
+//
+//        FastJsonHttpMessageConverter4 fastJsonHttpMessageConverter4 = new FastJsonHttpMessageConverter4();
+//        fastJsonHttpMessageConverter4.setFastJsonConfig(fastJsonConfig);
+//        fastJsonHttpMessageConverter4.setSupportedMediaTypes(new ArrayList<MediaType>() {
+//            {
+//                add(MediaType.TEXT_HTML);
+//                add(MediaType.APPLICATION_JSON_UTF8);
+//            }
+//
+//        });
+//        converters.add(fastJsonHttpMessageConverter4);
+//    }
 
 }

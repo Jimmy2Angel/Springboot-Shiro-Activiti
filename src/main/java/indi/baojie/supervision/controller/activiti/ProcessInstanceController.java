@@ -2,8 +2,6 @@ package indi.baojie.supervision.controller.activiti;
 
 import indi.baojie.common.utils.Page;
 import indi.baojie.common.utils.PageUtil;
-import indi.baojie.supervision.controller.BaseController;
-import indi.baojie.supervision.domain.User;
 import org.activiti.engine.*;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
@@ -27,7 +25,7 @@ import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/workflow/processinstance")
-public class ProcessInstanceController extends BaseController {
+public class ProcessInstanceController{
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -100,19 +98,19 @@ public class ProcessInstanceController extends BaseController {
 
 //        User user = UserUtil.getUserFromSession(request.getSession());
         // 用户未登录不能操作，实际应用使用权限框架实现，例如Spring Security、Shiro等
-        User user = currentUser();
-        if (user == null || StringUtils.isBlank(user.getUserName())) {
-            return "redirect:/login?timeout=true";
-        }
-        ProcessInstance processInstance = null;
-        try {
-            identityService.setAuthenticatedUserId(user.getUserName());
-            processInstance = formService.submitStartFormData(processDefinitionId, formProperties);
-            logger.debug("start a processinstance: {}", processInstance);
-        } finally {
-            identityService.setAuthenticatedUserId(null);
-        }
-        redirectAttributes.addFlashAttribute("message", "启动成功，流程ID：" + processInstance.getId());
+//        User user = currentUser();
+//        if (user == null || StringUtils.isBlank(user.getUserName())) {
+//            return "redirect:/login?timeout=true";
+//        }
+//        ProcessInstance processInstance = null;
+//        try {
+//            identityService.setAuthenticatedUserId(user.getUserName());
+//            processInstance = formService.submitStartFormData(processDefinitionId, formProperties);
+//            logger.debug("start a processinstance: {}", processInstance);
+//        } finally {
+//            identityService.setAuthenticatedUserId(null);
+//        }
+//        redirectAttributes.addFlashAttribute("message", "启动成功，流程ID：" + processInstance.getId());
 
         return "redirect:/workflow/process_list.do?processType=" + processType;
     }
