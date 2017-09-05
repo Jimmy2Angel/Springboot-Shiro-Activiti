@@ -7,15 +7,22 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Controller
 public class LoginController {
 
-    @PostMapping(value="/login")
+    @GetMapping("login")
+    public String login () {
+        return "login";
+    }
+
+    @PostMapping("login")
     public String login(HttpServletRequest request, User user, Model model){
         if (StringUtils.isEmpty(user.getUsername()) || StringUtils.isEmpty(user.getPassword())) {
             request.setAttribute("msg", "用户名或密码不能为空！");
