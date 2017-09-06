@@ -82,6 +82,9 @@ public class Cfg_Shiro implements EnvironmentAware{
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/logout","anon");
         filterChainDefinitionMap.put("/layui/**","anon");
+        filterChainDefinitionMap.put("/img/**","anon");
+        filterChainDefinitionMap.put("/css/**","anon");
+        filterChainDefinitionMap.put("/js/**","anon");
 //        filterChainDefinitionMap.put("/index","user");
 //        filterChainDefinitionMap.put("/","user");
         filterChainDefinitionMap.put("/**", "authc");

@@ -1,7 +1,9 @@
 package indi.baojie.supervision.controller;
 
+import indi.baojie.common.data.Constants;
+import indi.baojie.common.data.JsonResult;
 import indi.baojie.supervision.domain.User;
-import org.activiti.engine.repository.Model;
+import indi.baojie.supervision.utils.RequestUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -11,37 +13,50 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class LoginController {
 
     @GetMapping("login")
     public String login () {
+        if (RequestUtil.getRequest().getSession().getAttribute(Constants.SESSION_USER) != null) {
+            return "redirect:/index";
+        }
         return "login";
     }
 
     @PostMapping("login")
-    public String login(HttpServletRequest request, User user, Model model){
+    @ResponseBody
+    public JsonResult login(User user) {
+        JsonResult jsonResult = new JsonResult();
         if (StringUtils.isEmpty(user.getUsername()) || StringUtils.isEmpty(user.getPassword())) {
-            request.setAttribute("msg", "用户名或密码不能为空！");
-            return "login";
+            jsonResult.markError("用户名或密码不能为空！");
         }
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(user.getUsername(),user.getPassword());
         try {
             subject.login(token);
-            return "index";
-        }catch (LockedAccountException lae) {
+            jsonResult.markSuccess("登录成功", null);
+        } catch (LockedAccountException lae) {
             token.clear();
-            request.setAttribute("msg", "用户已经被锁定不能登录，请与管理员联系！");
-            return "login";
+            jsonResult.markError("用户已经被锁定不能登录，请与管理员联系！");
         } catch (AuthenticationException e) {
             token.clear();
-            request.setAttribute("msg", "用户或密码不正确！");
-            return "login";
+            jsonResult.markError("用户名或密码不正确！");
+        } finally {
+            return jsonResult;
         }
     }
 
+    @GetMapping("logout")
+    public String logout() {
+        RequestUtil.getRequest().getSession().invalidate();
+        return "redirect:/login";
+    }
+
+    @GetMapping("index")
+    public String index() {
+        return "index";
+    }
 }

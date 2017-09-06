@@ -5,5 +5,5 @@ package indi.baojie.common.data;
  */
 public class Constants {
 
-    public static final int SUPERVISOR_CODE = 1;
+    public static final String SESSION_USER = "user";
 }

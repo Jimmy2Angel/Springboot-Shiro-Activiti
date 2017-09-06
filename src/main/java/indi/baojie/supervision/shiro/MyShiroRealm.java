@@ -4,6 +4,7 @@ import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
+import indi.baojie.supervision.utils.RequestUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -72,6 +73,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if(user==null) {
             throw new UnknownAccountException();
         }
+        RequestUtil.getRequest().getSession().setAttribute("user",user);
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
         return authenticationInfo;
     }
