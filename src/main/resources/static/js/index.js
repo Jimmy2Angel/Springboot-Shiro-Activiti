@@ -1,5 +1,5 @@
 var $, form, layer, table, laypage;
-layui.use(['jquery','form','layer', 'laypage'], function () {
+layui.use(['jquery','form','layer', 'table', 'laypage'], function () {
     $ = layui.$, form = layui.form, layer = layui.layer, table = layui.table, laypage = layui.laypage;
 
     $(function () {
@@ -23,27 +23,123 @@ layui.use(['jquery','form','layer', 'laypage'], function () {
         });
 
         $("#user_list").bind('click', showUserList);
+
+
     });
 });
 
 //用户列表展示
 function showUserList() {
-    $(".layui-body").find("div").remove();
-    var html = '<table class="layui-table" lay-data="{height:332, url:\'/demo/table/user/\', page:true, id:\'idTest\'}" lay-filter="demo">\n' +
-        '  <thead>\n' +
-        '    <tr>\n' +
-        '      <th lay-data="{field:\'id\', width:80, sort: true, fixed: true}">ID</th>\n' +
-        '      <th lay-data="{field:\'username\', width:80}">用户名</th>\n' +
-        '      <th lay-data="{fixed: \'right\', width:160, align:\'center\', toolbar: \'#barDemo\'}"></th>\n' +
-        '    </tr>\n' +
-        '  </thead>\n' +
-        '</table>'+
-        '<script type="text/html" id="barDemo">\n' +
-        '  <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>\n' +
-        '  <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>\n' +
-        '  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>\n' +
-        '</script>';
-    $(".layui-body").append(html);
+    //展示已知数据
+    table.render({
+        elem: '#demo'
+        ,data: [{
+            "id": "10001"
+            ,"username": "杜甫"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "116"
+            ,"ip": "192.168.0.8"
+            ,"logins": "108"
+            ,"joinTime": "2016-10-14"
+        }, {
+            "id": "10002"
+            ,"username": "李白"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "12"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+            ,"LAY_CHECKED": true
+        }, {
+            "id": "10003"
+            ,"username": "王勃"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "65"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+        }, {
+            "id": "10004"
+            ,"username": "贤心"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "666"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+        }, {
+            "id": "10005"
+            ,"username": "贤心"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "86"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+        }, {
+            "id": "10006"
+            ,"username": "贤心"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "12"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+        }, {
+            "id": "10007"
+            ,"username": "贤心"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "16"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+        }, {
+            "id": "10008"
+            ,"username": "贤心"
+            ,"email": "xianxin@layui.com"
+            ,"sex": "男"
+            ,"city": "浙江杭州"
+            ,"sign": "人生恰似一场修行"
+            ,"experience": "106"
+            ,"ip": "192.168.0.8"
+            ,"logins": "106"
+            ,"joinTime": "2016-10-14"
+        }]
+        ,height: 272
+        ,cols: [[ //标题栏
+            {checkbox: true, LAY_CHECKED: true} //默认全选
+            ,{field: 'id', title: 'ID', width: 80, sort: true}
+            ,{field: 'username', title: '用户名', width: 120}
+            ,{field: 'email', title: '邮箱', width: 150}
+            ,{field: 'sign', title: '签名', width: 150}
+            ,{field: 'sex', title: '性别', width: 80}
+            ,{field: 'city', title: '城市', width: 100}
+            ,{field: 'experience', title: '积分', width: 80, sort: true}
+        ]]
+        ,skin: 'row' //表格风格
+        ,even: true
+        ,page: true //是否显示分页
+        ,limits: [5, 7, 10]
+        ,limit: 5 //每页默认显示的数量
+    });
     // getUserByPage(initNum);
 }
 
