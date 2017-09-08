@@ -19,7 +19,7 @@
 <body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">SSA－后台</div>
+        <div class="layui-logo">S S A</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a id="user_item" href="javascript:;">用户权限</a></li>
@@ -42,15 +42,16 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item layui-this"><a>Demo描述</a></li>
+                <li class="layui-nav-item layui-this"><a id="aaa">Demo描述</a></li>
             </ul>
         </div>
     </div>
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div class="lay_right">
-            <table id="demo"></table>
+        <div class="lay_right" style="text-align: center;">
+            <table id="table" lay-filter="table_tool"></table>
+            <div id="page"></div>
         </div>
     </div>
 
@@ -63,4 +64,10 @@
 
 <script src="${ctx}/layui/layui.js"></script>
 <script src="${ctx}/js/index.js"></script>
+<script src="${ctx}/js/user.js"></script>
+<script type="text/html" id="barDemo">
+</script>
+<script>
+
+</script>
 </html>

@@ -6,4 +6,6 @@ package indi.baojie.common.data;
 public class Constants {
 
     public static final String SESSION_USER = "user";
+
+    public static final Integer PAGE_SIZE = 10;
 }

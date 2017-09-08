@@ -48,7 +48,7 @@
 <script src="${ctx}/layui/layui.js"></script>
 <script>
     var form, $, layer;
-    layui.use(['form', 'jquery', 'layer'], function(){
+    layui.use(['form', 'layer'], function(){
         form = layui.form, $ = layui.$, layer = layui.layer;
 
         //监听提交

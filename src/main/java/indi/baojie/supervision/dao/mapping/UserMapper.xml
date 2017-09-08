@@ -23,4 +23,27 @@
         </where>
     </select>
 
+    <select id="find" parameterType="indi.baojie.supervision.domain.User" resultType="indi.baojie.supervision.domain.User">
+        select * from user
+    </select>
+
+    <select id="count" parameterType="indi.baojie.supervision.domain.User" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="username!=null">
+                and username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="indi.baojie.supervision.domain.User">
+        insert into user(username, password)
+        values(#{username}, #{password})
+    </insert>
+
+    <update id="update" parameterType="indi.baojie.supervision.domain.User">
+        update user
+        set username = #{username}, password = #{password}
+        where id = #{id}
+    </update>
 </mapper>
