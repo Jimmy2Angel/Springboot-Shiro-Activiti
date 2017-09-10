@@ -3,7 +3,9 @@ package indi.baojie.supervision.controller;
 import com.github.pagehelper.PageInfo;
 import indi.baojie.common.data.Constants;
 import indi.baojie.common.data.JsonResult;
+import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
+import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping("getByPage")
     @ResponseBody
@@ -51,5 +56,18 @@ public class UserController {
     public String show(@PathVariable Integer userId, Model model) {
         model.addAttribute("user", userService.findById(userId));
         return "user_add";
+    }
+
+    /**
+     * 分页获取所有的角色
+     * @param pageNum
+     * @return
+     */
+    @GetMapping("role/getByPage")
+    @ResponseBody
+    public PageInfo<Role> getRolesByPage(Integer pageNum) {
+        List<Role> userList = roleService.getAllByPaging(pageNum, Constants.PAGE_SIZE);
+        PageInfo<Role> pageInfo = new PageInfo<>(userList);
+        return pageInfo;
     }
 }

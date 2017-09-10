@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.baojie.supervision.dao.RoleMapper">
+
+    <select id="findOne" parameterType="indi.baojie.supervision.domain.Role" resultType="indi.baojie.supervision.domain.Role">
+        select
+        id, name
+        from role
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="find" parameterType="indi.baojie.supervision.domain.Role" resultType="indi.baojie.supervision.domain.Role">
+        select * from role
+    </select>
+
+    <select id="count" parameterType="indi.baojie.supervision.domain.Role" resultType="int">
+        select count(*) from role
+
+    </select>
+
+    <insert id="insert" parameterType="indi.baojie.supervision.domain.Role">
+        insert into role(name)
+        values(#{username})
+    </insert>
+
+    <update id="update" parameterType="indi.baojie.supervision.domain.Role">
+        update role
+        set name = #{name}
+        where id = #{id}
+    </update>
+</mapper>

@@ -1,6 +1,7 @@
 package indi.baojie.supervision.service;
 
 import indi.baojie.common.data.JsonResult;
+import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface UserService {
     User findById(Integer userId);
 
     JsonResult editOne(User user);
+
 }
