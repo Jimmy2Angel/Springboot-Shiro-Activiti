@@ -24,6 +24,11 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    /**
+     * 分页获取所有的user
+     * @param pageNum
+     * @return
+     */
     @GetMapping("getByPage")
     @ResponseBody
     public PageInfo<User> getByPage(Integer pageNum) {
@@ -33,18 +38,18 @@ public class UserController {
     }
 
     @GetMapping("add")
-    public String add() {
+    public String addUser() {
         return "user_add";
     }
 
     /**
-     * 新增或修改
+     * 用户新增或修改处理
      * @param user
      * @return
      */
     @PostMapping("add")
     @ResponseBody
-    public JsonResult add(User user) {
+    public JsonResult addUser(User user) {
         if (user.getId() == null) {
             return userService.addOne(user);
         } else {
@@ -53,13 +58,13 @@ public class UserController {
     }
 
     @GetMapping("{userId}")
-    public String show(@PathVariable Integer userId, Model model) {
+    public String showUser(@PathVariable Integer userId, Model model) {
         model.addAttribute("user", userService.findById(userId));
         return "user_add";
     }
 
     /**
-     * 分页获取所有的角色
+     * 分页获取所有的role
      * @param pageNum
      * @return
      */
@@ -70,4 +75,63 @@ public class UserController {
         PageInfo<Role> pageInfo = new PageInfo<>(userList);
         return pageInfo;
     }
+
+    @GetMapping("role/add")
+    public String addRole() {
+        return "role_add";
+    }
+
+    @GetMapping("role/{roleId}")
+    public String showRole(@PathVariable Integer roleId, Model model) {
+        model.addAttribute("role", roleService.getById(roleId));
+        return "role_add";
+    }
+
+    /**
+     * 角色新增或修改处理
+     * @param role
+     * @return
+     */
+    @PostMapping("role/add")
+    @ResponseBody
+    public JsonResult addRole(Role role) {
+        if (role.getId() == null) {
+            return roleService.addOne(role);
+        } else {
+            return roleService.editOne(role);
+        }
+    }
+
+    /**
+     * 给用户分配角色的页面显示
+     * @return
+     */
+    @GetMapping("{userId}/roles")
+    public String roleAssigned(@PathVariable Integer userId, Model model) {
+        List<Role> allRoles = roleService.getAllByPaging(null, null);
+        List<Role> selctedRoles = roleService.getRoleIdByUserId(userId);
+        model.addAttribute("allRoles",allRoles);
+        model.addAttribute("selectedRoles", selctedRoles);
+        return "role_assigned";
+    }
+
+    /**
+     * 给用户分配角色的处理
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    @PostMapping("{userId}/roles")
+    @ResponseBody
+    public JsonResult roleAssigned(@PathVariable Integer userId, String roleIds) {
+        JsonResult jsonResult = new JsonResult();
+        boolean isSuccess = roleService.assigned(userId, roleIds);
+        if (isSuccess) {
+            jsonResult.markSuccess("分配成功", null);
+        } else {
+            jsonResult.markError("分配失败！请与管理员联系！");
+        }
+        return jsonResult;
+    }
+
 }

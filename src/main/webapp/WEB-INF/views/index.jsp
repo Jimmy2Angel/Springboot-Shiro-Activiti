@@ -68,6 +68,5 @@
 <script type="text/html" id="barDemo">
 </script>
 <script>
-
 </script>
 </html>

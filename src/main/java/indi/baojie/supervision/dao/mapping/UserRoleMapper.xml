@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.baojie.supervision.dao.UserRoleMapper">
+
+    <select id="findOne" parameterType="indi.baojie.supervision.domain.UserRole" resultType="indi.baojie.supervision.domain.UserRole">
+        select
+        user_id, role_id
+        from user_role
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+        </where>
+    </select>
+
+    <select id="find" parameterType="indi.baojie.supervision.domain.UserRole" resultType="indi.baojie.supervision.domain.UserRole">
+        select * from user_role
+    </select>
+
+    <select id="count" parameterType="indi.baojie.supervision.domain.UserRole" resultType="int">
+        select count(*) from user_role
+        where user_id = #{userId}
+        and role_id = #{roleId}
+    </select>
+
+    <insert id="insert" parameterType="indi.baojie.supervision.domain.UserRole">
+        insert into user_role(user_id, role_id)
+        values(#{userId}, #{roleId})
+    </insert>
+
+    <delete id="delete">
+        delete from user_role
+        where user_id = #{userId}
+        and role_id = #{roleId}
+    </delete>
+</mapper>

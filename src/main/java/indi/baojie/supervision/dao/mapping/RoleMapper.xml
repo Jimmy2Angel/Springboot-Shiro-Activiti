@@ -22,12 +22,17 @@
 
     <select id="count" parameterType="indi.baojie.supervision.domain.Role" resultType="int">
         select count(*) from role
+        <where>
+            <if test="name!=null">
+                and name = #{name}
+            </if>
+        </where>
 
     </select>
 
     <insert id="insert" parameterType="indi.baojie.supervision.domain.Role">
         insert into role(name)
-        values(#{username})
+        values(#{name})
     </insert>
 
     <update id="update" parameterType="indi.baojie.supervision.domain.Role">

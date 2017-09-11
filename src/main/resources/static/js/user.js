@@ -1,7 +1,8 @@
-var initNum = '1', currentType = "";
+var currentNum = localStorage.getItem("pageNum")==null?'1':localStorage.getItem("pageNum"), currentType = "";
 //用户列表展示
 function showUserList() {
-    getByPage('user', initNum);
+    location.hash = "#user";
+    getByPage('user', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值
@@ -15,32 +16,33 @@ function showUserList() {
 }
 //角色列表展示
 function showRoleList() {
-    console.log("111");
-    getByPage('role', initNum);
+    location.hash = "#role";
+    getByPage('role', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         if (layEvent === 'open') { //查看
-            user_show(data.id);
+            role_show(data.id);
         }else if(layEvent === 'permission_assigned'){
-            role_assigned(data.id);
+            permission_assigned(data.id);
         }
     });
 }
 //权限列表展示
 function showPermissionList() {
-    getByPage('permission', initNum);
+    location.hash = "#permission";
+    getByPage('permission', currentNum);
 }
 
 
 //填充列表数据
-var barDemo = "", url ="", cols = [], html = "";
 function getByPage(type,pageNum){
+    var barDemo = "", url ="", cols = [], html = "";
     if ($(".layui-body>div").length > 1) {
         $(".layui-body>div:eq(0)").remove();
-        $(".lay_right")[0].innerHTML="";
-        //TODO ...
+        laypage.render({elem: 'page'});
+        table.render({elem: '#table',data: null, cols: null});
         $("#barDemo").empty();
     }
 
@@ -54,7 +56,7 @@ function getByPage(type,pageNum){
                 {field: 'id', title: 'ID', width: 300, sort: false}
                 , {field: 'username', title: '用户名', width: 300, sort: false}
                 , {field: 'password', title: '密码', width: 300, sort: false}
-                , {fixed: 'right', title: '操作', width: 350, toolbar: '#barDemo'}
+                , {fixed: 'right', title: '操作', width: 340, toolbar: '#barDemo'}
             ]);
             html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
                 '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="user_add()"><i class="layui-icon">&#xe611;</i>添加用户</a>\n' +
@@ -72,8 +74,8 @@ function getByPage(type,pageNum){
                 '<a class="layui-btn layui-btn-mini  layui-btn-normal" style="text-align: center;" lay-event="permission_assigned">赋予权限</a>';
             cols.push([
                 {field: 'id', title: 'ID', width: 400, sort: false}
-                , {field: 'username', title: '角色名', width: 400, sort: false}
-                , {fixed: 'right', title: '操作', width: 450, toolbar: '#barDemo'}
+                , {field: 'name', title: '角色名', width: 400, sort: false}
+                , {fixed: 'right', title: '操作', width: 435, toolbar: '#barDemo'}
             ]);
             html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
                 '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="role_add()"><i class="layui-icon">&#xe611;</i>添加角色</a>\n' +
@@ -96,7 +98,8 @@ function getByPage(type,pageNum){
         pageNum: pageNum //向服务端传的参数
     }, function (res) {
         var data = res.list;
-        initNum = pageNum;  //当前页码存到全局变量中
+        currentNum = pageNum;  //当前页码存到全局变量中
+        localStorage.setItem("pageNum",pageNum);
         // var myObject = JSON.parse(data);
         //自定义样式
         laypage.render({
@@ -121,9 +124,7 @@ function getByPage(type,pageNum){
             , cols: cols //设置表头
             //,…… //更多参数参考右侧目录：基本参数选项
         });
-        if ($(".layui-body>div").length == 1) {
-            $(".layui-body").prepend(html);
-        }
+        $(".layui-body").prepend(html);
     });
 }
 
@@ -146,6 +147,27 @@ function user_show(userId) {
         }
     });
 }
+//赋予用户角色
 function role_assigned(userId) {
     console.log(userId);
+}
+
+function role_add() {
+    layer.open({
+        type: 2,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['600px', '200px'], //宽高
+        content: ctx+'/user/role/add'
+    });
+}
+function role_show(roleId) {
+    layer.open({
+        type: 2,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['600px', '200px'], //宽高
+        content: ctx+'/user/role/'+roleId,
+        end: function() {
+            getByPage(currentType, initNum);
+        }
+    });
 }
