@@ -6,13 +6,25 @@
         id, username, password
     </sql>
 
-    <select id="findOne" parameterType="indi.baojie.supervision.domain.User" resultType="indi.baojie.supervision.domain.User">
+    <resultMap id="UserWithRoles" type="indi.baojie.supervision.domain.User">
+        <id column="uid" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <collection property="roles" ofType="indi.baojie.supervision.domain.Role">
+            <id column="rid" property="id" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    
+    <select id="findOne" parameterType="indi.baojie.supervision.domain.User" resultMap="UserWithRoles">
         select
-        <include refid="Base_Column_List"/>
-        from user
+        u.id as uid, username, password, r.id as rid, name
+        from user as u, user_role as ur, role as r
         <where>
+            and u.id = ur.user_id
+            and r.id = ur.role_id
             <if test="id != null">
-                and id = #{id}
+                and u.id = #{id}
             </if>
             <if test="username != null">
                 and username = #{username}

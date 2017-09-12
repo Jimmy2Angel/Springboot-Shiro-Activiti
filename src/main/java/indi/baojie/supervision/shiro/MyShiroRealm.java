@@ -5,6 +5,7 @@ import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
 import indi.baojie.supervision.utils.RequestUtil;
+import indi.baojie.supervision.utils.SessionUserUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -45,10 +46,9 @@ public class MyShiroRealm extends AuthorizingRealm {
             //用户的角色集合
             info.setRoles(userService.getRolesName(user));
             //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
-            Set<Role> roles=user.getRoles();
-            for (Role role : roles) {
+            user.getRoles().forEach(role -> {
                 info.addStringPermissions(roleService.getPermissionsName(role));
-            }
+            });
             // 或者按下面这样添加
             //添加一个角色,不是配置意义上的添加,而是证明该用户拥有admin角色
 //            simpleAuthorInfo.addRole("admin");
@@ -73,7 +73,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if(user==null) {
             throw new UnknownAccountException();
         }
-        RequestUtil.getRequest().getSession().setAttribute("user",user);
+        SessionUserUtil.save(user);
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
         return authenticationInfo;
     }

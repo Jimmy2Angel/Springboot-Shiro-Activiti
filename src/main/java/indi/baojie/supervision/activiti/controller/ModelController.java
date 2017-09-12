@@ -1,4 +1,4 @@
-package indi.baojie.supervision.controller.activiti;
+package indi.baojie.supervision.activiti.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package indi.baojie.supervision.controller.activiti;
+package indi.baojie.supervision.activiti.controller;
 
 import indi.baojie.common.utils.Page;
 import indi.baojie.common.utils.PageUtil;

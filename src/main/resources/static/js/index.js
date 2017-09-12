@@ -7,6 +7,7 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
 
     $(function () {
         $("#user_item").bind('click', function(){
+            $("#index_content").remove();
             layui.each($(".layui-nav-tree").find("li"), function () {
                this.remove();
             });
@@ -26,9 +27,6 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
                 case "#role":
                     showRoleList();
                     break;
-                case "#permission":
-                    showPermissionList()
-                    break;
             }
         });
 
@@ -36,13 +34,19 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
             layui.each($(".layui-nav-tree").find("li"), function () {
                 this.remove();
             });
-            var html = '<li class="layui-nav-item layui-this"><a href="">流程定义</a></li>\n' +
-                '<li class="layui-nav-item"><a href="">流程部署</a></li>';
+            var html = '<li class="layui-nav-item"><a id="model_a" onclick="showModelList()">模型工作区</a></li>\n' +
+                '<li class="layui-nav-item"><a id="process_d_a" onclick="">流程定义及部署</a></li>\n' +
+                '<li class="layui-nav-item"><a id="process_r_a" onclick="">运行中流程</a></li>';
             $(".layui-nav-tree").append(html);
         });
 
+        $("#index").bind('click', function(){
+            location.hash = "";
+            location.href = ctx+'/index';
+        });
+
         var hash;
-        hash=(!window.location.hash)?"#user":window.location.hash;
+        hash=(!window.location.hash)?"":window.location.hash;
         window.location.hash=hash;
         //调整地址栏地址，使前进、后退按钮能使用
         switch(hash){
@@ -51,16 +55,6 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
                 break;
             case "#role":
                 $("#user_item").click();
-                //TODO 这里粗略处理，可能失败，理论上要确保上一个click方法执行完才执行这个click方法
-                // setTimeout(function () {
-                //     $("#role_a").click();
-                // },5);
-                break;
-            case "#permission":
-                $("#user_item").click();
-                setTimeout(function () {
-                    $("#permission_a").click();
-                },5);
                 break;
         }
     });

@@ -2,12 +2,13 @@ var currentNum = localStorage.getItem("pageNum")==null?'1':localStorage.getItem(
 //用户列表展示
 function showUserList() {
     location.hash = "#user";
+    selectThisTab('user');
     getByPage('user', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值
         var tr = obj.tr; //获得当前行 tr 的DOM对象
-        if (layEvent === 'open') { //查看
+        if (layEvent === 'edit') { //编辑
             user_show(data.id);
         }else if(layEvent === 'role_assigned'){
             role_assigned(data.id);
@@ -17,15 +18,18 @@ function showUserList() {
 //角色列表展示
 function showRoleList() {
     location.hash = "#role";
+    selectThisTab('role');
     getByPage('role', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值
         var tr = obj.tr; //获得当前行 tr 的DOM对象
-        if (layEvent === 'open') { //查看
+        if (layEvent === 'edit') { //编辑
             role_show(data.id);
         }else if(layEvent === 'permission_assigned'){
             permission_assigned(data.id);
+        }else if (layEvent == 'delete') {
+            user_delete(data.id);
         }
     });
 }
@@ -50,47 +54,33 @@ function getByPage(type,pageNum){
     if ($("#barDemo>a").length == 0) {
         if (type == 'user') {
             url = ctx + '/user/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini  layui-btn" style="text-align: center;" lay-event="open">查看</a>\n' +
-                '<a class="layui-btn layui-btn-mini  layui-btn-normal" style="text-align: center;" lay-event="role_assigned">赋予角色</a>';
+            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">编辑</a>\n' +
+                    '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
-                {field: 'id', title: 'ID', width: 300, sort: false}
+                {field: 'id', title: 'ID', width:250, sort: false}
                 , {field: 'username', title: '用户名', width: 300, sort: false}
                 , {field: 'password', title: '密码', width: 300, sort: false}
-                , {fixed: 'right', title: '操作', width: 340, toolbar: '#barDemo'}
+                , {fixed: 'right', title: '操作', width: 380, toolbar: '#barDemo'}
             ]);
             html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
-                '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="user_add()"><i class="layui-icon">&#xe611;</i>添加用户</a>\n' +
-                '                        <span class="search-span" style="float: right;margin-right: 5px;margin-bottom: 10px;margin-top: 10px;">\n' +
-                '                        按用户名搜索：\n' +
-                '                            <div class="layui-inline">\n' +
-                '                                <input type="text" class="layui-input" name="username" id="username">\n' +
-                '                            </div>\n' +
-                '                            <button class="layui-btn" data-type="reload" onclick="getByPage('+type+',\'1\')">搜索</button>\n' +
-                '                    </span>\n' +
+                '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="user_add()"><i class="layui-icon">&#xe654;</i>添加用户</a>\n' +
                 '                    </div>';
         } else if (type == 'role') {
             url = ctx + '/user/role/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini  layui-btn" style="text-align: center;" lay-event="open">查看</a>\n' +
-                '<a class="layui-btn layui-btn-mini  layui-btn-normal" style="text-align: center;" lay-event="permission_assigned">赋予权限</a>';
+            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">编辑</a>\n' +
+                '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
                 {field: 'id', title: 'ID', width: 400, sort: false}
                 , {field: 'name', title: '角色名', width: 400, sort: false}
                 , {fixed: 'right', title: '操作', width: 435, toolbar: '#barDemo'}
             ]);
             html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
-                '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="role_add()"><i class="layui-icon">&#xe611;</i>添加角色</a>\n' +
-                '                        <span class="search-span" style="float: right;margin-right: 5px;margin-bottom: 10px;margin-top: 10px;">\n' +
-                '                        按角色名搜索：\n' +
-                '                            <div class="layui-inline">\n' +
-                '                                <input type="text" class="layui-input" name="name" id="name">\n' +
-                '                            </div>\n' +
-                '                            <button class="layui-btn" data-type="reload" onclick="getByPage('+type+',\'1\')">搜索</button>\n' +
-                '                    </span>\n' +
+                '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="role_add()"><i class="layui-icon">&#xe654;</i>添加角色</a>\n' +
                 '                    </div>';
 
         } else if (type == 'permission') {
             url = ctx + '/user/permission/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini  layui-btn" style="text-align: center;" lay-event="open">查看</a>';
+            barDemo = '<a class="layui-btn layui-btn-mini  layui-btn" style="text-align: center;" lay-event="edit">编辑</a>';
         }
         $("#barDemo").append(barDemo);
     }
@@ -132,7 +122,7 @@ function user_add() {
     layer.open({
         type: 2,
         skin: 'layui-layer-rim', //加上边框
-        area: ['600px', '200px'], //宽高
+        area: ['600px', '400px'], //宽高
         content: ctx+'/user/add'
     });
 }
@@ -140,10 +130,10 @@ function user_show(userId) {
     layer.open({
         type: 2,
         skin: 'layui-layer-rim', //加上边框
-        area: ['600px', '200px'], //宽高
+        area: ['600px', '400px'], //宽高
         content: ctx+'/user/'+userId,
         end: function() {
-            getByPage(currentType, initNum);
+            getByPage(currentType, currentNum);
         }
     });
 }
@@ -167,7 +157,23 @@ function role_show(roleId) {
         area: ['600px', '200px'], //宽高
         content: ctx+'/user/role/'+roleId,
         end: function() {
-            getByPage(currentType, initNum);
+            getByPage(currentType, currentNum);
         }
     });
+}
+
+function selectThisTab(tab) {
+    if ('user' == tab) {
+        $("#user_a").parent().addClass("layui-this");
+        $("#role_a").parent().removeClass("layui-this");
+        $("#permission_a").parent().removeClass("layui-this");
+    } else if ('role' == tab) {
+        $("#user_a").parent().removeClass("layui-this");
+        $("#role_a").parent().addClass("layui-this");
+        $("#permission_a").parent().removeClass("layui-this");
+    } else if ('permission' == tab) {
+        $("#user_a").parent().removeClass("layui-this");
+        $("#role_a").parent().removeClass("layui-this");
+        $("#permission_a").parent().addClass("layui-this");
+    }
 }

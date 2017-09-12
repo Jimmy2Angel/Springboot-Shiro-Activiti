@@ -19,10 +19,10 @@
 <body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">S S A</div>
+        <div class="layui-logo" id="index">S S A</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a id="user_item" href="javascript:;">用户权限</a></li>
+            <li class="layui-nav-item"><a id="user_item" href="javascript:;">用户管理</a></li>
             <li class="layui-nav-item"><a id="process_item">流程管理</a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
@@ -52,6 +52,9 @@
         <div class="lay_right" style="text-align: center;">
             <table id="table" lay-filter="table_tool"></table>
             <div id="page"></div>
+            <div id="index_content">
+                <span style="font-size: 36px">SSA</span>
+            </div>
         </div>
     </div>
 
@@ -65,6 +68,7 @@
 <script src="${ctx}/layui/layui.js"></script>
 <script src="${ctx}/js/index.js"></script>
 <script src="${ctx}/js/user.js"></script>
+<script src="${ctx}/js/process.js"></script>
 <script type="text/html" id="barDemo">
 </script>
 <script>

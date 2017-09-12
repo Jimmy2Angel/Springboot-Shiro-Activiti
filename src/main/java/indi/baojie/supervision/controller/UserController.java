@@ -7,6 +7,7 @@ import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
+import indi.baojie.supervision.utils.SessionUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +39,8 @@ public class UserController {
     }
 
     @GetMapping("add")
-    public String addUser() {
+    public String addUser(Model model) {
+        model.addAttribute("roles", roleService.getAllByPaging(null,null));
         return "user_add";
     }
 
@@ -60,6 +62,7 @@ public class UserController {
     @GetMapping("{userId}")
     public String showUser(@PathVariable Integer userId, Model model) {
         model.addAttribute("user", userService.findById(userId));
+        model.addAttribute("roles",roleService.getAllByPaging(null, null));
         return "user_add";
     }
 
@@ -109,9 +112,8 @@ public class UserController {
     @GetMapping("{userId}/roles")
     public String roleAssigned(@PathVariable Integer userId, Model model) {
         List<Role> allRoles = roleService.getAllByPaging(null, null);
-        List<Role> selctedRoles = roleService.getRoleIdByUserId(userId);
         model.addAttribute("allRoles",allRoles);
-        model.addAttribute("selectedRoles", selctedRoles);
+        model.addAttribute("selectedRoles", SessionUserUtil.current().getRoles());
         return "role_assigned";
     }
 

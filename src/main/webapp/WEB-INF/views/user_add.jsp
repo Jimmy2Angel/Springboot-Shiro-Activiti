@@ -26,7 +26,20 @@
         <div class="layui-input-inline">
             <input type="text" name="username" lay-verify="username" value="${user.username}"   autocomplete="off" placeholder="请输入登陆账号" class="layui-input">
         </div>
-        <div class="layui-form-mid layui-word-aux">登陆账号确认后不可修改，默认密码“111111”</div>
+        <div class="layui-form-mid layui-word-aux">默认密码“111111”</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">复选框</label>
+        <div class="layui-input-block">
+            <c:forEach items="${roles}" var="role" varStatus="i">
+                <input type="checkbox" name="name" title="${role.name}"
+                    <c:forEach items="${user.roles}" var="userRole">
+                        <c:if test="${userRole.id == role.id}">checked</c:if>
+                    </c:forEach>
+                >
+                <c:if test="${i.count%2 == 0}"><br/></c:if>
+            </c:forEach>
+        </div>
     </div>
 
     <div class="layui-form-item">
