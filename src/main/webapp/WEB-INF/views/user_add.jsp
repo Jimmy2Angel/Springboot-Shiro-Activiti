@@ -32,7 +32,7 @@
         <label class="layui-form-label">复选框</label>
         <div class="layui-input-block">
             <c:forEach items="${roles}" var="role" varStatus="i">
-                <input type="checkbox" name="name" title="${role.name}"
+                <input lay-filter="checkbox" type="checkbox" name="roleIds" value="${role.id}" title="${role.name}"
                     <c:forEach items="${user.roles}" var="userRole">
                         <c:if test="${userRole.id == role.id}">checked</c:if>
                     </c:forEach>
@@ -67,8 +67,22 @@
             }
         });
 
+        //监听checkbox
+        var selectedRoleId = [];
+        form.on('checkbox(checkbox)', function(data){
+            console.log(data.elem.checked); //是否被选中，true或者false
+            console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+            if (data.elem.checked) {
+                selectedRoleId.push(data.value);
+            } else {
+                selectedRoleId.splice(selectedRoleId.indexOf(data.value),1);
+            }
+            console.log(selectedRoleId);
+        });
+
         //监听保存提交
         form.on('submit(save)', function(data){
+            data.field.roleIds[selectedRoleId.length] = selectedRoleId;
             $.ajax({
                 url:'${ctx}/user/add',
                 data:data.field,

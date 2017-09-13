@@ -51,12 +51,14 @@ public class UserController {
      */
     @PostMapping("add")
     @ResponseBody
-    public JsonResult addUser(User user) {
-        if (user.getId() == null) {
-            return userService.addOne(user);
-        } else {
-            return userService.editOne(user);
-        }
+    public JsonResult addUser(User user, String[] roleIds) {
+        System.out.println(roleIds.length);
+//        if (user.getId() == null) {
+//            return userService.addOne(user);
+//        } else {
+//            return userService.editOne(user);
+//        }
+        return new JsonResult();
     }
 
     @GetMapping("{userId}")
