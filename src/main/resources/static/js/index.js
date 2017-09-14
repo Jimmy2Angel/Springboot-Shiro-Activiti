@@ -27,6 +27,9 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
                 case "#role":
                     showRoleList();
                     break;
+                case "#permission":
+                    showPermissionList();
+                    break;
             }
         });
 
@@ -54,6 +57,9 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
                 $("#user_item").click();
                 break;
             case "#role":
+                $("#user_item").click();
+                break;
+            case "#permission":
                 $("#user_item").click();
                 break;
         }

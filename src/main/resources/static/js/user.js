@@ -36,7 +36,18 @@ function showRoleList() {
 //权限列表展示
 function showPermissionList() {
     location.hash = "#permission";
+    selectThisTab('permission');
     getByPage('permission', currentNum);
+    table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        if (layEvent === 'edit') { //编辑
+            permission_show(data.id);
+        }else if (layEvent == 'delete') {
+            permission_delete(data.id);
+        }
+    });
 }
 
 
@@ -53,7 +64,7 @@ function getByPage(type,pageNum){
     currentType = type;
     if ($("#barDemo>a").length == 0) {
         if (type == 'user') {
-            url = ctx + '/user/getByPage';
+            url = ctx + '/sys/user/getByPage';
             barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
                     '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
@@ -66,7 +77,7 @@ function getByPage(type,pageNum){
                 '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="user_add()"><i class="layui-icon">&#xe654;</i>添加用户</a>\n' +
                 '                    </div>';
         } else if (type == 'role') {
-            url = ctx + '/user/role/getByPage';
+            url = ctx + '/sys/role/getByPage';
             barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
                 '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
@@ -79,14 +90,16 @@ function getByPage(type,pageNum){
                 '                    </div>';
 
         } else if (type == 'permission') {
-            url = ctx + '/user/permission/getByPage';
+            url = ctx + '/sys/permission/getByPage';
             barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
                 '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
-                {field: 'id', title: 'ID', width:250, sort: false}
-                , {field: 'name', title: '权限名', width: 300, sort: false}
-                , {field: 'url', title: 'url', width: 300, sort: false}
-                , {fixed: 'right', title: '操作', width: 380, toolbar: '#barDemo'}
+                {field: 'id', title: 'ID', width:200, sort: false}
+                , {field: 'name', title: '权限名', width: 200, sort: false}
+                , {field: 'sort', title: '序号', width: 200, sort: false}
+                , {field: 'url', title: 'url', width: 200, sort: false}
+                , {field: 'type', title: '权限标识', width: 200, sort: false}
+                , {fixed: 'right', title: '操作', width: 230, toolbar: '#barDemo'}
             ]);
             html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
                 '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="permission_add()"><i class="layui-icon">&#xe654;</i>添加权限</a>\n' +

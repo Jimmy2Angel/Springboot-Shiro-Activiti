@@ -3,8 +3,10 @@ package indi.baojie.supervision.controller;
 import com.github.pagehelper.PageInfo;
 import indi.baojie.common.data.Constants;
 import indi.baojie.common.data.JsonResult;
+import indi.baojie.supervision.domain.Permission;
 import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
+import indi.baojie.supervision.service.PermissionService;
 import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
 import indi.baojie.supervision.utils.SessionUserUtil;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("sys")
 public class UserController {
 
     @Autowired
@@ -27,12 +29,15 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private PermissionService permissionService;
+
     /**
      * 分页获取所有的user
      * @param pageNum
      * @return
      */
-    @GetMapping("getByPage")
+    @GetMapping("user/getByPage")
     @ResponseBody
     public PageInfo<User> getByPage(Integer pageNum) {
         List<User> userList = userService.getAllByPaging(pageNum, Constants.PAGE_SIZE);
@@ -40,7 +45,7 @@ public class UserController {
         return pageInfo;
     }
 
-    @GetMapping("add")
+    @GetMapping("user/add")
     public String addUser(Model model) {
         model.addAttribute("roles", roleService.getAllByPaging(null,null));
         return "user_add";
@@ -51,7 +56,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @PostMapping("add")
+    @PostMapping("user/add")
     @ResponseBody
     public JsonResult addUser(User user, String[] roleIds) {
         if (user.getId() == null) {
@@ -61,14 +66,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("user/{userId}")
     public String showUser(@PathVariable Integer userId, Model model) {
         model.addAttribute("user", userService.findById(userId));
         model.addAttribute("roles",roleService.getAllByPaging(null, null));
         return "user_add";
     }
 
-    @DeleteMapping("{userId}")
+    @DeleteMapping("user/{userId}")
     @ResponseBody
     public JsonResult deleteUser(@PathVariable Integer userId) {
         JsonResult jsonResult = new JsonResult();
@@ -121,34 +126,15 @@ public class UserController {
     }
 
     /**
-     * 给用户分配角色的页面显示
+     * 分页获取所有的permission
      * @return
      */
-    @GetMapping("{userId}/roles")
-    public String roleAssigned(@PathVariable Integer userId, Model model) {
-        List<Role> allRoles = roleService.getAllByPaging(null, null);
-        model.addAttribute("allRoles",allRoles);
-        model.addAttribute("selectedRoles", SessionUserUtil.current().getRoles());
-        return "role_assigned";
+    @GetMapping("permission/getByPage")
+    @ResponseBody
+    public PageInfo<Permission> getPermissionByPage(Integer pageNum) {
+        List<Permission> permissionList = permissionService.getAllByPaging(pageNum, Constants.PAGE_SIZE);
+        return new PageInfo<>(permissionList);
     }
 
-    /**
-     * 给用户分配角色的处理
-     * @param userId
-     * @param roleIds
-     * @return
-     */
-    @PostMapping("{userId}/roles")
-    @ResponseBody
-    public JsonResult roleAssigned(@PathVariable Integer userId, String roleIds) {
-        JsonResult jsonResult = new JsonResult();
-        boolean isSuccess = roleService.assigned(userId, roleIds);
-        if (isSuccess) {
-            jsonResult.markSuccess("分配成功", null);
-        } else {
-            jsonResult.markError("分配失败！请与管理员联系！");
-        }
-        return jsonResult;
-    }
 
 }
