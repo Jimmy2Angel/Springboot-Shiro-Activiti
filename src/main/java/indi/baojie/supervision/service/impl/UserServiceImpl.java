@@ -5,20 +5,27 @@ import com.google.common.collect.Sets;
 import com.sun.tools.javadoc.Start;
 import indi.baojie.common.data.JsonResult;
 import indi.baojie.supervision.dao.UserMapper;
+import indi.baojie.supervision.dao.UserRoleMapper;
 import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
+import indi.baojie.supervision.domain.UserRole;
 import indi.baojie.supervision.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    UserRoleMapper userRoleMapper;
 
     @Override
     public User findByName(String username) {
@@ -44,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JsonResult addOne(User user) {
+    public JsonResult addOne(User user, String[] roleIds) {
         JsonResult jsonResult = new JsonResult();
         int count = userMapper.count(user);
         if (count != 0) {
@@ -69,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JsonResult editOne(User user) {
+    public JsonResult editOne(User user, String[] roleIds) {
         JsonResult jsonResult = new JsonResult();
         if (userMapper.count(user) > 1) {
             jsonResult.markError("该用户名已经存在！");
@@ -78,8 +85,28 @@ public class UserServiceImpl implements UserService {
             jsonResult.markError("修改失败！请联系管理员！");
             return jsonResult;
         }
+        if (roleIds != null) {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(user.getId());
+            userRoleMapper.delete(userRole);
+            for (String roleId:roleIds) {
+                userRole.setRoleId(Integer.valueOf(roleId));
+                userRoleMapper.insert(userRole);
+            }
+        }
         jsonResult.markSuccess("修改成功！", null);
         return jsonResult;
+    }
+
+    @Override
+    public boolean deleteById(Integer userId) {
+        User user = new User();
+        user.setId(userId);
+        if (userMapper.delete(user) != 1) {
+            return false;
+        }
+        userRoleMapper.deleteByUserId(userId);
+        return true;
     }
 
 }

@@ -10,8 +10,8 @@ function showUserList() {
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         if (layEvent === 'edit') { //编辑
             user_show(data.id);
-        }else if(layEvent === 'role_assigned'){
-            role_assigned(data.id);
+        }else if(layEvent === 'delete'){
+            user_delete(data.id);
         }
     });
 }
@@ -29,7 +29,7 @@ function showRoleList() {
         }else if(layEvent === 'permission_assigned'){
             permission_assigned(data.id);
         }else if (layEvent == 'delete') {
-            user_delete(data.id);
+            role_delete(data.id);
         }
     });
 }
@@ -54,7 +54,7 @@ function getByPage(type,pageNum){
     if ($("#barDemo>a").length == 0) {
         if (type == 'user') {
             url = ctx + '/user/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">编辑</a>\n' +
+            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
                     '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
                 {field: 'id', title: 'ID', width:250, sort: false}
@@ -67,7 +67,7 @@ function getByPage(type,pageNum){
                 '                    </div>';
         } else if (type == 'role') {
             url = ctx + '/user/role/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">编辑</a>\n' +
+            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
                 '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
                 {field: 'id', title: 'ID', width: 400, sort: false}
@@ -80,7 +80,17 @@ function getByPage(type,pageNum){
 
         } else if (type == 'permission') {
             url = ctx + '/user/permission/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini  layui-btn" style="text-align: center;" lay-event="edit">编辑</a>';
+            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
+                '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
+            cols.push([
+                {field: 'id', title: 'ID', width:250, sort: false}
+                , {field: 'name', title: '权限名', width: 300, sort: false}
+                , {field: 'url', title: 'url', width: 300, sort: false}
+                , {fixed: 'right', title: '操作', width: 380, toolbar: '#barDemo'}
+            ]);
+            html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
+                '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="permission_add()"><i class="layui-icon">&#xe654;</i>添加权限</a>\n' +
+                '                    </div>';
         }
         $("#barDemo").append(barDemo);
     }
@@ -137,9 +147,29 @@ function user_show(userId) {
         }
     });
 }
-//赋予用户角色
-function role_assigned(userId) {
-    console.log(userId);
+//删除用户
+function user_delete(userId) {
+    layer.confirm('确认要删除该用户吗？',function(index){
+        $.ajax({
+            type: 'delete',
+            dataType:'json',
+            url: ctx + '/user/'+userId,
+            success:function(data){
+                var index = parent.layer.getFrameIndex(window.name);
+                if (data.success) {
+                    parent.layer.msg(data.message, {icon: 1, time: 2000});
+                    setTimeout(function () {
+                        parent.location.reload();
+                    },2000);
+                } else {
+                    parent.layer.msg(data.message, {icon: 2, time: 2000});
+                }
+            },
+            error:function(data){
+                parent.layer.msg("删除失败，请与管理员联系！", {icon: 2, time: 2000});
+            }
+        });
+    });
 }
 
 function role_add() {

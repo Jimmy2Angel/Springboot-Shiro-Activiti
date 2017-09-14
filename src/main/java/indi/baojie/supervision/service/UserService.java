@@ -15,10 +15,11 @@ public interface UserService {
 
     List<User> getAllByPaging(Integer pageNum, Integer pageSize);
 
-    JsonResult addOne(User user);
+    JsonResult addOne(User user, String[] roleIds);
 
     User findById(Integer userId);
 
-    JsonResult editOne(User user);
+    JsonResult editOne(User user, String[] roleIds);
 
+    boolean deleteById(Integer userId);
 }

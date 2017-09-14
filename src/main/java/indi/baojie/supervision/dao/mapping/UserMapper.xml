@@ -19,10 +19,10 @@
     <select id="findOne" parameterType="indi.baojie.supervision.domain.User" resultMap="UserWithRoles">
         select
         u.id as uid, username, password, r.id as rid, name
-        from user as u, user_role as ur, role as r
+        from ((
+            user as u left join user_role as ur on u.id = ur.user_id)
+        left join role as r on r.id = ur.role_id)
         <where>
-            and u.id = ur.user_id
-            and r.id = ur.role_id
             <if test="id != null">
                 and u.id = #{id}
             </if>
@@ -58,4 +58,16 @@
         set username = #{username}, password = #{password}
         where id = #{id}
     </update>
+
+    <delete id="delete">
+        delete from user
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+            <if test="username!=null">
+                and username = #{username}
+            </if>
+        </where>
+    </delete>
 </mapper>

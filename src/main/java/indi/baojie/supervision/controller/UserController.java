@@ -8,6 +8,8 @@ import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
 import indi.baojie.supervision.utils.SessionUserUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,13 +54,11 @@ public class UserController {
     @PostMapping("add")
     @ResponseBody
     public JsonResult addUser(User user, String[] roleIds) {
-        System.out.println(roleIds.length);
-//        if (user.getId() == null) {
-//            return userService.addOne(user);
-//        } else {
-//            return userService.editOne(user);
-//        }
-        return new JsonResult();
+        if (user.getId() == null) {
+            return userService.addOne(user, roleIds);
+        } else {
+            return userService.editOne(user, roleIds);
+        }
     }
 
     @GetMapping("{userId}")
@@ -66,6 +66,19 @@ public class UserController {
         model.addAttribute("user", userService.findById(userId));
         model.addAttribute("roles",roleService.getAllByPaging(null, null));
         return "user_add";
+    }
+
+    @DeleteMapping("{userId}")
+    @ResponseBody
+    public JsonResult deleteUser(@PathVariable Integer userId) {
+        JsonResult jsonResult = new JsonResult();
+        boolean isSuccess = userService.deleteById(userId);
+        if (isSuccess) {
+            jsonResult.markSuccess("删除成功！", null);
+        } else {
+            jsonResult.markError("删除失败！请与管理员联系！");
+        }
+        return jsonResult;
     }
 
     /**

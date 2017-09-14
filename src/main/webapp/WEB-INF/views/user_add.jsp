@@ -69,9 +69,14 @@
 
         //监听checkbox
         var selectedRoleId = [];
+        <c:if test="${user!=null && user.roles!=null}">
+            <c:forEach items="${user.roles}" var="role">
+                selectedRoleId.push(${role.id});
+            </c:forEach>
+        </c:if>
         form.on('checkbox(checkbox)', function(data){
-            console.log(data.elem.checked); //是否被选中，true或者false
-            console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+//            console.log(data.elem.checked); //是否被选中，true或者false
+//            console.log(data.value); //复选框value值，也可以通过data.elem.value得到
             if (data.elem.checked) {
                 selectedRoleId.push(data.value);
             } else {
@@ -82,12 +87,14 @@
 
         //监听保存提交
         form.on('submit(save)', function(data){
-            data.field.roleIds[selectedRoleId.length] = selectedRoleId;
+            data.field.roleIds = selectedRoleId;
+            console.log(data.field);
             $.ajax({
                 url:'${ctx}/user/add',
                 data:data.field,
                 type:'post',
                 dataType:'json',
+                traditional: true ,
                 success: function (res) {
                     if(res.success){
                         layer.msg(res.message);

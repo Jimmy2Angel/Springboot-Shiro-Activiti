@@ -33,7 +33,17 @@
 
     <delete id="delete">
         delete from user_role
+        <where>
+            <if test="userId!=null">
+                and user_id = #{userId}
+            </if>
+            <if test="roleId!=null">
+                and role_id = #{roleId}
+            </if>
+        </where>
+    </delete>
+    <delete id="deleteByUserId">
+        delete from user_role
         where user_id = #{userId}
-        and role_id = #{roleId}
     </delete>
 </mapper>

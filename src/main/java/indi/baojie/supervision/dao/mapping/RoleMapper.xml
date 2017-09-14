@@ -7,18 +7,21 @@
         <result column="rname" property="name" jdbcType="VARCHAR"/>
         <collection property="permissions" ofType="indi.baojie.supervision.domain.Permission">
             <id column="pid" property="id" jdbcType="INTEGER"/>
+            <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
             <result column="pname" property="name" jdbcType="VARCHAR"/>
             <result column="url" property="url" jdbcType="VARCHAR"/>
+            <result column="type" property="type" jdbcType="VARCHAR"/>
+            <result column="sort" property="sort" jdbcType="INTEGER"/>
         </collection>
     </resultMap>
     
     <select id="findOne" parameterType="indi.baojie.supervision.domain.Role" resultMap="RoleWithPermissions">
         select
-        r.id as rid, r.name as rname, p.id as pid, p.name as pname, url
-        from role as r, role_permission as rp, permission as p
+        r.id as rid, r.name as rname, p.id as pid, parent_id, p.name as pname, url, type, sort
+        from ((
+            role as r left join role_permission as rp on r.id = rp.role_id)
+        left join permission as p on p.id = rp.permission_id)
         <where>
-            and r.id = rp.role_id
-            and p.id = rp.permission_id
             <if test="id != null">
                 and r.id = #{id}
             </if>
@@ -26,6 +29,7 @@
                 and r.name = #{name}
             </if>
         </where>
+        order by parent_id,sort asc
     </select>
 
     <select id="find" parameterType="indi.baojie.supervision.domain.Role" resultType="indi.baojie.supervision.domain.Role">
