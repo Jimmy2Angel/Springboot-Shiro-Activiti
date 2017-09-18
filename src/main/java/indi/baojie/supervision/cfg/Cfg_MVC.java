@@ -1,6 +1,8 @@
 package indi.baojie.supervision.cfg;
 
 import com.alibaba.fastjson.parser.Feature;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -8,16 +10,21 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -53,6 +60,7 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver jspViewResolver = new InternalResourceViewResolver();
+
         jspViewResolver.setPrefix("/WEB-INF/views/");
         jspViewResolver.setSuffix(".jsp");
 
@@ -75,27 +83,41 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
             logger.error(e);
         }
 
+        jspViewResolver.setOrder(1);
         registry.viewResolver(jspViewResolver);
+
+        TilesViewResolver viewResolver = new TilesViewResolver();
+        viewResolver.setOrder(2);
+        registry.viewResolver(viewResolver);
     }
 
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//
-//        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-//        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
-//        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-//        fastJsonConfig.setFeatures(Feature.IgnoreNotMatch);
-//
-//        FastJsonHttpMessageConverter4 fastJsonHttpMessageConverter4 = new FastJsonHttpMessageConverter4();
-//        fastJsonHttpMessageConverter4.setFastJsonConfig(fastJsonConfig);
-//        fastJsonHttpMessageConverter4.setSupportedMediaTypes(new ArrayList<MediaType>() {
-//            {
-//                add(MediaType.TEXT_HTML);
-//                add(MediaType.APPLICATION_JSON_UTF8);
-//            }
-//
-//        });
-//        converters.add(fastJsonHttpMessageConverter4);
-//    }
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new StringHttpMessageConverter());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setObjectMapper(objectMapper);
+        converter.setSupportedMediaTypes(new ArrayList<MediaType>() {
+            {
+                add(MediaType.APPLICATION_JSON_UTF8);
+            }
+        });
+        converter.setDefaultCharset(Charset.forName("UTF-8"));
+        converters.add(converter);
+    }
+
+    /**
+     * Configure TilesConfigurer.
+     */
+    @Bean
+    public TilesConfigurer tilesConfigurer(){
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/**/tiles.xml"});
+        tilesConfigurer.setCheckRefresh(true);
+        return tilesConfigurer;
+    }
+
 
 }
