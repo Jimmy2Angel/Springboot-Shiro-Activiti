@@ -1,13 +1,15 @@
 package indi.baojie.supervision.cfg;
 
-import com.alibaba.fastjson.parser.Feature;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.support.ErrorPageFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import java.io.IOException;
@@ -57,6 +60,46 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 
+    /**
+     * Configure TilesConfigurer.
+     */
+    @Bean
+    public TilesConfigurer tilesConfigurer(){
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setDefinitions("/WEB-INF/tiles.xml");
+        tilesConfigurer.setCheckRefresh(true);
+        return tilesConfigurer;
+    }
+
+    @Bean
+    @Primary
+    public TilesViewResolver tilesViewResolver() {
+        final TilesViewResolver resolver = new TilesViewResolver();
+        resolver.setViewClass(TilesView.class);
+
+        // jsp 用到的全局变量
+        try {
+            HashMap<String, Object> jspVars = new LinkedHashMap<>();
+            Properties vars = new Properties();
+            vars.load(new InputStreamReader(getClass().getResourceAsStream("/jsp-vars.properties"), "UTF-8"));
+            Enumeration<String> varsEnum = (Enumeration<String>) vars.propertyNames();
+            while (varsEnum.hasMoreElements()) {
+                String k = varsEnum.nextElement();
+                String v = vars.getProperty(k);
+                jspVars.put(k, v);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("{}:{}", k, v);
+                }
+            }
+            resolver.setAttributesMap(jspVars);
+        } catch (IOException e) {
+            logger.error(e);
+        }
+
+        resolver.setOrder(1);
+        return resolver;
+    }
+
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver jspViewResolver = new InternalResourceViewResolver();
@@ -83,12 +126,14 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
             logger.error(e);
         }
 
-        jspViewResolver.setOrder(1);
+        jspViewResolver.setOrder(2);
         registry.viewResolver(jspViewResolver);
 
-        TilesViewResolver viewResolver = new TilesViewResolver();
-        viewResolver.setOrder(2);
-        registry.viewResolver(viewResolver);
+//        TilesViewResolver viewResolver = new TilesViewResolver();
+//        viewResolver.setOrder(1);
+//        viewResolver.setPrefix("/WEB-INF/views/");
+//        viewResolver.setSuffix(".jsp");
+//        registry.viewResolver(viewResolver);
     }
 
     @Override
@@ -108,16 +153,17 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
         converters.add(converter);
     }
 
-    /**
-     * Configure TilesConfigurer.
-     */
     @Bean
-    public TilesConfigurer tilesConfigurer(){
-        TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/**/tiles.xml"});
-        tilesConfigurer.setCheckRefresh(true);
-        return tilesConfigurer;
+    public ErrorPageFilter errorPageFilter() {
+        return new ErrorPageFilter();
     }
 
+    @Bean
+    public FilterRegistrationBean disableSpringBootErrorFilter(ErrorPageFilter filter) {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(filter);
+        filterRegistrationBean.setEnabled(false);
+        return filterRegistrationBean;
+    }
 
 }
