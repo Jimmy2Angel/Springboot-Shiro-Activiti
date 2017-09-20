@@ -4,6 +4,7 @@ import indi.baojie.common.data.Constants;
 import indi.baojie.common.data.JsonResult;
 import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.utils.RequestUtil;
+import indi.baojie.supervision.utils.SessionUserUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
 @Controller
@@ -58,7 +60,7 @@ public class LoginController {
     }
 
     @GetMapping("index")
-    public String index() {
-        return "home";
+    public ModelAndView index() {
+        return new ModelAndView("home", "username", SessionUserUtil.current().getUsername());
     }
 }

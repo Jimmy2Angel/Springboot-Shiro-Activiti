@@ -1,4 +1,4 @@
-<%--
+<%@ page import="indi.baojie.supervision.domain.User" %><%--
   Created by IntelliJ IDEA.
   User: lollipop
   Date: 17/9/6
@@ -30,16 +30,6 @@
     <section id="site-content">
         <tiles:insertAttribute name="body" />
     </section>
-    <div class="layui-body">
-        <!-- 内容主体区域 -->
-        <div class="lay_right" style="text-align: center;">
-            <table id="table" lay-filter="table_tool"></table>
-            <div id="page"></div>
-            <div id="index_content">
-                <span style="font-size: 36px">SSA</span>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 

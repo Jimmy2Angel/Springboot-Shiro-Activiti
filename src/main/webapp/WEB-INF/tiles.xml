@@ -8,28 +8,27 @@
     <!-- Base Definition -->
     <definition name="base" template="/WEB-INF/views/tiles/layouts/index.jsp">
         <put-attribute name="title" value="aa" />
-        <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" />
-        <put-attribute name="menu" value="/WEB-INF/views/tiles/template/menu.jsp" />
-        <put-attribute name="body" value="" />
-        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/tiles/template/defaultHeader.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/views/tiles/template/defaultMenu.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/home.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/defaultFooter.jsp" />
     </definition>
 
     <!-- Home Page -->
     <definition name="home" extends="base">
         <put-attribute name="title" value="SSA-首页" />
-        <put-attribute name="body" value="/WEB-INF/views/pages/home.jsp" />
     </definition>
 
-    <!-- Product Page -->
-    <!--<definition name="products" extends="base">-->
-        <!--<put-attribute name="title" value="Products" />-->
-        <!--<put-attribute name="body" value="/WEB-INF/views/pages/products.jsp" />-->
-    <!--</definition>-->
+    <!-- User Page -->
+    <definition name="user" extends="base">
+        <put-attribute name="title" value="SSA-用户模块" />
+        <put-attribute name="menu" value="/WEB-INF/views/tiles/template/userMenu.jsp"/>
+    </definition>
 
-    <!-- Contact-us Page -->
-    <!--<definition name="contactus" extends="base">-->
-        <!--<put-attribute name="title" value="Contact Us" />-->
-        <!--<put-attribute name="body" value="/WEB-INF/views/pages/contactus.jsp" />-->
-    <!--</definition>-->
+    <!-- Process Page -->
+    <definition name="process" extends="base">
+        <put-attribute name="title" value="SSA-流程模块" />
+        <put-attribute name="menu" value="/WEB-INF/views/tiles/template/processMenu.jsp"/>
+    </definition>
 
 </tiles-definitions>

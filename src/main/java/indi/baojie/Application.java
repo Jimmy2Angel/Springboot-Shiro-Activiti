@@ -1,12 +1,14 @@
 package indi.baojie;
 
 import indi.baojie.supervision.cfg.Cfg_Rest;
+import org.apache.tiles.extras.complete.CompleteAutoloadTilesListener;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -71,6 +73,12 @@ public class Application extends SpringBootServletInitializer{
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean testListenerRegistration(){
+        ServletListenerRegistrationBean registration = new ServletListenerRegistrationBean(new CompleteAutoloadTilesListener());
+        return registration;
     }
 
 }

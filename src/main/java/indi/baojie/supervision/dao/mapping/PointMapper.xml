@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.baojie.supervision.dao.PointMapper">
+
+    <sql id="Base_Column_List">
+        id,name, point_x,point_y
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="indi.baojie.supervision.domain.Point">
+        insert into point(name,point_x,point_y) values(#{name},#{pointX},#{pointY})
+    </insert>
+
+    <select id="findByName" resultType="indi.baojie.supervision.domain.Point">
+        select
+        <include refid="Base_Column_List" />
+        from point
+        where name = #{name}
+    </select>
+</mapper>

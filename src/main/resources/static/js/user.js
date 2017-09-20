@@ -1,7 +1,6 @@
 var currentNum = localStorage.getItem("pageNum")==null?'1':localStorage.getItem("pageNum"), currentType = "";
 //用户列表展示
 function showUserList() {
-    location.hash = "#user";
     selectThisTab('user');
     getByPage('user', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
