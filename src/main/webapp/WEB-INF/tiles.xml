@@ -7,7 +7,7 @@
 
     <!-- Base Definition -->
     <definition name="base" template="/WEB-INF/views/tiles/layouts/index.jsp">
-        <put-attribute name="title" value="aa" />
+        <put-attribute name="title" value="SSA-首页" />
         <put-attribute name="header" value="/WEB-INF/views/tiles/template/defaultHeader.jsp" />
         <put-attribute name="menu" value="/WEB-INF/views/tiles/template/defaultMenu.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/pages/home.jsp" />

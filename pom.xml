@@ -7,13 +7,13 @@
     </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>indi.baojie</groupId>
-  <artifactId>supervision</artifactId>
+  <artifactId>SSA</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>supervision Maven Webapp</name>
+  <name>SSA Maven Webapp</name>
   <url>http://maven.apache.org</url>
     <build>
-        <finalName>supervision</finalName>
+        <finalName>SSA</finalName>
         <!--编译时同步mapper.xml文件-->
         <resources>
             <resource>
@@ -60,7 +60,7 @@
         <java.version>1.8</java.version>
         <activiti-version>5.22.0</activiti-version>
         <slf4j.version>1.7.21</slf4j.version>
-        <apachetiles.version>3.0.5</apachetiles.version>
+        <apachetiles.version>3.0.7</apachetiles.version>
     </properties>
 
     <dependencies>
@@ -194,24 +194,30 @@
         <!-- Apache Tiles -->
         <dependency>
             <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-core</artifactId>
+            <artifactId>tiles-extras</artifactId>
             <version>${apachetiles.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-api</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-servlet</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-jsp</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.tiles</groupId>-->
+        <!--<artifactId>tiles-core</artifactId>-->
+        <!--<version>${apachetiles.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.tiles</groupId>-->
+        <!--<artifactId>tiles-api</artifactId>-->
+        <!--<version>${apachetiles.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.tiles</groupId>-->
+        <!--<artifactId>tiles-servlet</artifactId>-->
+        <!--<version>${apachetiles.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.tiles</groupId>-->
+        <!--<artifactId>tiles-jsp</artifactId>-->
+        <!--<version>${apachetiles.version}</version>-->
+        <!--</dependency>-->
+
         <!-- jsp支持 -->
         <dependency>
             <groupId>javax.servlet</groupId>

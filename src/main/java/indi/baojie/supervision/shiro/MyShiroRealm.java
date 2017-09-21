@@ -1,10 +1,8 @@
 package indi.baojie.supervision.shiro;
 
-import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.service.RoleService;
 import indi.baojie.supervision.service.UserService;
-import indi.baojie.supervision.utils.RequestUtil;
 import indi.baojie.supervision.utils.SessionUserUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,8 +12,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Set;
 
 /**
  * Created by Lollipop on 2017/6/19.
