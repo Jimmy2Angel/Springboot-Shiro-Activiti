@@ -60,7 +60,7 @@ public class LoginController {
     }
 
     @GetMapping("index")
-    public ModelAndView index() {
-        return new ModelAndView("home", "username", SessionUserUtil.current().getUsername());
+    public String index() {
+        return "base";
     }
 }

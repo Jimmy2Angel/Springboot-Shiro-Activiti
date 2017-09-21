@@ -16,7 +16,6 @@ function showUserList() {
 }
 //角色列表展示
 function showRoleList() {
-    location.hash = "#role";
     selectThisTab('role');
     getByPage('role', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
@@ -34,7 +33,6 @@ function showRoleList() {
 }
 //权限列表展示
 function showPermissionList() {
-    location.hash = "#permission";
     selectThisTab('permission');
     getByPage('permission', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"

@@ -25,6 +25,9 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
             case "#permission":
                 showPermissionList();
                 break;
+            case "model":
+                showModelList();
+                break;
         }
     });
 

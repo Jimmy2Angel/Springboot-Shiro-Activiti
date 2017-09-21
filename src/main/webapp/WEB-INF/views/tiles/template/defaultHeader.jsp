@@ -13,7 +13,7 @@
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
         <li class="layui-nav-item"><a href="${ctx}/user#user">用户管理</a></li>
-        <li class="layui-nav-item"><a id="process_item">流程管理</a></li>
+        <li class="layui-nav-item"><a href="${ctx}/process#model">流程管理</a></li>
     </ul>
     <ul class="layui-nav layui-layout-right">
         <li class="layui-nav-item">
