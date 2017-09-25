@@ -48,7 +48,7 @@ public class UserController {
     @GetMapping("user/add")
     public String addUser(Model model) {
         model.addAttribute("roles", roleService.getAllByPaging(null,null));
-        return "user_add";
+        return "pages/user/user_add";
     }
 
     /**
@@ -70,7 +70,7 @@ public class UserController {
     public String showUser(@PathVariable Integer userId, Model model) {
         model.addAttribute("user", userService.findById(userId));
         model.addAttribute("roles",roleService.getAllByPaging(null, null));
-        return "user_add";
+        return "pages/user/user_add";
     }
 
     @DeleteMapping("user/{userId}")
@@ -107,7 +107,7 @@ public class UserController {
     @GetMapping("role/{roleId}")
     public String showRole(@PathVariable Integer roleId, Model model) {
         model.addAttribute("role", roleService.getById(roleId));
-        return "role_add";
+        return "pages/user/role_add";
     }
 
     /**

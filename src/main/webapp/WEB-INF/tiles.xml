@@ -29,5 +29,11 @@
     <definition name="user" extends="user_module">
         <put-attribute name="body" value="/WEB-INF/views/pages/user/user_list.jsp"/>
     </definition>
+    <definition name="role" extends="user_module">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/role_list.jsp"/>
+    </definition>
+    <definition name="permission" extends="user_module">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/permission_list.jsp"/>
+    </definition>
 
 </tiles-definitions>

@@ -14,6 +14,7 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
         var hash;
         hash=(!window.location.hash)?"":window.location.hash;
         window.location.hash=hash;
+        selectThisTab(hash);
         //调整地址栏地址，使前进、后退按钮能使用
         switch(hash){
             case "#user":

@@ -15,64 +15,64 @@ function showUserList() {
     });
 }
 //角色列表展示
-function showRoleList() {
-    selectThisTab('role');
-    getByPage('role', currentNum);
-    table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-        if (layEvent === 'edit') { //编辑
-            role_show(data.id);
-        }else if(layEvent === 'permission_assigned'){
-            permission_assigned(data.id);
-        }else if (layEvent == 'delete') {
-            role_delete(data.id);
-        }
-    });
-}
+// function showRoleList() {
+//     selectThisTab('role');
+//     getByPage('role', currentNum);
+//     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+//         var data = obj.data; //获得当前行数据
+//         var layEvent = obj.event; //获得 lay-event 对应的值
+//         var tr = obj.tr; //获得当前行 tr 的DOM对象
+//         if (layEvent === 'edit') { //编辑
+//             role_show(data.id);
+//         }else if(layEvent === 'permission_assigned'){
+//             permission_assigned(data.id);
+//         }else if (layEvent == 'delete') {
+//             role_delete(data.id);
+//         }
+//     });
+// }
 //权限列表展示
-function showPermissionList() {
-    selectThisTab('permission');
-    getByPage('permission', currentNum);
-    table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-        if (layEvent === 'edit') { //编辑
-            permission_show(data.id);
-        }else if (layEvent == 'delete') {
-            permission_delete(data.id);
-        }
-    });
-}
+// function showPermissionList() {
+//     selectThisTab('permission');
+//     getByPage('permission', currentNum);
+//     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+//         var data = obj.data; //获得当前行数据
+//         var layEvent = obj.event; //获得 lay-event 对应的值
+//         var tr = obj.tr; //获得当前行 tr 的DOM对象
+//         if (layEvent === 'edit') { //编辑
+//             permission_show(data.id);
+//         }else if (layEvent == 'delete') {
+//             permission_delete(data.id);
+//         }
+//     });
+// }
 
 
 //填充列表数据
 function getByPage(type,pageNum){
     var barDemo = "", url ="", cols = [], html = "";
-    if ($(".layui-body>div").length > 1) {
-        $(".layui-body>div:eq(0)").remove();
+    // if ($(".layui-body>div").length > 1) {
+    //     $(".layui-body>div:eq(0)").remove();
         laypage.render({elem: 'page'});
         table.render({elem: '#table',data: null, cols: null});
-        $("#barDemo").empty();
-    }
+    //     $("#barDemo").empty();
+    // }
 
     currentType = type;
     if ($("#barDemo>a").length == 0) {
         if (type == 'user') {
             url = ctx + '/sys/user/getByPage';
-            barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
-                    '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
+            // barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
+            //         '<a class="layui-btn layui-btn-mini  layui-btn-warm" style="text-align: center;" lay-event="delete">删除</a>';
             cols.push([
                 {field: 'id', title: 'ID', width:250, sort: false}
                 , {field: 'username', title: '用户名', width: 300, sort: false}
                 , {field: 'password', title: '密码', width: 300, sort: false}
                 , {fixed: 'right', title: '操作', width: 380, toolbar: '#barDemo'}
             ]);
-            html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
-                '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="user_add()"><i class="layui-icon">&#xe654;</i>添加用户</a>\n' +
-                '                    </div>';
+            // html = '<div style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;">\n' +
+            //     '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="user_add()"><i class="layui-icon">&#xe654;</i>添加用户</a>\n' +
+            //     '                    </div>';
         } else if (type == 'role') {
             url = ctx + '/sys/role/getByPage';
             barDemo = '<a class="layui-btn layui-btn-mini" style="text-align: center;" lay-event="edit">修改</a>\n' +
@@ -102,7 +102,7 @@ function getByPage(type,pageNum){
                 '                        <a class="layui-btn layui-btn-normal" style="margin-top: 6px;" onclick="permission_add()"><i class="layui-icon">&#xe654;</i>添加权限</a>\n' +
                 '                    </div>';
         }
-        $("#barDemo").append(barDemo);
+        // $("#barDemo").append(barDemo);
     }
     $.getJSON( url, {
         pageNum: pageNum //向服务端传的参数
@@ -134,7 +134,7 @@ function getByPage(type,pageNum){
             , cols: cols //设置表头
             //,…… //更多参数参考右侧目录：基本参数选项
         });
-        $(".layui-body").prepend(html);
+        // $(".layui-body").prepend(html);
     });
 }
 
@@ -143,7 +143,7 @@ function user_add() {
         type: 2,
         skin: 'layui-layer-rim', //加上边框
         area: ['600px', '400px'], //宽高
-        content: ctx+'/user/add'
+        content: ctx+'/sys/user/add'
     });
 }
 function user_show(userId) {
@@ -187,7 +187,7 @@ function role_add() {
         type: 2,
         skin: 'layui-layer-rim', //加上边框
         area: ['600px', '200px'], //宽高
-        content: ctx+'/user/role/add'
+        content: ctx+'/sys/user/role/add'
     });
 }
 function role_show(roleId) {
@@ -203,17 +203,18 @@ function role_show(roleId) {
 }
 
 function selectThisTab(tab) {
-    if ('user' == tab) {
-        $("#user_a").parent().addClass("layui-this");
-        $("#role_a").parent().removeClass("layui-this");
-        $("#permission_a").parent().removeClass("layui-this");
-    } else if ('role' == tab) {
-        $("#user_a").parent().removeClass("layui-this");
-        $("#role_a").parent().addClass("layui-this");
-        $("#permission_a").parent().removeClass("layui-this");
-    } else if ('permission' == tab) {
-        $("#user_a").parent().removeClass("layui-this");
-        $("#role_a").parent().removeClass("layui-this");
-        $("#permission_a").parent().addClass("layui-this");
-    }
+    $("#"+tab+"_a").parent().addClass("layui-this");
+    // if ('user' == tab) {
+    //     $("#user_a").parent().addClass("layui-this");
+    //     $("#role_a").parent().removeClass("layui-this");
+    //     $("#permission_a").parent().removeClass("layui-this");
+    // } else if ('role' == tab) {
+    //     $("#user_a").parent().removeClass("layui-this");
+    //     $("#role_a").parent().addClass("layui-this");
+    //     $("#permission_a").parent().removeClass("layui-this");
+    // } else if ('permission' == tab) {
+    //     $("#user_a").parent().removeClass("layui-this");
+    //     $("#role_a").parent().removeClass("layui-this");
+    //     $("#permission_a").parent().addClass("layui-this");
+    // }
 }
