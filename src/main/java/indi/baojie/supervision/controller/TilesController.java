@@ -11,7 +11,17 @@ public class TilesController {
 
     @GetMapping("user")
     public String showUser() {
-        return "user";
+        return "pages/user/user_list";
+    }
+
+    @GetMapping("role")
+    public String showRole() {
+        return "pages/user/role_list";
+    }
+
+    @GetMapping("permission")
+    public String showPermission() {
+        return "pages/user/permission_list";
     }
 
 

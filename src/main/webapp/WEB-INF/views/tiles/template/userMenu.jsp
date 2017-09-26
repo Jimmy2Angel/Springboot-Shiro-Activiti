@@ -12,9 +12,9 @@
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <nav>
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item"><a id="user_a" href="${ctx}/user#role" onclick="">用户管理</a></li>
-                <li class="layui-nav-item"><a id="role_a" onclick="showRoleList()">角色管理</a></li>
-                <li class="layui-nav-item"><a id="permission_a" onclick="showPermissionList()">权限管理</a></li>
+                <li class="layui-nav-item"><a id="user_a" href="${ctx}/user" onclick="">用户管理</a></li>
+                <li class="layui-nav-item"><a id="role_a" href="${ctx}/role">角色管理</a></li>
+                <li class="layui-nav-item"><a id="permission_a" href="${ctx}/permission">权限管理</a></li>
             </ul>
         </nav>
     </div>

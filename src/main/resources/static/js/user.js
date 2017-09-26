@@ -1,7 +1,6 @@
 var currentNum = localStorage.getItem("pageNum")==null?'1':localStorage.getItem("pageNum"), currentType = "";
 //用户列表展示
 function showUserList() {
-    selectThisTab('user');
     getByPage('user', currentNum);
     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
@@ -14,23 +13,7 @@ function showUserList() {
         }
     });
 }
-//角色列表展示
-// function showRoleList() {
-//     selectThisTab('role');
-//     getByPage('role', currentNum);
-//     table.on('tool(table_tool)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-//         var data = obj.data; //获得当前行数据
-//         var layEvent = obj.event; //获得 lay-event 对应的值
-//         var tr = obj.tr; //获得当前行 tr 的DOM对象
-//         if (layEvent === 'edit') { //编辑
-//             role_show(data.id);
-//         }else if(layEvent === 'permission_assigned'){
-//             permission_assigned(data.id);
-//         }else if (layEvent == 'delete') {
-//             role_delete(data.id);
-//         }
-//     });
-// }
+
 //权限列表展示
 // function showPermissionList() {
 //     selectThisTab('permission');
@@ -51,12 +34,8 @@ function showUserList() {
 //填充列表数据
 function getByPage(type,pageNum){
     var barDemo = "", url ="", cols = [], html = "";
-    // if ($(".layui-body>div").length > 1) {
-    //     $(".layui-body>div:eq(0)").remove();
         laypage.render({elem: 'page'});
         table.render({elem: '#table',data: null, cols: null});
-    //     $("#barDemo").empty();
-    // }
 
     currentType = type;
     if ($("#barDemo>a").length == 0) {

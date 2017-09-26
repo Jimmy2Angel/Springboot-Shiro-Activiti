@@ -11,19 +11,17 @@ layui.use(['laytpl', 'form','layer', 'table', 'laypage', 'element'], function ()
             location.href = ctx+'/index';
         });
 
-        var hash;
-        hash=(!window.location.hash)?"":window.location.hash;
-        window.location.hash=hash;
-        selectThisTab(hash);
+        var navi = path.substring(path.lastIndexOf("/")+1)
+        $("#"+navi+"_a").parent().addClass("layui-this");
         //调整地址栏地址，使前进、后退按钮能使用
-        switch(hash){
-            case "#user":
+        switch(navi){
+            case "user":
                 showUserList();
                 break;
-            case "#role":
+            case "role":
                 showRoleList();
                 break;
-            case "#permission":
+            case "permission":
                 showPermissionList();
                 break;
             case "model":

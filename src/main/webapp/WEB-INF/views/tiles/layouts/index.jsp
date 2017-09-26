@@ -1,4 +1,4 @@
-<%@ page import="indi.baojie.supervision.domain.User" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: lollipop
   Date: 17/9/6
@@ -16,6 +16,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="stylesheet" href="${ctx}/layui/css/layui.css">
     <title><tiles:insertAttribute name="title" /> </title>
+    <tiles:insertAttribute name="tilesCss" ignore="true"/>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -32,11 +33,9 @@
     </section>
 </div>
 </body>
-
+<tiles:insertAttribute name="tilesScript" ignore="true"/>
+<tiles:insertAttribute name="tilesScriptJq" ignore="true"/>
 <script src="${ctx}/layui/layui.js"></script>
 <script src="${ctx}/js/index.js"></script>
-<script src="${ctx}/js/user.js"></script>
 <script src="${ctx}/js/process.js"></script>
-<script type="text/html" id="barDemo">
-</script>
 </html>

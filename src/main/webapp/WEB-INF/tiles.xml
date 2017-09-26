@@ -15,25 +15,15 @@
     </definition>
 
     <!-- User Module -->
-    <definition name="user_module" extends="base">
+    <definition name="user" extends="base">
         <put-attribute name="title" value="SSA-用户模块" />
         <put-attribute name="menu" value="/WEB-INF/views/tiles/template/userMenu.jsp"/>
     </definition>
 
     <!-- Process Module -->
-    <definition name="process_module" extends="base">
+    <definition name="process" extends="base">
         <put-attribute name="title" value="SSA-流程模块" />
         <put-attribute name="menu" value="/WEB-INF/views/tiles/template/processMenu.jsp"/>
-    </definition>
-
-    <definition name="user" extends="user_module">
-        <put-attribute name="body" value="/WEB-INF/views/pages/user/user_list.jsp"/>
-    </definition>
-    <definition name="role" extends="user_module">
-        <put-attribute name="body" value="/WEB-INF/views/pages/user/role_list.jsp"/>
-    </definition>
-    <definition name="permission" extends="user_module">
-        <put-attribute name="body" value="/WEB-INF/views/pages/user/permission_list.jsp"/>
     </definition>
 
 </tiles-definitions>
