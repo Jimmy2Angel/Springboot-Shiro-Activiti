@@ -2,8 +2,10 @@ package indi.baojie.supervision.cfg;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import indi.baojie.supervision.interceptor.PageContextInterceptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.support.ErrorPageFilter;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +17,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
@@ -31,18 +30,22 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by Lollipop on 2017/6/1.
+ * @author: lollipop
+ * @date: 17/6/1
  */
 @EnableWebMvc
 @ComponentScan(
         basePackages = "indi.baojie.supervision.controller"
 )
 @Configuration
-public class Cfg_MVC extends WebMvcConfigurerAdapter {
+public class MvcConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    PageContextInterceptor pageContextInterceptor;
 
     private Logger logger = LogManager.getLogger(this);
 
-    public Cfg_MVC() {
+    public MvcConfig() {
         logger.info("********************* WebMvcConfig init ... *********************");
     }
 
@@ -58,82 +61,6 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-    }
-
-    /**
-     * Configure TilesConfigurer.
-     */
-    @Bean
-    public TilesConfigurer tilesConfigurer(){
-        TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        tilesConfigurer.setDefinitions("/WEB-INF/tiles.xml");
-        tilesConfigurer.setCheckRefresh(true);
-        return tilesConfigurer;
-    }
-
-    @Bean
-    @Primary
-    public TilesViewResolver tilesViewResolver() {
-        final TilesViewResolver resolver = new TilesViewResolver();
-        resolver.setViewClass(TilesView.class);
-
-        // jsp 用到的全局变量
-        try {
-            HashMap<String, Object> jspVars = new LinkedHashMap<>();
-            Properties vars = new Properties();
-            vars.load(new InputStreamReader(getClass().getResourceAsStream("/jsp-vars.properties"), "UTF-8"));
-            Enumeration<String> varsEnum = (Enumeration<String>) vars.propertyNames();
-            while (varsEnum.hasMoreElements()) {
-                String k = varsEnum.nextElement();
-                String v = vars.getProperty(k);
-                jspVars.put(k, v);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("{}:{}", k, v);
-                }
-            }
-            resolver.setAttributesMap(jspVars);
-        } catch (IOException e) {
-            logger.error(e);
-        }
-
-        resolver.setOrder(1);
-        return resolver;
-    }
-
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        InternalResourceViewResolver jspViewResolver = new InternalResourceViewResolver();
-
-        jspViewResolver.setPrefix("/WEB-INF/views/");
-        jspViewResolver.setSuffix(".jsp");
-
-        // jsp 用到的全局变量
-        try {
-            HashMap<String, Object> jspVars = new LinkedHashMap<>();
-            Properties vars = new Properties();
-            vars.load(new InputStreamReader(getClass().getResourceAsStream("/jsp-vars.properties"), "UTF-8"));
-            Enumeration<String> varsEnum = (Enumeration<String>) vars.propertyNames();
-            while (varsEnum.hasMoreElements()) {
-                String k = varsEnum.nextElement();
-                String v = vars.getProperty(k);
-                jspVars.put(k, v);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("{}:{}", k, v);
-                }
-            }
-            jspViewResolver.setAttributesMap(jspVars);
-        } catch (IOException e) {
-            logger.error(e);
-        }
-
-        jspViewResolver.setOrder(2);
-        registry.viewResolver(jspViewResolver);
-
-//        TilesViewResolver viewResolver = new TilesViewResolver();
-//        viewResolver.setOrder(1);
-//        viewResolver.setPrefix("/WEB-INF/views/");
-//        viewResolver.setSuffix(".jsp");
-//        registry.viewResolver(viewResolver);
     }
 
     @Override
@@ -166,4 +93,9 @@ public class Cfg_MVC extends WebMvcConfigurerAdapter {
         return filterRegistrationBean;
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+        registry.addInterceptor(pageContextInterceptor).addPathPatterns("/**");
+    }
 }

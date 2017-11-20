@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @Configuration
 @ImportResource("classpath:spring/spring-activiti.xml")
-public class Cfg_Activiti{
+public class ActivitiConfig {
 //    //流程配置，与spring整合采用SpringProcessEngineConfiguration这个实现
 //    @Bean
 //    public ProcessEngineConfiguration processEngineConfiguration(DataSource dataSource, PlatformTransactionManager transactionManager){

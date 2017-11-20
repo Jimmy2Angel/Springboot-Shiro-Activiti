@@ -4,30 +4,32 @@ import indi.baojie.common.data.Constants;
 import indi.baojie.common.data.JsonResult;
 import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.utils.RequestUtil;
-import indi.baojie.supervision.utils.SessionUserUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ViewResolver;
 
+/**
+ * @author: lollipop
+ * @date: 17/9/5
+ */
 @Controller
+@RequestMapping("a")
 public class LoginController {
 
-    @GetMapping("login")
+    @RequestMapping("login")
     public String login () {
         if (RequestUtil.getRequest().getSession().getAttribute(Constants.SESSION_USER) != null) {
             return "redirect:/index";
         }
-        return "login";
+        return "admin/login";
     }
 
     @PostMapping("login")
@@ -61,6 +63,6 @@ public class LoginController {
 
     @GetMapping("index")
     public String index() {
-        return "base";
+        return "index";
     }
 }

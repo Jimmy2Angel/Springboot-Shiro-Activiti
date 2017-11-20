@@ -29,9 +29,9 @@ import java.util.Map;
 /**
  * Created by Lollipop on 2017/6/19.
  */
-@Configuration
-public class Cfg_Shiro implements EnvironmentAware{
-    private static final Logger logger = LoggerFactory.getLogger(Cfg_Shiro.class);
+//@Configuration
+public class ShiroConfig implements EnvironmentAware{
+    private static final Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
 
 //    @Value("${spring.redis.host}")
     private String host;

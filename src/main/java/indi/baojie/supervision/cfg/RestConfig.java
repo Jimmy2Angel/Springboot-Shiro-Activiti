@@ -11,5 +11,5 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @ComponentScan("org.activiti.rest")
 @EnableWebMvc
-public class Cfg_Rest {
+public class RestConfig {
 }

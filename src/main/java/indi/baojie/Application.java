@@ -1,14 +1,12 @@
 package indi.baojie;
 
-import indi.baojie.supervision.cfg.Cfg_Rest;
-import org.apache.tiles.extras.complete.CompleteAutoloadTilesListener;
+import indi.baojie.supervision.cfg.RestConfig;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +18,8 @@ import javax.servlet.Filter;
 import java.io.IOException;
 
 /**
- * Created by Lollipop on 2017/6/15.
+ * @author: lollipop
+ * @date: 17/6/15
  */
 @SpringBootApplication()
 @EnableAutoConfiguration(exclude={SecurityAutoConfiguration.class})
@@ -51,7 +50,7 @@ public class Application extends SpringBootServletInitializer{
         AnnotationConfigWebApplicationContext applicationContext
                 = new AnnotationConfigWebApplicationContext();
         //base package
-        applicationContext.register(Cfg_Rest.class);
+        applicationContext.register(RestConfig.class);
         //通过构造函数指定dispatcherServlet的上下文
         DispatcherServlet rest_dispatcherServlet
                 = new DispatcherServlet(applicationContext);
@@ -73,12 +72,6 @@ public class Application extends SpringBootServletInitializer{
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
-    }
-
-    @Bean
-    public ServletListenerRegistrationBean testListenerRegistration(){
-        ServletListenerRegistrationBean registration = new ServletListenerRegistrationBean(new CompleteAutoloadTilesListener());
-        return registration;
     }
 
 }

@@ -15,8 +15,8 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 @EnableCaching
-public class Cfg_Redis extends CachingConfigurerSupport {
-    private static final Logger logger = LoggerFactory.getLogger(Cfg_Redis.class);
+public class RedisConfig extends CachingConfigurerSupport {
+    private static final Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 
     @Value("${spring.redis.host}")
     private String host;
