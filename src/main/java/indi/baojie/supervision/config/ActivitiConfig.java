@@ -1,4 +1,4 @@
-package indi.baojie.supervision.cfg;
+package indi.baojie.supervision.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;

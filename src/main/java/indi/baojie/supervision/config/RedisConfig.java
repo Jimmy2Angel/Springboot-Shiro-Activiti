@@ -1,4 +1,4 @@
-package indi.baojie.supervision.cfg;
+package indi.baojie.supervision.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

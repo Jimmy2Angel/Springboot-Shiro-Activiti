@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date: 17/9/5
  */
 @Controller
-@RequestMapping("a")
 public class LoginController {
 
     @RequestMapping("login")
@@ -63,6 +62,6 @@ public class LoginController {
 
     @GetMapping("index")
     public String index() {
-        return "index";
+        return "admin/index";
     }
 }

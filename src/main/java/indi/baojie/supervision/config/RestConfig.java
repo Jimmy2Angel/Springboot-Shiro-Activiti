@@ -1,4 +1,4 @@
-package indi.baojie.supervision.cfg;
+package indi.baojie.supervision.config;
 
 /**
  * Created by Lollipop on 2017/7/25.

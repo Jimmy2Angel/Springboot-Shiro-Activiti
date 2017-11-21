@@ -1,5 +1,6 @@
-package indi.baojie.supervision.cfg;
+package indi.baojie.supervision.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import indi.baojie.supervision.shiro.MyShiroFilterFactoryBean;
 import indi.baojie.supervision.shiro.MyShiroRealm;
 import org.apache.shiro.codec.Base64;
@@ -16,12 +17,10 @@ import org.crazycake.shiro.RedisManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,18 +28,23 @@ import java.util.Map;
 /**
  * Created by Lollipop on 2017/6/19.
  */
-//@Configuration
-public class ShiroConfig implements EnvironmentAware{
+@Configuration
+public class ShiroConfig {
     private static final Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
 
-//    @Value("${spring.redis.host}")
+    @Value("${spring.redis.host}")
     private String host;
 
-//    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port}")
     private int port;
 
-//    @Value("${spring.redis.timeout}")
+    @Value("${spring.redis.timeout}")
     private int timeout;
+
+    @Bean
+    public ShiroDialect shiroDialect() {
+        return new ShiroDialect();
+    }
 
     @Bean(name = "shiroFilter")
     @Order(Integer.MAX_VALUE)
@@ -212,9 +216,10 @@ public class ShiroConfig implements EnvironmentAware{
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(port);
-        redisManager.setExpire(1800);// 配置缓存过期时间
+        // 配置缓存过期时间
+        redisManager.setExpire(1800);
         redisManager.setTimeout(timeout);
-//         redisManager.setPassword(password);
+///         redisManager.setPassword(password);
         return redisManager;
     }
 
@@ -258,23 +263,23 @@ public class ShiroConfig implements EnvironmentAware{
      * 不知道为什么这里用@Value注入不了，还没解决
      * @param environment
      */
-    @Override
-    public void setEnvironment(Environment environment) {
-
-        //通过 environment 获取到系统属性.
-        //System.out.println(environment.getProperty("JAVA_HOME"));
-
-        //通过 environment 同样能获取到application.yml配置的属性.
-        logger.info(environment.getProperty("spring.redis.host"));
-
-        //获取到前缀是"spring.redis." 的属性列表值.
-        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(environment, "spring.redis.");
-        logger.info("spring.redis.port="+relaxedPropertyResolver.getProperty("port"));
-        logger.info("spring.redis.timeout="+relaxedPropertyResolver.getProperty("timeout"));
-
-        //注入redis配置
-        this.host = environment.getProperty("spring.redis.host");
-        this.port = Integer.parseInt(environment.getProperty("spring.redis.port"));
-        this.timeout = Integer.parseInt(environment.getProperty("spring.redis.timeout"));
-    }
+//    @Override
+//    public void setEnvironment(Environment environment) {
+//
+//        //通过 environment 获取到系统属性.
+//        //System.out.println(environment.getProperty("JAVA_HOME"));
+//
+//        //通过 environment 同样能获取到application.yml配置的属性.
+//        logger.info(environment.getProperty("spring.redis.host"));
+//
+//        //获取到前缀是"spring.redis." 的属性列表值.
+//        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(environment, "spring.redis.");
+//        logger.info("spring.redis.port="+relaxedPropertyResolver.getProperty("port"));
+//        logger.info("spring.redis.timeout="+relaxedPropertyResolver.getProperty("timeout"));
+//
+//        //注入redis配置
+//        this.host = environment.getProperty("spring.redis.host");
+//        this.port = Integer.parseInt(environment.getProperty("spring.redis.port"));
+//        this.timeout = Integer.parseInt(environment.getProperty("spring.redis.timeout"));
+//    }
 }
