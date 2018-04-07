@@ -1,8 +1,10 @@
 package indi.baojie.supervision.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable {
+
 
     private Integer id;
 

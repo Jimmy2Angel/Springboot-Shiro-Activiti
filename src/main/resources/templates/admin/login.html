@@ -57,8 +57,7 @@
                     if (res.success) {
                         window.location.href = 'index';
                     } else {
-                        layer.msg(res.message,{area: ['auto', 'auto'],
-                            offset: '100px'});
+                        layer.msg(res.message);
                         $("input[name='username']").select();
                     }
                 },
@@ -72,12 +71,11 @@
 
     function formValidate() {
         if ($("input[name='username']").val()==='') {
-            layer.msg("用户名不能为空！",{area: ['auto', 'auto'],
-                offset: '100px'});
+            layer.msg("用户名不能为空！");
             $("input[name='username']").focus();
             return false;
         }if ($("input[name='password']").val()=='') {
-            layer.msg('密码不能为空！', {area: ['auto', 'auto'], offset: '100px'});
+            layer.msg('密码不能为空！');
             $("input[name='password']").focus();
             return false;
         }

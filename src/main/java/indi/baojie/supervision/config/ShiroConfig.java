@@ -3,6 +3,7 @@ package indi.baojie.supervision.config;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import indi.baojie.supervision.shiro.MyShiroFilterFactoryBean;
 import indi.baojie.supervision.shiro.MyShiroRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -14,9 +15,9 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +48,7 @@ public class ShiroConfig {
     }
 
     @Bean(name = "shiroFilter")
-    @Order(Integer.MAX_VALUE)
+    @Order(-1)
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
 
         logger.info("注入Shiro的Web过滤器-->shiroFilter", MyShiroFilterFactoryBean.class);
@@ -111,33 +112,33 @@ public class ShiroConfig {
     @Bean(name = "myShiroRealm")
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm realm = new MyShiroRealm();
-//        realm.setCacheManager(cacheManager());
-//        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        realm.setCacheManager(cacheManager());
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
-//    /**
-//     * 凭证匹配器
-//     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
-//     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
-//     * ）
-//     * @return
-//     */
-//    @Bean
-//    public HashedCredentialsMatcher hashedCredentialsMatcher(){
-//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-//
-//        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-//        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
-//
-//        return hashedCredentialsMatcher;
-//    }
+    /**
+     * 凭证匹配器
+     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
+     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
+     * ）
+     * @return
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+
+        return hashedCredentialsMatcher;
+    }
 
     /**
      * Shiro生命周期处理器
      */
     @Bean(name = "lifecycleBeanPostProcessor")
-    public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 
@@ -146,12 +147,13 @@ public class ShiroConfig {
      * 需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
      * 配置以下两个bean(DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor)即可实现此功能
      */
-    @Bean
-    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
-        daap.setProxyTargetClass(true);
-        return daap;
-    }
+//    @Bean
+//    @DependsOn(value = "lifecycleBeanPostProcessor")
+//    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+//        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
+//        daap.setProxyTargetClass(true);
+//        return daap;
+//    }
 
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
@@ -240,12 +242,12 @@ public class ShiroConfig {
      * 使用的是shiro-redis开源插件
      */
     //TODO 此处有问题  不知道为什么
-//    @Bean
-//    public RedisSessionDAO redisSessionDAO() {
-//        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-//        redisSessionDAO.setRedisManager(redisManager());
-//        return redisSessionDAO;
-//    }
+    @Bean
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
+    }
 
     /**
      * shiro session的管理
@@ -253,14 +255,16 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-//        sessionManager.setSessionDAO(redisSessionDAO());
+        sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
 
-    //TODO @Value注入失效以待解决
     /**
+     * 实现 EnvironmentAware
      * 获取系统变量，注入redis配置
-     * 不知道为什么这里用@Value注入不了，还没解决
+     *
+     * (不知道为什么这里用 @Value 注入不了)
+     * 解决办法：将 getLifecycleBeanPostProcessor 方法换成 static 方法
      * @param environment
      */
 //    @Override

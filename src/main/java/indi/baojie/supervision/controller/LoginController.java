@@ -49,9 +49,8 @@ public class LoginController {
         } catch (AuthenticationException e) {
             token.clear();
             jsonResult.markError("用户名或密码不正确！");
-        } finally {
-            return jsonResult;
         }
+        return jsonResult;
     }
 
     @GetMapping("logout")
@@ -60,7 +59,7 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    @GetMapping("index")
+    @GetMapping(value = {"index", ""})
     public String index() {
         return "admin/index";
     }

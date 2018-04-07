@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Set;
 
 public interface RoleService {
-    Set<String> getPermissionsName(Role role);
+    Set<String> findPermissionsName(Role role);
 
-    List<Role> getAllByPaging(Integer pageNum, Integer pageSize);
+    List<Role> findAllByPaging(Integer pageNum, Integer pageSize);
 
-    Role getById(Integer roleId);
+    Role findById(Integer roleId);
 
-    JsonResult addOne(Role role);
+    JsonResult saveOne(Role role);
 
-    JsonResult editOne(Role role);
+    JsonResult updateOne(Role role);
 
-    List<Role> getRoleIdByUserId(Integer userId);
+    List<Role> findRoleIdByUserId(Integer userId);
 
-    boolean assigned(Integer userId, String roleIds);
+    boolean saveUserRoles(Integer userId, String roleIds);
 }

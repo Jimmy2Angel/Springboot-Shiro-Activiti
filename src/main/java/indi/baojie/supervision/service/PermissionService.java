@@ -5,5 +5,5 @@ import indi.baojie.supervision.domain.Permission;
 import java.util.List;
 
 public interface PermissionService {
-    List<Permission> getAllByPaging(Integer pageNum, Integer pageSize);
+    List<Permission> findAllByPaging(Integer pageNum, Integer pageSize);
 }

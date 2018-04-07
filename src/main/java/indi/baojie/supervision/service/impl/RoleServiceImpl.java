@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
     UserRoleMapper userRoleMapper;
 
     @Override
-    public Set<String> getPermissionsName(Role role) {
+    public Set<String> findPermissionsName(Role role) {
         Set<Permission> permissions = role.getPermissions();
         Set<String> permissionNames = Sets.newHashSet();
         permissions.forEach(e -> {
@@ -37,7 +37,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> getAllByPaging(Integer pageNum, Integer pageSize) {
+    public List<Role> findAllByPaging(Integer pageNum, Integer pageSize) {
         if (pageNum != null) {
             PageHelper.startPage(pageNum, Constants.PAGE_SIZE);
         }
@@ -45,14 +45,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role getById(Integer roleId) {
+    public Role findById(Integer roleId) {
         Role role = new Role();
         role.setId(roleId);
         return roleMapper.findOne(role);
     }
 
     @Override
-    public JsonResult addOne(Role role) {
+    public JsonResult saveOne(Role role) {
         JsonResult jsonResult = new JsonResult();
         int count = roleMapper.count(role);
         if (count != 0) {
@@ -69,7 +69,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public JsonResult editOne(Role role) {
+    public JsonResult updateOne(Role role) {
         JsonResult jsonResult = new JsonResult();
         if (roleMapper.count(role) > 1) {
             jsonResult.markError("该角色名已经存在！");
@@ -83,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> getRoleIdByUserId(Integer userId) {
+    public List<Role> findRoleIdByUserId(Integer userId) {
         List<Role> result = Lists.newArrayList();
         UserRole userRole = new UserRole();
         userRole.setUserId(userId);
@@ -97,7 +97,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean assigned(Integer userId, String roleIds) {
+    public boolean saveUserRoles(Integer userId, String roleIds) {
         String[] roleIdsArr = roleIds.split(",");
         UserRole userRole = new UserRole();
         for (String roleId: roleIdsArr) {

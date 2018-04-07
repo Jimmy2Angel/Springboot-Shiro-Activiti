@@ -12,6 +12,7 @@ import indi.baojie.supervision.service.UserService;
 import indi.baojie.supervision.utils.SessionUserUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresUser;
+import org.restlet.resource.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,6 @@ import java.util.List;
  * @date: 17/9/5
  */
 @Controller
-@RequestMapping("sys")
 public class UserController {
 
     @Autowired
@@ -37,6 +37,15 @@ public class UserController {
     private PermissionService permissionService;
 
     /**
+     * 用户列表
+     * @return
+     */
+    @GetMapping("user/list")
+    public String showUserList() {
+        return "admin/user_list";
+    }
+
+    /**
      * 分页获取所有的user
      * @param pageNum
      * @return
@@ -44,14 +53,14 @@ public class UserController {
     @GetMapping("user/getByPage")
     @ResponseBody
     public PageInfo<User> getByPage(Integer pageNum) {
-        List<User> userList = userService.getAllByPaging(pageNum, Constants.PAGE_SIZE);
+        List<User> userList = userService.findAllByPaging(pageNum, Constants.PAGE_SIZE);
         PageInfo<User> pageInfo = new PageInfo<>(userList);
         return pageInfo;
     }
 
     @GetMapping("user/add")
     public String addUser(Model model) {
-        model.addAttribute("roles", roleService.getAllByPaging(null,null));
+        model.addAttribute("roles", roleService.findAllByPaging(null,null));
         return "pages/user/user_add";
     }
 
@@ -64,16 +73,16 @@ public class UserController {
     @ResponseBody
     public JsonResult addUser(User user, String[] roleIds) {
         if (user.getId() == null) {
-            return userService.addOne(user, roleIds);
+            return userService.saveOne(user, roleIds);
         } else {
-            return userService.editOne(user, roleIds);
+            return userService.updateOne(user, roleIds);
         }
     }
 
     @GetMapping("user/{userId}")
     public String showUser(@PathVariable Integer userId, Model model) {
         model.addAttribute("user", userService.findById(userId));
-        model.addAttribute("roles",roleService.getAllByPaging(null, null));
+        model.addAttribute("roles",roleService.findAllByPaging(null, null));
         return "pages/user/user_add";
     }
 
@@ -98,7 +107,7 @@ public class UserController {
     @GetMapping("role/getByPage")
     @ResponseBody
     public PageInfo<Role> getRolesByPage(Integer pageNum) {
-        List<Role> userList = roleService.getAllByPaging(pageNum, Constants.PAGE_SIZE);
+        List<Role> userList = roleService.findAllByPaging(pageNum, Constants.PAGE_SIZE);
         PageInfo<Role> pageInfo = new PageInfo<>(userList);
         return pageInfo;
     }
@@ -110,7 +119,7 @@ public class UserController {
 
     @GetMapping("role/{roleId}")
     public String showRole(@PathVariable Integer roleId, Model model) {
-        model.addAttribute("role", roleService.getById(roleId));
+        model.addAttribute("role", roleService.findById(roleId));
         return "pages/user/role_add";
     }
 
@@ -123,9 +132,9 @@ public class UserController {
     @ResponseBody
     public JsonResult addRole(Role role) {
         if (role.getId() == null) {
-            return roleService.addOne(role);
+            return roleService.saveOne(role);
         } else {
-            return roleService.editOne(role);
+            return roleService.updateOne(role);
         }
     }
 
@@ -136,7 +145,7 @@ public class UserController {
     @GetMapping("permission/getByPage")
     @ResponseBody
     public PageInfo<Permission> getPermissionByPage(Integer pageNum) {
-        List<Permission> permissionList = permissionService.getAllByPaging(pageNum, Constants.PAGE_SIZE);
+        List<Permission> permissionList = permissionService.findAllByPaging(pageNum, Constants.PAGE_SIZE);
         return new PageInfo<>(permissionList);
     }
 

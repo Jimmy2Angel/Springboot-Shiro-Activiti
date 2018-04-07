@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <nav>
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item"><a th:text="用户列表"></a></li>
+                <li class="layui-nav-item"><a th:text="角色列表"></a></li>
+                <li class="layui-nav-item"><a th:text="权限列表"></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

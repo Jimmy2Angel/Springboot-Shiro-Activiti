@@ -40,10 +40,10 @@ public class MyShiroRealm extends AuthorizingRealm {
             //权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
             SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
             //用户的角色集合
-            info.setRoles(userService.getRolesName(user));
+            info.setRoles(userService.findRolesName(user));
             //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
             user.getRoles().forEach(role -> {
-                info.addStringPermissions(roleService.getPermissionsName(role));
+                info.addStringPermissions(roleService.findPermissionsName(role));
             });
             // 或者按下面这样添加
             //添加一个角色,不是配置意义上的添加,而是证明该用户拥有admin角色

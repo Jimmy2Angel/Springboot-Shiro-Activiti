@@ -11,15 +11,15 @@ public interface UserService {
 
     User findByName(String username);
 
-    Set<String> getRolesName(User user);
+    Set<String> findRolesName(User user);
 
-    List<User> getAllByPaging(Integer pageNum, Integer pageSize);
+    List<User> findAllByPaging(Integer pageNum, Integer pageSize);
 
-    JsonResult addOne(User user, String[] roleIds);
+    JsonResult saveOne(User user, String[] roleIds);
 
     User findById(Integer userId);
 
-    JsonResult editOne(User user, String[] roleIds);
+    JsonResult updateOne(User user, String[] roleIds);
 
     boolean deleteById(Integer userId);
 }

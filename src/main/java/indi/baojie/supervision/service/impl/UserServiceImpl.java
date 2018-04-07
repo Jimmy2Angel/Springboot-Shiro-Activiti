@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<String> getRolesName(User user) {
+    public Set<String> findRolesName(User user) {
         Set<Role> roles = user.getRoles();
         Set<String> roleNames = Sets.newHashSet();
         roles.forEach(e -> {
@@ -44,13 +43,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllByPaging(Integer pageNum, Integer pageSize) {
+    public List<User> findAllByPaging(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return userMapper.find(new User());
     }
 
     @Override
-    public JsonResult addOne(User user, String[] roleIds) {
+    public JsonResult saveOne(User user, String[] roleIds) {
         JsonResult jsonResult = new JsonResult();
         int count = userMapper.count(user);
         if (count != 0) {
@@ -75,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JsonResult editOne(User user, String[] roleIds) {
+    public JsonResult updateOne(User user, String[] roleIds) {
         JsonResult jsonResult = new JsonResult();
         if (userMapper.count(user) > 1) {
             jsonResult.markError("该用户名已经存在！");

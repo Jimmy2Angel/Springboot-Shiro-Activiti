@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <title th:text="用户列表"></title>
+</head>
+<body>
+    <div class="layui-layout layui-layout-admin">
+        <header id="header" th:replace="admin/layout/header"></header>
+
+        <section id="sidemenu" th:replace="admin/layout/user_sidemenu"></section>
+
+        <section id="site-content" th:replace="admin/layout/content"></section>
+
+        <section id="footer" th:replace="admin/layout/footer"></section>
+    </div>
+</body>
+<script th:src="@{/layui/layui.js}"></script>
+</html>
