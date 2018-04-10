@@ -27,7 +27,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Lollipop on 2017/6/19.
+ *
+ * @author Lollipop
+ * @date 2017/6/19
  */
 @Configuration
 public class ShiroConfig {
@@ -98,7 +100,7 @@ public class ShiroConfig {
         return shiroFilterFactoryBean;
     }
 
-//    @Bean
+///    @Bean
 //    public EhCacheManager getEhCacheManager() {
 //        EhCacheManager em = new EhCacheManager();
 //        em.setCacheManagerConfigFile("classpath:shiro/ehcache-shiro.xml");
@@ -127,10 +129,10 @@ public class ShiroConfig {
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
-
+        //散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        //散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(2);
         return hashedCredentialsMatcher;
     }
 
@@ -174,7 +176,6 @@ public class ShiroConfig {
 //        securityManager.setSessionManager(sessionManager);
 
         // 自定义缓存实现 使用redis
-        //TODO 据说在刚修改用户的权限时，无法立即失效。
         securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());

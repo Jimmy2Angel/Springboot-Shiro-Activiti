@@ -9,9 +9,9 @@ import indi.baojie.supervision.domain.Role;
 import indi.baojie.supervision.domain.User;
 import indi.baojie.supervision.domain.UserRole;
 import indi.baojie.supervision.service.UserService;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -56,7 +56,8 @@ public class UserServiceImpl implements UserService {
             jsonResult.markError("该用户名已经存在！");
             return jsonResult;
         } else {
-            user.setPassword("111111");
+            SimpleHash simpleHash = new SimpleHash("md5", user.getPassword(), "", 2);
+            user.setPassword(simpleHash.toString());
             if (userMapper.insert(user)==0) {
                 jsonResult.markError("新增失败！请联系管理员！");
                 return jsonResult;

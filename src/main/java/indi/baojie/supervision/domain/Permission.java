@@ -1,6 +1,13 @@
 package indi.baojie.supervision.domain;
 
-public class Permission {
+import java.io.Serializable;
+
+/**
+ * @author lollipop
+ */
+public class Permission implements Serializable {
+
+    private static final long serialVersionUID = -5032518338374661104L;
 
     private Integer id;
 

@@ -7,11 +7,17 @@ import indi.baojie.supervision.utils.SessionUserUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.security.provider.MD5;
+
+import java.security.MessageDigest;
 
 /**
  * Created by Lollipop on 2017/6/19.
@@ -70,7 +76,6 @@ public class MyShiroRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
         SessionUserUtil.save(user);
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
-        return authenticationInfo;
+        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 }

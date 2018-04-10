@@ -1,6 +1,13 @@
 package indi.baojie.supervision.domain;
 
-public class RolePermission {
+import java.io.Serializable;
+
+/**
+ * @author lollipop
+ */
+public class RolePermission implements Serializable {
+
+    private static final long serialVersionUID = 285469059940884995L;
 
     private Integer roleId;
 

@@ -2,7 +2,7 @@
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <div class="layui-header">
-    <div class="layui-logo" id="index">S S A</div>
+    <a class="layui-logo" th:href="@{/index}">S S A</a>
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
         <li class="layui-nav-item"><a th:href="@{/user/list}">用户管理</a></li>

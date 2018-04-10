@@ -27,8 +27,9 @@ public class MyShiroHttpServletResponse extends ShiroHttpServletResponse {
     }
     @Override
     protected String toEncoded(String url, String sessionId) {
-        if ((url == null) || (sessionId == null))
+        if ((url == null) || (sessionId == null)) {
             return (url);
+        }
 
         String path = url;
         String query = "";

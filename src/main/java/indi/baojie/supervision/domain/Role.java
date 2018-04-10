@@ -1,8 +1,14 @@
 package indi.baojie.supervision.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class Role {
+/**
+ * @author lollipop
+ */
+public class Role implements Serializable{
+
+    private static final long serialVersionUID = 3000436449954215387L;
 
     private Integer id;
 
