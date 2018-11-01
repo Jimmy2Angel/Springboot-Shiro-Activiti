@@ -41,6 +41,9 @@ public class ShiroConfig {
     @Value("${spring.redis.port}")
     private int port;
 
+    @Value("${spring.redis.password}")
+    private String password;
+
     @Value("${spring.redis.timeout}")
     private int timeout;
 
@@ -222,7 +225,7 @@ public class ShiroConfig {
         // 配置缓存过期时间
         redisManager.setExpire(1800);
         redisManager.setTimeout(timeout);
-///         redisManager.setPassword(password);
+        redisManager.setPassword(password);
         return redisManager;
     }
 
