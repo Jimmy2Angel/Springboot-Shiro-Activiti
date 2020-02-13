@@ -266,9 +266,16 @@ public class ShiroConfig {
     /**
      * 实现 EnvironmentAware
      * 获取系统变量，注入redis配置
+     * (因为不知道为什么这里用 @Value 注入不了)
      *
-     * (不知道为什么这里用 @Value 注入不了)
-     * 解决办法：将 getLifecycleBeanPostProcessor 方法换成 static 方法
+     * 原因：在 Spring 容器启动阶段 registerBeanPostProcessors 的时候，会去创建 LifecycleBeanPostProcessor，
+     * 此时又会由于其 FactoryBean 是 ShiroConfig，所以先去创建 ShiroConfig，
+     * 但是此时 AutowiredAnnotationBeanPostProcessor 还没有注册到，@Value 注解自然不生效
+     *
+     * 解决方案：ShiroConfig 类中定义的 LifecycleBeanPostProcessor 改为 static 的，
+     * 这样在创建 LifecycleBeanPostProcessor 的时候就不会去立马创建 ShiroConfig，
+     * 然后等创建 ShiroConfig 的时候AutowiredAnnotationBeanPostProcessor 也在之前注册好了，@Value 自然也就生效了
+     *
      * @param environment
      */
 //    @Override
